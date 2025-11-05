@@ -13,6 +13,8 @@ export interface AppState {
   commitments: Commitment[];
   currentStreak: number;
   lastCommitmentDate: string | null;
+  tenYearVision: string | null;
+  hasCompletedSevenDayReflection: boolean;
 }
 
 const STORAGE_KEY = 'papyr_state';
@@ -36,10 +38,18 @@ export const getAppState = (): AppState => {
       commitments: [],
       currentStreak: 0,
       lastCommitmentDate: null,
+      tenYearVision: null,
+      hasCompletedSevenDayReflection: false,
     };
   }
 
-  return JSON.parse(stored);
+  const parsed = JSON.parse(stored);
+  // Ensure new fields exist for backwards compatibility
+  return {
+    ...parsed,
+    tenYearVision: parsed.tenYearVision || null,
+    hasCompletedSevenDayReflection: parsed.hasCompletedSevenDayReflection || false,
+  };
 };
 
 export const saveAppState = (state: AppState) => {
@@ -117,4 +127,17 @@ export const canCommitToday = (): boolean => {
 export const needsPaywall = (): boolean => {
   const state = getAppState();
   return state.commitments.length >= 7 && !state.hasPaid;
+};
+
+export const needsSevenDayReflection = (): boolean => {
+  const state = getAppState();
+  return state.currentStreak === 7 && !state.hasCompletedSevenDayReflection;
+};
+
+export const completeSevenDayReflection = (vision: string, hasPaid: boolean) => {
+  const state = getAppState();
+  state.tenYearVision = vision;
+  state.hasCompletedSevenDayReflection = true;
+  state.hasPaid = hasPaid;
+  saveAppState(state);
 };

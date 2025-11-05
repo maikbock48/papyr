@@ -33,6 +33,11 @@ export default function Home() {
     setCurrentView('main');
   };
 
+  const handleSevenDayReflection = () => {
+    // After 7-day reflection, user stays in main app (they already paid)
+    setCurrentView('main');
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
@@ -49,7 +54,12 @@ export default function Home() {
     case 'paywall':
       return <Paywall onComplete={handlePaywallComplete} />;
     case 'main':
-      return <MainApp onPaywallRequired={handlePaywallRequired} />;
+      return (
+        <MainApp
+          onPaywallRequired={handlePaywallRequired}
+          onSevenDayReflection={handleSevenDayReflection}
+        />
+      );
     default:
       return null;
   }

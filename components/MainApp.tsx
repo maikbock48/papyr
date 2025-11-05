@@ -8,31 +8,52 @@ import {
   isWithinWolfHour,
   canCommitToday,
   needsPaywall,
+  needsSevenDayReflection,
+  completeSevenDayReflection,
   type Commitment,
 } from '@/lib/storage';
 import { canShowParade, hasSeenParade, getLastMonthCommitments } from '@/lib/monthlyParade';
+import { shouldShowDailyQuestion } from '@/lib/dailyQuestions';
 import MonthlyParade from './MonthlyParade';
+import DailyQuestion from './DailyQuestion';
+import SevenDayReflection from './SevenDayReflection';
 
 interface MainAppProps {
   onPaywallRequired: () => void;
+  onSevenDayReflection: () => void;
 }
 
-export default function MainApp({ onPaywallRequired }: MainAppProps) {
+export default function MainApp({ onPaywallRequired, onSevenDayReflection }: MainAppProps) {
   const [appState, setAppState] = useState(getAppState());
   const [showStreakSplash, setShowStreakSplash] = useState(true);
   const [showParade, setShowParade] = useState(false);
+  const [showDailyQuestion, setShowDailyQuestion] = useState(false);
+  const [showSevenDayReflection, setShowSevenDayReflection] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [goals, setGoals] = useState('');
   const [globalPulse, setGlobalPulse] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Hide streak splash after 1.5 seconds, then check for parade
+  // Hide streak splash after 1.5 seconds, then check for what to show next
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowStreakSplash(false);
 
-      // Check if parade should be shown
+      // Priority order:
+      // 1. Seven Day Reflection (most important)
+      if (needsSevenDayReflection()) {
+        setShowSevenDayReflection(true);
+        return;
+      }
+
+      // 2. Daily Question (if applicable)
+      if (shouldShowDailyQuestion(appState.currentStreak)) {
+        setShowDailyQuestion(true);
+        return;
+      }
+
+      // 3. Monthly Parade
       if (canShowParade(appState.commitments)) {
         const paradeData = getLastMonthCommitments(appState.commitments);
         if (!hasSeenParade(paradeData.month, paradeData.year)) {
@@ -41,7 +62,7 @@ export default function MainApp({ onPaywallRequired }: MainAppProps) {
       }
     }, 1500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [appState.currentStreak, appState.commitments]);
 
   // Simulate global pulse (in real app, this would be from a backend)
   useEffect(() => {
@@ -115,13 +136,19 @@ export default function MainApp({ onPaywallRequired }: MainAppProps) {
     }
 
     addCommitment(currentImage, goals);
-    setAppState(getAppState());
+    const newState = getAppState();
+    setAppState(newState);
     setIsUploading(false);
     setCurrentImage(null);
     setGoals('');
 
     // Increment global pulse
     setGlobalPulse(prev => prev + 1);
+
+    // Check if we should show daily question
+    if (shouldShowDailyQuestion(newState.currentStreak)) {
+      setShowDailyQuestion(true);
+    }
   };
 
   const handleCancel = () => {
@@ -137,6 +164,31 @@ export default function MainApp({ onPaywallRequired }: MainAppProps) {
           {appState.currentStreak}
         </div>
       </div>
+    );
+  }
+
+  if (showSevenDayReflection) {
+    return (
+      <SevenDayReflection
+        onComplete={(vision) => {
+          completeSevenDayReflection(vision, true);
+          setAppState(getAppState());
+          setShowSevenDayReflection(false);
+          onSevenDayReflection();
+        }}
+      />
+    );
+  }
+
+  if (showDailyQuestion) {
+    return (
+      <DailyQuestion
+        day={appState.currentStreak}
+        onComplete={() => {
+          setShowDailyQuestion(false);
+          setAppState(getAppState());
+        }}
+      />
     );
   }
 
