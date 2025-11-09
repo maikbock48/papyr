@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Onboarding from '@/components/Onboarding';
+import NewOnboarding from '@/components/NewOnboarding';
 import MainApp from '@/components/MainApp';
 import Paywall from '@/components/Paywall';
 import { getAppState, completeOnboarding } from '@/lib/storage';
@@ -20,8 +20,8 @@ export default function Home() {
     setIsLoading(false);
   }, []);
 
-  const handleOnboardingComplete = (hasPaid: boolean) => {
-    completeOnboarding(hasPaid);
+  const handleOnboardingComplete = (hasPaid: boolean, userName: string) => {
+    completeOnboarding(hasPaid, userName);
     setCurrentView('main');
   };
 
@@ -50,7 +50,7 @@ export default function Home() {
 
   switch (currentView) {
     case 'onboarding':
-      return <Onboarding onComplete={handleOnboardingComplete} />;
+      return <NewOnboarding onComplete={handleOnboardingComplete} />;
     case 'paywall':
       return <Paywall onComplete={handlePaywallComplete} />;
     case 'main':

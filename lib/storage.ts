@@ -10,6 +10,7 @@ export interface Commitment {
 export interface AppState {
   hasCompletedOnboarding: boolean;
   hasPaid: boolean;
+  userName: string;
   commitments: Commitment[];
   currentStreak: number;
   lastCommitmentDate: string | null;
@@ -24,9 +25,12 @@ export const getAppState = (): AppState => {
     return {
       hasCompletedOnboarding: false,
       hasPaid: false,
+      userName: '',
       commitments: [],
       currentStreak: 0,
       lastCommitmentDate: null,
+      tenYearVision: null,
+      hasCompletedSevenDayReflection: false,
     };
   }
 
@@ -35,6 +39,7 @@ export const getAppState = (): AppState => {
     return {
       hasCompletedOnboarding: false,
       hasPaid: false,
+      userName: '',
       commitments: [],
       currentStreak: 0,
       lastCommitmentDate: null,
@@ -47,6 +52,7 @@ export const getAppState = (): AppState => {
   // Ensure new fields exist for backwards compatibility
   return {
     ...parsed,
+    userName: parsed.userName || '',
     tenYearVision: parsed.tenYearVision || null,
     hasCompletedSevenDayReflection: parsed.hasCompletedSevenDayReflection || false,
   };
@@ -104,10 +110,11 @@ export const markCommitmentDeveloped = (id: string) => {
   }
 };
 
-export const completeOnboarding = (hasPaid: boolean) => {
+export const completeOnboarding = (hasPaid: boolean, userName: string) => {
   const state = getAppState();
   state.hasCompletedOnboarding = true;
   state.hasPaid = hasPaid;
+  state.userName = userName;
   saveAppState(state);
 };
 
