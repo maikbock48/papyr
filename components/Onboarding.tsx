@@ -76,7 +76,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
             Das Ritual ist kostenlos. Das ewige Archiv ist dein Bekenntnis.
           </p>
           <p className="text-lg mb-8 leading-relaxed">
-            Du kannst 7 Tage kostenlos testen und sehen, wie dein Streak wächst.
+            Du kannst 14 Tage kostenlos testen und sehen, wie dein Streak wächst.
           </p>
           <div className="border-4 border-brown p-6 mb-8">
             <p className="text-2xl font-bold mb-4">
@@ -129,7 +129,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                   onClick={() => onComplete(false)}
                   className="w-full bg-cream text-brown px-8 py-4 text-lg border-2 border-brown hover:bg-vintage/30 transition-colors"
                 >
-                  Ich teste 7 Tage.
+                  Ich teste 14 Tage.
                 </button>
               </>
             )}

@@ -43,7 +43,7 @@ Die App ist "unnötig" - aber das Abtippen ist der Trick. Das ist die Verinnerli
 - Entweder zahlen (0,99€) oder Streak zurücksetzen
 
 ### 🌙 Die Stunde des Wolfs
-- Upload nur zwischen 21:00 - 03:00 Uhr möglich
+- Upload nur zwischen 20:00 - 02:00 Uhr möglich
 - Das ist die Zeit der Planung, der Vorbereitung
 
 ### 📸 Polaroid-Entwicklung
@@ -126,7 +126,7 @@ location.reload();
 ```
 
 ### Stunde des Wolfs testen
-Standardmäßig nur 21:00-03:00 Uhr. Zum Testen:
+Standardmäßig nur 20:00-02:00 Uhr. Zum Testen:
 
 In `lib/storage.ts` Zeile 92, ändere temporär:
 ```typescript

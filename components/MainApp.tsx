@@ -100,7 +100,7 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
     }
 
     if (!isWithinWolfHour()) {
-      alert('⏰ Die Stunde des Wolfs ist zwischen 21:00 und 03:00 Uhr. Komm dann wieder.');
+      alert('⏰ Die Stunde des Wolfs ist zwischen 20:00 und 02:00 Uhr. Komm dann wieder.');
       return;
     }
 
@@ -368,7 +368,7 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
               Dein Archiv wartet auf dein erstes Bekenntnis.
             </p>
             <p className="text-sm text-brown/50 mt-4">
-              Komm zwischen 21:00 und 03:00 Uhr zurück.
+              Komm zwischen 20:00 und 02:00 Uhr zurück.
             </p>
           </div>
         )}

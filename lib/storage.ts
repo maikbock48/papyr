@@ -114,8 +114,8 @@ export const completeOnboarding = (hasPaid: boolean) => {
 export const isWithinWolfHour = (): boolean => {
   const now = new Date();
   const hour = now.getHours();
-  // 21:00 (9 PM) to 03:00 (3 AM)
-  return hour >= 21 || hour < 3;
+  // 20:00 (8 PM) to 02:00 (2 AM) - Die Stunde des Wolfs
+  return hour >= 20 || hour < 2;
 };
 
 export const canCommitToday = (): boolean => {
@@ -126,7 +126,8 @@ export const canCommitToday = (): boolean => {
 
 export const needsPaywall = (): boolean => {
   const state = getAppState();
-  return state.commitments.length >= 7 && !state.hasPaid;
+  // 14 Tage Free Trial (nicht 7!)
+  return state.commitments.length >= 14 && !state.hasPaid;
 };
 
 export const needsSevenDayReflection = (): boolean => {
