@@ -12,9 +12,7 @@ import {
   completeSevenDayReflection,
   type Commitment,
 } from '@/lib/storage';
-import { canShowParade, hasSeenParade, getLastMonthCommitments } from '@/lib/monthlyParade';
 import { shouldShowDailyQuestion } from '@/lib/dailyQuestions';
-import MonthlyParade from './MonthlyParade';
 import DailyQuestion from './DailyQuestion';
 import SevenDayReflection from './SevenDayReflection';
 
@@ -26,7 +24,6 @@ interface MainAppProps {
 export default function MainApp({ onPaywallRequired, onSevenDayReflection }: MainAppProps) {
   const [appState, setAppState] = useState(getAppState());
   const [showStreakSplash, setShowStreakSplash] = useState(true);
-  const [showParade, setShowParade] = useState(false);
   const [showDailyQuestion, setShowDailyQuestion] = useState(false);
   const [showSevenDayReflection, setShowSevenDayReflection] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -51,14 +48,6 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
       if (shouldShowDailyQuestion(appState.currentStreak)) {
         setShowDailyQuestion(true);
         return;
-      }
-
-      // 3. Monthly Parade
-      if (canShowParade(appState.commitments)) {
-        const paradeData = getLastMonthCommitments(appState.commitments);
-        if (!hasSeenParade(paradeData.month, paradeData.year)) {
-          setShowParade(true);
-        }
       }
     }, 1500);
     return () => clearTimeout(timer);
@@ -192,15 +181,6 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
     );
   }
 
-  if (showParade) {
-    return (
-      <MonthlyParade
-        commitments={appState.commitments}
-        onClose={() => setShowParade(false)}
-      />
-    );
-  }
-
   if (isUploading) {
     return (
       <div className="min-h-screen bg-cream p-6">
@@ -274,15 +254,6 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
             <p className="text-sm text-brown/60 mt-6 italic">
               In diesem Moment bekennen sich: <strong>{globalPulse.toLocaleString()}</strong> Seelen
             </p>
-          )}
-
-          {canShowParade(appState.commitments) && (
-            <button
-              onClick={() => setShowParade(true)}
-              className="mt-6 bg-vintage/40 text-brown px-6 py-3 text-sm font-bold hover:bg-vintage/60 transition-colors border-2 border-brown"
-            >
-              🎬 Zeig mir meine {getLastMonthCommitments(appState.commitments).month}-Parade
-            </button>
           )}
         </div>
 

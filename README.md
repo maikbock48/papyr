@@ -61,17 +61,10 @@ Die App ist "unnötig" - aber das Abtippen ist der Trick. Das ist die Verinnerli
 - Live während der Stunde des Wolfs
 - Du bist nicht allein
 
-### 🎬 **Monats-Parade (NEU!)**
-- Am 1-7. des Monats verfügbar
-- Rasender Supercut all deiner Bekenntnisse
-- Mit 70er-Jahre-Gitarren-Riff (Audio einfügen unter `/public/parade-music.mp3`)
-- **Share-Button für Social Media** - "Mein November. Durchgezogen."
-- Das ist der virale Hebel!
-
-### 💶 7-Tage Paywall
-- Kostenlos für 7 Tage
-- Dann: 0,99€ für ewiges Archiv
-- "Investiere 99 Cent in DICH, statt 10€ in die Träume anderer."
+### 💶 14-Tage Free Trial
+- Kostenlos für 14 Tage
+- Dann: 1€/Monat für ewiges Archiv (Abo)
+- "Investiere 1€ in DICH, statt 10€ in die Träume anderer."
 
 ## Tech Stack
 
@@ -135,24 +128,6 @@ export const isWithinWolfHour = (): boolean => {
 };
 ```
 
-### Monats-Parade testen
-Die Parade erscheint nur wenn:
-1. Es ist Tag 1-7 des Monats
-2. Du hast mindestens 7 Bekenntnisse vom letzten Monat
-
-Zum Testen in `lib/monthlyParade.ts` Zeile 42-46 anpassen:
-```typescript
-export const canShowParade = (commitments: Commitment[]): boolean => {
-  return commitments.length >= 7; // Immer zeigen wenn 7+ vorhanden
-};
-```
-
-Dann einfach 7+ Bekenntnisse erstellen (Datum im Code anpassen wenn nötig).
-
-### Audio für Parade hinzufügen
-Lege einen 70er-Jahre-Gitarren-Riff als `public/parade-music.mp3` ab.
-Empfehlung: 3-4 Sekunden, upbeat, "cheesey" Vibe.
-
 ## Deployment
 
 ### Vercel (empfohlen)
@@ -182,17 +157,18 @@ Siehe `chad.md` für die komplette Vision.
 **Kern-Idee:** "Flüster-Launch"
 - Keine klassische Werbung
 - Seeding an 10 "stille" Hustle-Philosophen
-- Viral durch Monats-Parade Shares
+- Viral durch authentisches Ritual und Commitment
 - FOMO durch den "Du brauchst es nicht?"-Pitch
 
 ## To-Do für Production
 
 - [ ] Echte Icons erstellen (192x192, 512x512)
-- [ ] 70er-Jahre-Audio für Parade hinzufügen
 - [ ] Sound-Effekte: Vintage Camera Click
-- [ ] Push Notifications für 21:00 Uhr
-- [ ] Payment-Integration (Stripe/PayPal) für 0,99€
+- [ ] Push Notifications für 20:00 Uhr
+- [ ] Payment-Integration (Stripe) für 1€/Monat Abo
 - [ ] Backend für echten "Globalen Puls"
+- [ ] Joker-System (1 Joker pro 7 Tage Streak)
+- [ ] Initialen-Signatur Feature
 - [ ] Analytics (optional)
 
 ## Die Vision
