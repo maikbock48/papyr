@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getAppState, saveAppState } from '@/lib/storage';
 import { requestNotificationPermission, updateNotificationSettings, scheduleNotifications } from '@/lib/notifications';
+import ConfirmDialog from './ConfirmDialog';
 
 export default function Settings() {
   const [appState, setAppState] = useState(getAppState());
@@ -16,6 +17,9 @@ export default function Settings() {
   const [afternoonTime, setAfternoonTime] = useState(appState.notificationSettings.afternoon);
   const [eveningTime, setEveningTime] = useState(appState.notificationSettings.evening);
   const [notifSaved, setNotifSaved] = useState(false);
+  const [showNotifDialog, setShowNotifDialog] = useState(false);
+  const [showResetDialog, setShowResetDialog] = useState(false);
+  const [showClearDialog, setShowClearDialog] = useState(false);
 
   const handleSave = () => {
     const state = getAppState();
@@ -27,35 +31,41 @@ export default function Settings() {
   };
 
   const handleResetOnboarding = () => {
-    if (confirm('Möchtest du wirklich das Onboarding zurücksetzen? Du bleibst eingeloggt und behältst deine Daten.')) {
-      const state = getAppState();
-      state.hasCompletedOnboarding = false;
-      saveAppState(state);
-      window.location.reload();
-    }
+    setShowResetDialog(true);
+  };
+
+  const confirmResetOnboarding = () => {
+    const state = getAppState();
+    state.hasCompletedOnboarding = false;
+    saveAppState(state);
+    window.location.reload();
   };
 
   const handleClearData = () => {
-    if (confirm('ACHTUNG: Alle Daten werden gelöscht! Bist du sicher?')) {
-      if (confirm('Wirklich ALLE Daten löschen? Das kann nicht rückgängig gemacht werden!')) {
-        localStorage.removeItem('papyr_state');
-        window.location.reload();
-      }
-    }
+    setShowClearDialog(true);
   };
 
-  const handleEnableNotifications = async () => {
+  const confirmClearData = () => {
+    localStorage.removeItem('papyr_state');
+    window.location.reload();
+  };
+
+  const handleEnableNotifications = () => {
     if (!notifEnabled) {
-      const granted = await requestNotificationPermission();
-      if (granted) {
-        setNotifEnabled(true);
-        setNotifCount(1); // Default to 1 notification
-      } else {
-        alert('Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
-      }
+      setShowNotifDialog(true);
     } else {
       setNotifEnabled(false);
       setNotifCount(0);
+    }
+  };
+
+  const confirmEnableNotifications = async () => {
+    const granted = await requestNotificationPermission();
+    if (granted) {
+      setNotifEnabled(true);
+      setNotifCount(1); // Default to 1 notification
+    } else {
+      alert('Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
     }
   };
 
@@ -293,6 +303,64 @@ export default function Settings() {
           </div>
         </div>
       </div>
+
+      {/* Notification Permission Dialog */}
+      <ConfirmDialog
+        title="Benachrichtigungen aktivieren"
+        message="Möchtest du tägliche Erinnerungen erhalten? Du wirst jeden Tag zur richtigen Zeit daran erinnert, deinen Zettel zu schreiben."
+        isOpen={showNotifDialog}
+        onClose={() => setShowNotifDialog(false)}
+        buttons={[
+          {
+            text: '✓ Ja, erinnere mich!',
+            action: confirmEnableNotifications,
+            primary: true,
+          },
+          {
+            text: 'Nicht jetzt',
+            action: () => {},
+          },
+        ]}
+      />
+
+      {/* Reset Onboarding Dialog */}
+      <ConfirmDialog
+        title="Onboarding zurücksetzen"
+        message="Möchtest du wirklich das Onboarding zurücksetzen? Du bleibst eingeloggt und behältst alle deine Daten. Nur das Onboarding wird neu gestartet."
+        isOpen={showResetDialog}
+        onClose={() => setShowResetDialog(false)}
+        buttons={[
+          {
+            text: 'Ja, zurücksetzen',
+            action: confirmResetOnboarding,
+            primary: true,
+          },
+          {
+            text: 'Abbrechen',
+            action: () => {},
+          },
+        ]}
+      />
+
+      {/* Clear Data Dialog */}
+      <ConfirmDialog
+        title="⚠️ ACHTUNG"
+        message="ALLE Daten werden unwiderruflich gelöscht!\n\nDas umfasst:\n• Alle Bekenntnisse\n• Deinen Streak\n• Deine Jokers\n• Alle Einstellungen\n\nDieser Vorgang kann NICHT rückgängig gemacht werden!"
+        isOpen={showClearDialog}
+        onClose={() => setShowClearDialog(false)}
+        buttons={[
+          {
+            text: 'Ja, alles löschen',
+            action: confirmClearData,
+            danger: true,
+          },
+          {
+            text: 'Abbrechen',
+            action: () => {},
+            primary: true,
+          },
+        ]}
+      />
     </div>
   );
 }

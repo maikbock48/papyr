@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { getAppState, isWithinWolfHour, canCommitToday, needsPaywall, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
+import ConfirmDialog from './ConfirmDialog';
 
 interface DashboardProps {
   onUpload: () => void;
@@ -12,6 +13,8 @@ interface DashboardProps {
 export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: DashboardProps) {
   const [appState, setAppState] = useState(getAppState());
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showUploadChoice, setShowUploadChoice] = useState(false);
+  const [uploadType, setUploadType] = useState<'camera' | 'gallery'>('camera');
 
   const handleCameraClick = () => {
     if (needsPaywall()) {
@@ -29,7 +32,16 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
       return;
     }
 
-    fileInputRef.current?.click();
+    // Show choice dialog
+    setShowUploadChoice(true);
+  };
+
+  const handleUploadChoice = (type: 'camera' | 'gallery') => {
+    setUploadType(type);
+    setShowUploadChoice(false);
+    setTimeout(() => {
+      fileInputRef.current?.click();
+    }, 100);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +88,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             {/* Global Counter */}
             {isWithinWolfHour() && (
               <div className="mb-8 animate-pulse">
-                <p className="text-sm md:text-base text-brown/60 italic">
+                <p className="text-xl md:text-2xl text-brown/70">
                   Heute wurden bereits
                 </p>
                 <p className="text-5xl md:text-6xl font-bold text-brown mt-2">
@@ -159,7 +171,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="environment"
+              {...(uploadType === 'camera' ? { capture: 'environment' } : {})}
               onChange={handleFileChange}
               className="hidden"
             />
@@ -240,6 +252,25 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           </div>
         </div>
       )}
+
+      {/* Upload Choice Dialog */}
+      <ConfirmDialog
+        title="Zettel scannen"
+        message="Woher möchtest du dein Foto nehmen?"
+        isOpen={showUploadChoice}
+        onClose={() => setShowUploadChoice(false)}
+        buttons={[
+          {
+            text: '📷 Kamera öffnen',
+            action: () => handleUploadChoice('camera'),
+            primary: true,
+          },
+          {
+            text: '🖼 Galerie durchsuchen',
+            action: () => handleUploadChoice('gallery'),
+          },
+        ]}
+      />
     </div>
   );
 }
