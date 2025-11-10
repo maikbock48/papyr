@@ -4,9 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 
 interface NewOnboardingProps {
   onComplete: (hasPaid: boolean, userName: string) => void;
+  onOpenInspiration?: () => void;
 }
 
-export default function NewOnboarding({ onComplete }: NewOnboardingProps) {
+export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnboardingProps) {
   const [currentSection, setCurrentSection] = useState(0);
   const [userName, setUserName] = useState('');
   const [tempName, setTempName] = useState('');
@@ -270,6 +271,15 @@ export default function NewOnboarding({ onComplete }: NewOnboardingProps) {
                 >
                   Los geht's!
                 </button>
+
+                {onOpenInspiration && (
+                  <button
+                    onClick={onOpenInspiration}
+                    className="w-full bg-vintage text-brown px-8 py-4 text-lg border-4 border-brown hover:bg-vintage/80 transition-colors font-bold"
+                  >
+                    🎲 Lass dich inspirieren
+                  </button>
+                )}
 
                 <button
                   onClick={() => setShowRules(true)}

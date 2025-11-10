@@ -10,6 +10,7 @@ import {
   completeSevenDayReflection,
 } from '@/lib/storage';
 import { shouldShowDailyQuestion } from '@/lib/dailyQuestions';
+import { shouldShowPopup, getPopupForDay, markPopupAsShown } from '@/lib/onboardingHelper';
 import Navbar from './Navbar';
 import Dashboard from './Dashboard';
 import Archive from './Archive';
@@ -17,6 +18,8 @@ import Settings from './Settings';
 import UploadFlow from './UploadFlow';
 import DailyQuestion from './DailyQuestion';
 import SevenDayReflection from './SevenDayReflection';
+import OnboardingPopup from './OnboardingPopup';
+import InspirationBrowser from './InspirationBrowser';
 
 interface MainAppProps {
   onPaywallRequired: () => void;
@@ -34,6 +37,9 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
   const [isUploading, setIsUploading] = useState(false);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [globalPulse, setGlobalPulse] = useState(0);
+  const [showOnboardingPopup, setShowOnboardingPopup] = useState(false);
+  const [currentPopupData, setCurrentPopupData] = useState<any>(null);
+  const [showInspirationBrowser, setShowInspirationBrowser] = useState(false);
 
   // Hide streak splash after 1.5 seconds, then check for what to show next
   useEffect(() => {
@@ -123,9 +129,52 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
       alert('🃏 Ein Joker wurde verwendet! Dein Streak bleibt bestehen.');
     }
 
+    // Check for onboarding popup
+    if (shouldShowPopup()) {
+      const popupData = getPopupForDay();
+      if (popupData) {
+        setCurrentPopupData(popupData);
+        setShowOnboardingPopup(true);
+        markPopupAsShown();
+        return; // Show popup first, then other screens
+      }
+    }
+
     // Check if we should show daily question
     if (shouldShowDailyQuestion(newState.currentStreak)) {
       setShowDailyQuestion(true);
+    }
+  };
+
+  const handlePopupAction = (action: string) => {
+    setShowOnboardingPopup(false);
+
+    switch (action) {
+      case 'close':
+        // Check if we should show daily question after closing
+        const state = getAppState();
+        if (shouldShowDailyQuestion(state.currentStreak)) {
+          setShowDailyQuestion(true);
+        }
+        break;
+      case 'showInspiration':
+        setShowInspirationBrowser(true);
+        break;
+      case 'showPaywall':
+        onPaywallRequired();
+        break;
+      case 'showProPaywall':
+        onPaywallRequired();
+        break;
+      case 'showArchive':
+        setCurrentView('archive');
+        break;
+      case 'openShop':
+        // TODO: Implement shop link
+        window.open('https://papyr.shop', '_blank');
+        break;
+      default:
+        break;
     }
   };
 
@@ -181,7 +230,11 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
 
   return (
     <>
-      <Navbar currentView={currentView} onNavigate={setCurrentView} />
+      <Navbar
+        currentView={currentView}
+        onNavigate={setCurrentView}
+        onOpenInspiration={() => setShowInspirationBrowser(true)}
+      />
 
       {currentView === 'dashboard' && (
         <Dashboard
@@ -194,6 +247,23 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
       {currentView === 'archive' && <Archive />}
 
       {currentView === 'settings' && <Settings />}
+
+      {/* Onboarding Popup */}
+      {showOnboardingPopup && currentPopupData && (
+        <OnboardingPopup
+          title={currentPopupData.title}
+          text={currentPopupData.text}
+          buttons={currentPopupData.buttons}
+          onAction={handlePopupAction}
+          isVisible={showOnboardingPopup}
+        />
+      )}
+
+      {/* Inspiration Browser */}
+      <InspirationBrowser
+        isOpen={showInspirationBrowser}
+        onClose={() => setShowInspirationBrowser(false)}
+      />
     </>
   );
 }

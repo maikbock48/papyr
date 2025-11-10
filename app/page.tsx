@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import NewOnboarding from '@/components/NewOnboarding';
 import MainApp from '@/components/MainApp';
 import Paywall from '@/components/Paywall';
+import InspirationBrowser from '@/components/InspirationBrowser';
 import { getAppState, completeOnboarding } from '@/lib/storage';
 
 type AppView = 'onboarding' | 'main' | 'paywall';
@@ -11,6 +12,7 @@ type AppView = 'onboarding' | 'main' | 'paywall';
 export default function Home() {
   const [currentView, setCurrentView] = useState<AppView>('onboarding');
   const [isLoading, setIsLoading] = useState(true);
+  const [showInspirationBrowser, setShowInspirationBrowser] = useState(false);
 
   useEffect(() => {
     const state = getAppState();
@@ -48,19 +50,29 @@ export default function Home() {
     );
   }
 
-  switch (currentView) {
-    case 'onboarding':
-      return <NewOnboarding onComplete={handleOnboardingComplete} />;
-    case 'paywall':
-      return <Paywall onComplete={handlePaywallComplete} />;
-    case 'main':
-      return (
+  return (
+    <>
+      {currentView === 'onboarding' && (
+        <NewOnboarding
+          onComplete={handleOnboardingComplete}
+          onOpenInspiration={() => setShowInspirationBrowser(true)}
+        />
+      )}
+      {currentView === 'paywall' && (
+        <Paywall onComplete={handlePaywallComplete} />
+      )}
+      {currentView === 'main' && (
         <MainApp
           onPaywallRequired={handlePaywallRequired}
           onSevenDayReflection={handleSevenDayReflection}
         />
-      );
-    default:
-      return null;
-  }
+      )}
+
+      {/* Inspiration Browser (Global) */}
+      <InspirationBrowser
+        isOpen={showInspirationBrowser}
+        onClose={() => setShowInspirationBrowser(false)}
+      />
+    </>
+  );
 }

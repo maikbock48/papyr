@@ -1,0 +1,176 @@
+{
+  "dailyPopups": {
+    "day1": {
+      "title": "Glückwunsch! Dein erster PAPYR.",
+      "text": "Schmeiß ihn morgen nicht weg. Bewahre ihn auf. Häng ihn an den Kühlschrank. Das hier ist der Anfang von etwas Großem, wenn du mitziehst. Dein zukünftiges Ich wird dir danken.",
+      "buttons": [
+        { "text": "Bis morgen Abend.", "action": "close" }
+      ]
+    },
+    "day2": {
+      "title": "Tag 2. Läuft bei dir.",
+      "text": "Mach dir das Leben nicht schwerer als es ist. Ein erledigtes Ding ist besser als drei halbfertige. Es muss nichts Weltbewegendes sein: Müll rausbringen, Oma anrufen, den Busfahrer grüßen. Hauptsache, du machst es.",
+      "buttons": [
+        { "text": "Verstanden.", "action": "close" }
+      ]
+    },
+    "day3": {
+      "title": "Hattrick! 3 Tage in Folge.",
+      "text": "Du tauschst gerade Chaos gegen Struktur. Fühlt sich gut an, oder? Falls dir mal die Ideen ausgehen: Schau, was andere sich vornehmen. Aber denk dran: Dein Zettel, deine Regeln.",
+      "buttons": [
+        { "text": "Lass dich inspirieren", "action": "showInspiration" }
+      ]
+    },
+    "day4": {
+      "title": "Hälfte der Woche geschafft!",
+      "text": "Du hast dir 7 Tage versprochen. 4 hast du schon im Sack. Zieh durch. Es wird leichter. Versprochen.\n\nDu kannst dich jederzeit von unsere Community für deinen nächsten Zettel inspirieren lassen!",
+      "buttons": [
+        { "text": "Ich bleib dran.", "action": "close" }
+      ]
+    },
+    "day5": {
+      "title": "High Five! Noch 2 Tage.",
+      "text": "Jeder Zettel ist ein kleiner Sieg über deinen inneren Schweinehund. Bleib dran, bald schaltest du deinen ersten Joker frei! (Damit kannst du einen vergessenen Upload retten – aber nur einen!)",
+      "buttons": [
+        { "text": "Bis morgen!", "action": "close" }
+      ]
+    },
+    "day6": {
+      "title": "Du bist nicht allein.",
+      "text": "Heute wurden schon 12.483 Zettel eingereicht. Du bist Zettel Nr. 12.484. Wir werden mehr. Übrigens: Echte Profis nutzen echte PAPYR-Blöcke im Shop. Zu jedem Oberteil gibt's einen 20x20cm PAPYR-Block kostenlos dazu!",
+      "buttons": [
+        { "text": "Zeig mir den Merch", "action": "openShop" },
+        { "text": "Zurück zum Block", "action": "close" }
+      ]
+    },
+    "day7": {
+      "title": "7 Tage. Respekt!",
+      "text": "Du hast es eine Woche durchgezogen. Du hast bewiesen, dass du es ernst meinst.\n\nAb jetzt wird es ernst. Dein kostenloser Aktenschrank ist voll. Wir speichern nur die letzten 7 Zettel kostenlos für dich.\n\nWillst du deine Erfolgsgeschichte lückenlos dokumentieren? Für 0,99€ im Monat gehört das \"Ewige Archiv\" dir.",
+      "buttons": [
+        { "text": "Werde Member (0,99€ / Monat)", "action": "showPaywall" },
+        { "text": "Nur der nächste Zettel zählt (Basis bleiben)", "action": "close" }
+      ]
+    },
+    "day10": {
+      "title": "Level 10 erreicht.",
+      "text": "Die meisten geben nach 3 Tagen auf. Du nicht. Du gehörst jetzt offiziell zu den Top 10% unserer User. Du bist ein Macher.\n\nDir gehen manchmal die Ideen für morgen aus? Hol dir Inspiration in der Community!",
+      "buttons": [
+        { "text": "Zeig mir Inspiration", "action": "showInspiration" }
+      ]
+    },
+    "day14": {
+      "title": "14 Tage. Das ist keine Phase mehr.",
+      "text": "Das ist jetzt dein Leben. Du hast bewiesen, dass du es ernst meinst. Ein Ziel muss nicht immer nur für dich sein. Manchmal ist das Beste, was du tun kannst, \"Für jemand anderen kochen\" oder \"Einen alten Freund anrufen\" auf deinen Zettel zu schreiben. Struktur für dich & Freude für andere.",
+      "buttons": [
+        { "text": "Zeig mir Inspiration", "action": "showInspiration" }
+      ]
+    },
+    "day14_member": {
+      "title": "14 Tage. Das ist keine Phase mehr.",
+      "text": "Das ist jetzt dein Leben. Schau in dein Archiv und sieh dir an, wo du angefangen hast. Wahnsinn, oder?\n\nFalls dir heute die Ideen ausgehen: Schau, was die Community macht. Ein Ziel muss nicht immer nur für dich sein. Schreib \"Für jemand anderen kochen\" auf. Struktur für dich, Freude für andere.",
+      "buttons": [
+        { "text": "Zeig mir Inspiration", "action": "showInspiration" },
+        { "text": "Zu meinem Archiv", "action": "showArchive" }
+      ]
+    },
+    "day30": {
+      "title": "EIN MONAT!",
+      "text": "Das ist eine Ansage. 30 Tage Streak. Du hast dir nicht nur ein Badge \"Monats-Meister\" verdient, du kannst jetzt \"Pro\" Mitglied werden!\n\n\"Pro\" zu sein gibt dir keine neuen Features außer folgenden:\n• jeden Monat einen Extra-Joker für einen verpatzten STREAK\n• dauerhaft 20% auf unsern Merch-Shop\n• Teile erreichte Zettel als Meilensteine mit der Community\n\nDu hast bereits alles, was du brauchst: Zettel, Stift, Disziplin. \"Pro\" ist ein Bekenntnis. Ein Statement. Jede Pro Mitgliedschaft unterstütz soziale Projekte wie dieses.\n\nAls Pro Member (4,99€/Monat):\n\nDu hast 30 Tage geschafft. Bist du bereit für dieses Bekenntnis?",
+      "buttons": [
+        { "text": "Werde Pro Member (Statement setzen)", "action": "showProPaywall" },
+        { "text": "Nein, ich bleibe Basic (Trotzdem stolz sein)", "action": "close" }
+      ]
+    },
+    "day50": {
+      "title": "50 Tage. Halbzeit zur Hundert.",
+      "text": "Erinnerst du dich noch an Tag 1? Als es schwer fiel? Jetzt ist es so normal wie Zähneputzen. Du baust dir gerade ein Fundament aus Stahl. Weiter so.",
+      "buttons": [
+        { "text": "Weiter geht's!", "action": "close" }
+      ]
+    },
+    "day100": {
+      "title": "100 TAGE PAPYR!",
+      "text": "Das ist legendär. Du gehörst zur absoluten Elite. Ernsthaft, wir sind stolz auf dich. Gönn dir heute was Schönes. Schreib es auf deinen Zettel für morgen: \"Feiern\".",
+      "buttons": [
+        { "text": "Danke! 🎉", "action": "close" }
+      ]
+    },
+    "day100_pro": {
+      "title": "100 TAGE PAPYR!",
+      "text": "Das ist legendär. Du gehörst zur absoluten Elite. Ernsthaft, wir sind stolz auf dich. Gönn dir heute was Schönes. Schreib es auf deinen Zettel für morgen: \"Feiern\".\n\nDanke für dein Bekenntnis. Dein 20% Rabatt gilt natürlich auch für die neue \"Club 100\"-Kollektion im Shop.",
+      "buttons": [
+        { "text": "Zum Shop", "action": "openShop" },
+        { "text": "Danke! 🎉", "action": "close" }
+      ]
+    },
+    "day180": {
+      "title": "Ein halbes Jahr Fokus.",
+      "text": "Schau zurück. Was hast du in diesen 6 Monaten alles geschafft, nur weil du es dir am Vorabend auf einen kleinen Zettel geschrieben hast? Das ist die Macht der Gewohnheit. Du hast dein Leben verändert.",
+      "buttons": [
+        { "text": "Zum Archiv", "action": "showArchive" },
+        { "text": "Schließen", "action": "close" }
+      ]
+    },
+    "day365": {
+      "title": "365 Tage. Ein Jahr PAPYR.",
+      "text": "Unfassbar. Du hast ein komplettes Jahr dokumentiert. 365 Versprechen an dich selbst, 365 Mal gehalten. Du bist nicht mehr derselbe Mensch wie vor einem Jahr. Du bist stärker, fokussierter, besser.",
+      "buttons": [
+        { "text": "Legenden-Badge ansehen", "action": "showBadge" },
+        { "text": "Danke! 🏆", "action": "close" }
+      ]
+    }
+  },
+  "streakBroken": {
+    "standard": {
+      "title": "Autsch. Streak weg.",
+      "text": "Passiert den Besten. Hinfallen ist keine Schande, liegenbleiben schon. Dein neuer Streak startet... JETZT. Mund abwischen, Zettel schreiben.",
+      "buttons": [
+        { "text": "Auf ein Neues!", "action": "close" }
+      ]
+    },
+    "withJoker": {
+      "title": "Joker einsetzen?",
+      "text": "Du hast noch einen Joker! Willst du ihn einsetzen und deinen Streak retten?",
+      "buttons": [
+        { "text": "Ja, Joker einsetzen!", "action": "useJoker" },
+        { "text": "Nein, neu starten", "action": "close" }
+      ]
+    },
+    "noJoker": {
+      "title": "Autsch. Streak weg.",
+      "text": "Du hast leider keinen Joker mehr. Auf ein Neues.",
+      "buttons": [
+        { "text": "Neu starten", "action": "close" }
+      ]
+    },
+    "day15to29": {
+      "title": "Autsch. Streak weg.",
+      "text": "Du warst auf dem besten Weg zur Pro-Freischaltung (Tag 30). Nicht aufgeben. Das trennt die Spreu vom Weizen. Dein neuer Anlauf startet JETZT.",
+      "buttons": [
+        { "text": "Nochmal!", "action": "close" }
+      ]
+    },
+    "proMember": {
+      "title": "Streak weg, Pro?",
+      "text": "Ein \"Pro\" lässt sich davon nicht unterkriegen. Du hast dein Bekenntnis gegeben, jetzt beweis es dir aufs Neue.",
+      "buttons": [
+        { "text": "Weitermachen!", "action": "close" }
+      ]
+    },
+    "proWithJoker": {
+      "title": "Pro-Joker verfügbar!",
+      "text": "Zum Glück hast du ja deinen monatlichen Pro-Joker. Einsetzen und weitermachen?",
+      "buttons": [
+        { "text": "Pro-Joker einsetzen!", "action": "useProJoker" },
+        { "text": "Neu starten", "action": "close" }
+      ]
+    },
+    "proNoJoker": {
+      "title": "Streak weg, Pro?",
+      "text": "Dein Pro-Joker für diesen Monat ist aufgebraucht. Also Zähne zusammenbeißen. Auf ein Neues. Zettel schreiben.",
+      "buttons": [
+        { "text": "Los geht's!", "action": "close" }
+      ]
+    }
+  }
+}

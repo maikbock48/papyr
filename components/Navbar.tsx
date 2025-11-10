@@ -6,9 +6,10 @@ import { getAppState } from '@/lib/storage';
 interface NavbarProps {
   currentView: 'dashboard' | 'archive' | 'settings';
   onNavigate: (view: 'dashboard' | 'archive' | 'settings') => void;
+  onOpenInspiration: () => void;
 }
 
-export default function Navbar({ currentView, onNavigate }: NavbarProps) {
+export default function Navbar({ currentView, onNavigate, onOpenInspiration }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const appState = getAppState();
 
@@ -51,6 +52,12 @@ export default function Navbar({ currentView, onNavigate }: NavbarProps) {
               }`}
             >
               Archiv
+            </button>
+            <button
+              onClick={onOpenInspiration}
+              className="text-lg font-medium text-cream/70 hover:text-cream transition-colors"
+            >
+              🎲 Inspiration
             </button>
             <button
               onClick={() => onNavigate('settings')}
@@ -156,6 +163,15 @@ export default function Navbar({ currentView, onNavigate }: NavbarProps) {
               }`}
             >
               Archiv
+            </button>
+            <button
+              onClick={() => {
+                onOpenInspiration();
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-cream hover:bg-brown/50"
+            >
+              🎲 Inspiration
             </button>
             <button
               onClick={() => {

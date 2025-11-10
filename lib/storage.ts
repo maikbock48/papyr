@@ -18,6 +18,8 @@ export interface AppState {
   tenYearVision: string | null;
   hasCompletedSevenDayReflection: boolean;
   jokers: number;
+  lastShownPopupDay: number | null;
+  totalCommitments: number;
 }
 
 const STORAGE_KEY = 'papyr_state';
@@ -34,6 +36,8 @@ export const getAppState = (): AppState => {
       tenYearVision: null,
       hasCompletedSevenDayReflection: false,
       jokers: 0,
+      lastShownPopupDay: null,
+      totalCommitments: 0,
     };
   }
 
@@ -49,6 +53,8 @@ export const getAppState = (): AppState => {
       tenYearVision: null,
       hasCompletedSevenDayReflection: false,
       jokers: 0,
+      lastShownPopupDay: null,
+      totalCommitments: 0,
     };
   }
 
@@ -60,6 +66,8 @@ export const getAppState = (): AppState => {
     tenYearVision: parsed.tenYearVision || null,
     hasCompletedSevenDayReflection: parsed.hasCompletedSevenDayReflection || false,
     jokers: parsed.jokers || 0,
+    lastShownPopupDay: parsed.lastShownPopupDay || null,
+    totalCommitments: parsed.totalCommitments || parsed.commitments?.length || 0,
   };
 };
 
@@ -125,6 +133,7 @@ export const addCommitment = (imageData: string, goals: string, signWithInitials
   state.currentStreak = newStreak;
   state.jokers = newJokers;
   state.lastCommitmentDate = today;
+  state.totalCommitments += 1;
 
   saveAppState(state);
   return { commitment: newCommitment, jokersUsed };
