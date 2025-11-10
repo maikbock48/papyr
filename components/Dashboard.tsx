@@ -104,7 +104,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             <div className="max-w-md mx-auto mb-8">
               <div className="relative">
                 {/* Paper */}
-                <div className="bg-white border-4 border-brown shadow-2xl p-8 md:p-12 transform -rotate-2">
+                <div className="bg-white border-4 border-brown shadow-2xl rounded-2xl p-8 md:p-12 transform -rotate-2">
                   <div className="space-y-4">
                     <div className="h-3 bg-brown/10 w-3/4"></div>
                     <div className="h-3 bg-brown/10 w-full"></div>
@@ -181,7 +181,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentCommitments.map((commitment) => (
-              <div key={commitment.id} className="border-8 border-brown bg-white p-4 shadow-xl hover:shadow-2xl transition-shadow">
+              <div key={commitment.id} className="border-8 border-brown rounded-2xl bg-white p-4 shadow-xl hover:shadow-2xl transition-shadow">
                 <div className="relative">
                   <img
                     src={commitment.imageData}
@@ -209,14 +209,14 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                   {canMarkAsCompleted(commitment.date) && !commitment.completed && (
                     <button
                       onClick={() => handleMarkCompleted(commitment.id)}
-                      className="w-full bg-green-600 text-white px-3 py-2 text-sm font-bold hover:bg-green-700 transition-colors border-2 border-green-600"
+                      className="w-full bg-green-600 text-white px-3 py-2 text-sm font-bold hover:bg-green-700 transition-colors border-2 border-green-600 rounded-lg"
                     >
                       ✓ Als erledigt markieren
                     </button>
                   )}
                   <button
                     onClick={() => handleDelete(commitment.id)}
-                    className="w-full bg-red-600 text-white px-3 py-2 text-sm font-bold hover:bg-red-700 transition-colors border-2 border-red-600"
+                    className="w-full bg-red-600 text-white px-3 py-2 text-sm font-bold hover:bg-red-700 transition-colors border-2 border-red-600 rounded-lg"
                   >
                     🗑 Löschen
                   </button>
@@ -230,7 +230,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
       {/* Empty State */}
       {appState.commitments.length === 0 && (
         <div className="max-w-6xl mx-auto px-4 py-12">
-          <div className="text-center py-12 border-4 border-brown/30 bg-white/50">
+          <div className="text-center py-12 border-4 border-brown/30 rounded-2xl bg-white/50">
             <p className="text-xl text-brown/70 mb-4">
               Dein Archiv wartet auf dein erstes Bekenntnis.
             </p>

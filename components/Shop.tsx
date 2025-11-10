@@ -76,7 +76,7 @@ export default function Shop() {
         </div>
 
         {/* Info Banner */}
-        <div className="mb-12 bg-brown text-cream p-6 md:p-8 border-4 border-brown shadow-xl">
+        <div className="mb-12 bg-brown text-cream p-6 md:p-8 border-4 border-brown shadow-xl rounded-2xl">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <div className="text-4xl">💚</div>
             <div className="flex-1 text-center md:text-left">
@@ -95,10 +95,10 @@ export default function Shop() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white border-4 border-brown p-6 shadow-xl hover:shadow-2xl transition-shadow"
+              className="bg-white border-4 border-brown rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow"
             >
               <div className="relative mb-4">
-                <div className="aspect-square bg-vintage/20 border-2 border-brown/30 flex items-center justify-center">
+                <div className="aspect-square bg-vintage/20 border-2 border-brown/30 rounded-xl flex items-center justify-center">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -106,7 +106,7 @@ export default function Shop() {
                   />
                 </div>
                 {product.badge && (
-                  <div className="absolute -top-3 -right-3 bg-vintage text-brown px-3 py-1 text-xs font-bold border-2 border-brown transform rotate-12">
+                  <div className="absolute -top-3 -right-3 bg-vintage text-brown px-3 py-1 text-xs font-bold border-2 border-brown rounded-lg transform rotate-12">
                     {product.badge}
                   </div>
                 )}
@@ -131,7 +131,7 @@ export default function Shop() {
                   )}
                 </div>
                 {isPro && (
-                  <div className="bg-vintage text-brown px-3 py-1 text-xs font-bold border-2 border-brown">
+                  <div className="bg-vintage text-brown px-3 py-1 text-xs font-bold border-2 border-brown rounded-lg">
                     -20% PRO
                   </div>
                 )}
@@ -139,7 +139,7 @@ export default function Shop() {
 
               <button
                 onClick={() => alert('Shop-Integration kommt bald! 🚀')}
-                className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg"
+                className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg rounded-xl"
               >
                 In den Warenkorb
               </button>
@@ -149,7 +149,7 @@ export default function Shop() {
 
         {/* Footer Info */}
         <div className="mt-16 text-center">
-          <div className="inline-block bg-white border-4 border-brown/30 p-8 max-w-2xl">
+          <div className="inline-block bg-white border-4 border-brown/30 rounded-2xl p-8 max-w-2xl">
             <h3 className="text-2xl font-bold text-brown mb-4">
               Noch Fragen?
             </h3>

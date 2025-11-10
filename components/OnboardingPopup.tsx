@@ -47,7 +47,7 @@ export default function OnboardingPopup({
       }`}
     >
       <div
-        className={`max-w-2xl w-full bg-cream border-8 border-brown shadow-2xl transform transition-all duration-300 ${
+        className={`max-w-2xl w-full bg-cream border-8 border-brown shadow-2xl rounded-3xl overflow-hidden transform transition-all duration-300 ${
           show ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
         }`}
       >
@@ -71,7 +71,7 @@ export default function OnboardingPopup({
             <button
               key={index}
               onClick={() => handleAction(button.action)}
-              className={`w-full px-6 py-4 text-lg md:text-xl font-bold transition-all border-4 ${
+              className={`w-full px-6 py-4 text-lg md:text-xl font-bold transition-all border-4 rounded-xl ${
                 index === 0
                   ? 'bg-brown text-cream border-brown hover:bg-brown/90 hover:scale-105'
                   : 'bg-cream text-brown border-brown hover:bg-vintage/30'

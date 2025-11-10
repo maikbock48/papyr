@@ -84,7 +84,7 @@ export default function Settings() {
         </h1>
 
         {/* Profile Section */}
-        <div className="bg-white border-4 border-brown p-6 md:p-8 mb-6 shadow-xl">
+        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
           <h2 className="text-2xl font-bold text-brown mb-6">Profil</h2>
 
           <div className="space-y-4">
@@ -96,14 +96,14 @@ export default function Settings() {
                 type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
                 placeholder="Wie heißt du?"
               />
             </div>
 
             <button
               onClick={handleSave}
-              className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg"
+              className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown rounded-2xl shadow-lg"
             >
               {saved ? '✓ Gespeichert!' : 'Speichern'}
             </button>
@@ -111,7 +111,7 @@ export default function Settings() {
         </div>
 
         {/* Stats Section */}
-        <div className="bg-white border-4 border-brown p-6 md:p-8 mb-6 shadow-xl">
+        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
           <h2 className="text-2xl font-bold text-brown mb-6">Statistiken</h2>
 
           <div className="grid grid-cols-2 gap-6">
@@ -143,7 +143,7 @@ export default function Settings() {
         </div>
 
         {/* Notifications Section */}
-        <div className="bg-white border-4 border-brown p-6 md:p-8 mb-6 shadow-xl">
+        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
           <h2 className="text-2xl font-bold text-brown mb-6">🔔 Benachrichtigungen</h2>
 
           <div className="space-y-6">
@@ -207,7 +207,7 @@ export default function Settings() {
                       type="time"
                       value={morningTime}
                       onChange={(e) => setMorningTime(e.target.value)}
-                      className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                      className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
                     />
                   </div>
                 )}
@@ -221,7 +221,7 @@ export default function Settings() {
                       type="time"
                       value={afternoonTime}
                       onChange={(e) => setAfternoonTime(e.target.value)}
-                      className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                      className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
                     />
                   </div>
                 )}
@@ -235,14 +235,14 @@ export default function Settings() {
                       type="time"
                       value={eveningTime}
                       onChange={(e) => setEveningTime(e.target.value)}
-                      className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                      className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
                     />
                   </div>
                 )}
 
                 <button
                   onClick={handleSaveNotifications}
-                  className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg"
+                  className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown rounded-2xl shadow-lg"
                 >
                   {notifSaved ? '✓ Gespeichert!' : 'Benachrichtigungen speichern'}
                 </button>
@@ -252,7 +252,7 @@ export default function Settings() {
         </div>
 
         {/* Account Section */}
-        <div className="bg-white border-4 border-brown p-6 md:p-8 mb-6 shadow-xl">
+        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
           <h2 className="text-2xl font-bold text-brown mb-6">Account</h2>
 
           <div className="space-y-4">

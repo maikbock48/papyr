@@ -111,7 +111,7 @@ export default function Archive() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {visibleCommitments.map((commitment) => (
               <div key={commitment.id} className="relative">
-                <div className="border-8 border-brown bg-white p-3 shadow-xl hover:shadow-2xl transition-shadow">
+                <div className="border-8 border-brown rounded-2xl bg-white p-3 shadow-xl hover:shadow-2xl transition-shadow">
                   {commitment.isDeveloping ? (
                     <div className="aspect-square bg-white flex items-center justify-center">
                       <div className="text-center">
@@ -173,7 +173,7 @@ export default function Archive() {
         {viewMode === 'list' && (
           <div className="space-y-4">
             {visibleCommitments.map((commitment) => (
-              <div key={commitment.id} className="border-4 border-brown bg-white p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div key={commitment.id} className="border-4 border-brown rounded-2xl bg-white p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="w-full md:w-48 flex-shrink-0">
                     {commitment.isDeveloping ? (

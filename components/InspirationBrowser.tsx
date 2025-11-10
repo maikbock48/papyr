@@ -83,7 +83,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
       onClick={handleClose}
     >
       <div
-        className={`max-w-4xl w-full max-h-[90vh] bg-cream border-8 border-brown shadow-2xl transform transition-all duration-300 overflow-hidden flex flex-col ${
+        className={`max-w-4xl w-full max-h-[90vh] bg-cream border-8 border-brown shadow-2xl rounded-3xl transform transition-all duration-300 overflow-hidden flex flex-col ${
           show ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -115,7 +115,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
                 <button
                   key={key}
                   onClick={() => handleCategoryChange(key)}
-                  className={`px-4 py-2 font-bold border-4 transition-all whitespace-nowrap ${
+                  className={`px-4 py-2 font-bold border-4 rounded-xl transition-all whitespace-nowrap ${
                     selectedCategory === key
                       ? 'bg-brown text-cream border-brown scale-105'
                       : 'bg-white text-brown border-brown hover:bg-vintage/30'
@@ -132,7 +132,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
         <div className="flex-1 overflow-hidden p-6 flex flex-col items-center justify-center">
           {/* Card */}
           <div className="relative w-full max-w-2xl">
-            <div className="bg-white border-8 border-brown p-8 md:p-12 shadow-2xl min-h-[200px] flex items-center justify-center">
+            <div className="bg-white border-8 border-brown rounded-2xl p-8 md:p-12 shadow-2xl min-h-[200px] flex items-center justify-center">
               <p className="text-2xl md:text-4xl text-brown font-bold text-center leading-relaxed">
                 {currentItem}
               </p>
@@ -171,19 +171,19 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleCopy}
-              className="flex-1 bg-vintage text-brown px-6 py-3 text-lg font-bold hover:bg-vintage/80 transition-colors border-4 border-brown"
+              className="flex-1 bg-vintage text-brown px-6 py-3 text-lg font-bold hover:bg-vintage/80 transition-colors border-4 border-brown rounded-xl"
             >
               📋 Kopieren
             </button>
             <button
               onClick={handleShuffle}
-              className="flex-1 bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown"
+              className="flex-1 bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown rounded-xl"
             >
               🎲 Mischen
             </button>
             <button
               onClick={handleClose}
-              className="flex-1 bg-cream text-brown px-6 py-3 text-lg font-bold hover:bg-vintage/30 transition-colors border-4 border-brown"
+              className="flex-1 bg-cream text-brown px-6 py-3 text-lg font-bold hover:bg-vintage/30 transition-colors border-4 border-brown rounded-xl"
             >
               Schließen
             </button>

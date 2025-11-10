@@ -41,6 +41,7 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
   const [showOnboardingPopup, setShowOnboardingPopup] = useState(false);
   const [currentPopupData, setCurrentPopupData] = useState<any>(null);
   const [showInspirationBrowser, setShowInspirationBrowser] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Hide streak splash after 1.5 seconds, then check for what to show next
   useEffect(() => {
@@ -234,21 +235,30 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
         currentView={currentView}
         onNavigate={setCurrentView}
         onOpenInspiration={() => setShowInspirationBrowser(true)}
+        sidebarOpen={sidebarOpen}
+        onSidebarToggle={setSidebarOpen}
       />
 
-      {currentView === 'dashboard' && (
-        <Dashboard
-          onUpload={handleUploadStart}
-          onPaywallRequired={onPaywallRequired}
-          globalPulse={globalPulse}
-        />
-      )}
+      {/* Content wrapper with sidebar offset */}
+      <div
+        className={`transition-all duration-300 ${
+          sidebarOpen ? 'md:ml-[280px]' : 'md:ml-0'
+        }`}
+      >
+        {currentView === 'dashboard' && (
+          <Dashboard
+            onUpload={handleUploadStart}
+            onPaywallRequired={onPaywallRequired}
+            globalPulse={globalPulse}
+          />
+        )}
 
-      {currentView === 'archive' && <Archive />}
+        {currentView === 'archive' && <Archive />}
 
-      {currentView === 'settings' && <Settings />}
+        {currentView === 'settings' && <Settings />}
 
-      {currentView === 'shop' && <Shop />}
+        {currentView === 'shop' && <Shop />}
+      </div>
 
       {/* Onboarding Popup */}
       {showOnboardingPopup && currentPopupData && (

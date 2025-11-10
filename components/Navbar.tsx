@@ -7,11 +7,12 @@ interface NavbarProps {
   currentView: 'dashboard' | 'archive' | 'settings' | 'shop';
   onNavigate: (view: 'dashboard' | 'archive' | 'settings' | 'shop') => void;
   onOpenInspiration: () => void;
+  sidebarOpen: boolean;
+  onSidebarToggle: (open: boolean) => void;
 }
 
-export default function Navbar({ currentView, onNavigate, onOpenInspiration }: NavbarProps) {
+export default function Navbar({ currentView, onNavigate, onOpenInspiration, sidebarOpen, onSidebarToggle }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const appState = getAppState();
 
   return (
@@ -22,7 +23,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
           <div className="flex justify-between md:justify-center items-center h-16">
             {/* Desktop Toggle Button - Left */}
             <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+              onClick={() => onSidebarToggle(!sidebarOpen)}
               className="hidden md:block absolute left-6 text-cream hover:text-vintage transition-colors"
             >
               <svg
@@ -252,7 +253,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
       {sidebarOpen && (
         <div
           className="hidden md:block fixed inset-0 bg-black/20 z-30 top-16"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => onSidebarToggle(false)}
         />
       )}
     </>
