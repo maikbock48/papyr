@@ -37,14 +37,14 @@ export default function Archive() {
     : commitments.slice(0, 7);
 
   return (
-    <div className="min-h-screen bg-cream py-12 px-4">
+    <div className="min-h-screen py-12 px-4" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-brown mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#2d2e2e' }}>
             Dein Archiv
           </h1>
-          <p className="text-lg text-brown/70">
+          <p className="text-lg" style={{ color: '#666' }}>
             {appState.commitments.length} {appState.commitments.length === 1 ? 'Bekenntnis' : 'Bekenntnisse'} gesiegelt
           </p>
         </div>
@@ -55,21 +55,23 @@ export default function Archive() {
           <div className="flex gap-2">
             <button
               onClick={() => setFilter('all')}
-              className={`px-6 py-3 font-bold border-4 transition-colors ${
+              className={`px-6 py-3 font-bold border-2 rounded-lg transition-colors shadow-sm ${
                 filter === 'all'
-                  ? 'bg-brown text-cream border-brown'
-                  : 'bg-white text-brown border-brown hover:bg-vintage/30'
+                  ? 'bg-black text-white'
+                  : 'bg-white hover:bg-gray-50'
               }`}
+              style={filter === 'all' ? {} : { color: '#2d2e2e', borderColor: '#e0e0e0' }}
             >
               Alle ({appState.commitments.length})
             </button>
             <button
               onClick={() => setFilter('developed')}
-              className={`px-6 py-3 font-bold border-4 transition-colors ${
+              className={`px-6 py-3 font-bold border-2 rounded-lg transition-colors shadow-sm ${
                 filter === 'developed'
-                  ? 'bg-brown text-cream border-brown'
-                  : 'bg-white text-brown border-brown hover:bg-vintage/30'
+                  ? 'bg-black text-white'
+                  : 'bg-white hover:bg-gray-50'
               }`}
+              style={filter === 'developed' ? {} : { color: '#2d2e2e', borderColor: '#e0e0e0' }}
             >
               Entwickelt ({appState.commitments.filter(c => !c.isDeveloping).length})
             </button>
@@ -79,11 +81,12 @@ export default function Archive() {
           <div className="flex gap-2">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-3 border-4 transition-colors ${
+              className={`p-3 border-2 rounded-lg transition-colors shadow-sm ${
                 viewMode === 'grid'
-                  ? 'bg-brown text-cream border-brown'
-                  : 'bg-white text-brown border-brown hover:bg-vintage/30'
+                  ? 'bg-black text-white'
+                  : 'bg-white hover:bg-gray-50'
               }`}
+              style={viewMode === 'grid' ? {} : { borderColor: '#e0e0e0' }}
               title="Grid View"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,11 +95,12 @@ export default function Archive() {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-3 border-4 transition-colors ${
+              className={`p-3 border-2 rounded-lg transition-colors shadow-sm ${
                 viewMode === 'list'
-                  ? 'bg-brown text-cream border-brown'
-                  : 'bg-white text-brown border-brown hover:bg-vintage/30'
+                  ? 'bg-black text-white'
+                  : 'bg-white hover:bg-gray-50'
               }`}
+              style={viewMode === 'list' ? {} : { borderColor: '#e0e0e0' }}
               title="List View"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,11 +115,11 @@ export default function Archive() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {visibleCommitments.map((commitment) => (
               <div key={commitment.id} className="relative">
-                <div className="border-8 border-brown rounded-2xl bg-white p-3 shadow-xl hover:shadow-2xl transition-shadow">
+                <div className="border-2 rounded-xl bg-white p-3 shadow-lg hover:shadow-xl transition-shadow" style={{ borderColor: '#e0e0e0' }}>
                   {commitment.isDeveloping ? (
                     <div className="aspect-square bg-white flex items-center justify-center">
                       <div className="text-center">
-                        <p className="text-brown/50 text-sm font-bold animate-pulse">
+                        <p className="text-sm font-bold animate-pulse" style={{ color: '#999' }}>
                           Entwickelt sich...
                         </p>
                       </div>
@@ -126,20 +130,20 @@ export default function Archive() {
                         <img
                           src={commitment.imageData}
                           alt={`Bekenntnis ${commitment.date}`}
-                          className="w-full aspect-square object-cover mb-2"
+                          className="w-full aspect-square object-cover mb-2 rounded"
                         />
                         {commitment.signatureInitials && (
-                          <div className="absolute bottom-2 right-2 bg-brown/90 text-cream px-2 py-1 text-xs font-bold border-2 border-cream">
+                          <div className="absolute bottom-2 right-2 bg-white/95 px-2 py-1 text-xs font-bold border-2 rounded shadow-md" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
                             {commitment.signatureInitials}
                           </div>
                         )}
                         {commitment.completed && (
-                          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 text-xs font-bold border-2 border-white">
+                          <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded shadow-md">
                             ✓ Erledigt
                           </div>
                         )}
                       </div>
-                      <div className="text-xs text-brown/70 space-y-1 mb-2">
+                      <div className="text-xs space-y-1 mb-2" style={{ color: '#666' }}>
                         <p className="font-bold">{commitment.date}</p>
                         <p className="whitespace-pre-line line-clamp-3">{commitment.goals}</p>
                       </div>
@@ -149,14 +153,14 @@ export default function Archive() {
                         {canMarkAsCompleted(commitment.date) && !commitment.completed && (
                           <button
                             onClick={() => handleMarkCompleted(commitment.id)}
-                            className="w-full bg-green-600 text-white px-2 py-1 text-xs font-bold hover:bg-green-700 transition-colors border-2 border-green-600"
+                            className="w-full bg-green-500 text-white px-2 py-1 text-xs font-bold hover:bg-green-600 transition-colors rounded shadow-sm"
                           >
                             ✓ Erledigt
                           </button>
                         )}
                         <button
                           onClick={() => handleDelete(commitment.id)}
-                          className="w-full bg-red-600 text-white px-2 py-1 text-xs font-bold hover:bg-red-700 transition-colors border-2 border-red-600"
+                          className="w-full bg-red-500 text-white px-2 py-1 text-xs font-bold hover:bg-red-600 transition-colors rounded shadow-sm"
                         >
                           🗑
                         </button>
@@ -173,12 +177,12 @@ export default function Archive() {
         {viewMode === 'list' && (
           <div className="space-y-4">
             {visibleCommitments.map((commitment) => (
-              <div key={commitment.id} className="border-4 border-brown rounded-2xl bg-white p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div key={commitment.id} className="border-2 rounded-xl bg-white p-6 shadow-lg hover:shadow-xl transition-shadow" style={{ borderColor: '#e0e0e0' }}>
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="w-full md:w-48 flex-shrink-0">
                     {commitment.isDeveloping ? (
-                      <div className="aspect-square bg-vintage/20 flex items-center justify-center border-2 border-brown/20">
-                        <p className="text-brown/50 text-sm font-bold animate-pulse">
+                      <div className="aspect-square bg-gray-50 flex items-center justify-center border-2 rounded" style={{ borderColor: '#e0e0e0' }}>
+                        <p className="text-sm font-bold animate-pulse" style={{ color: '#999' }}>
                           Entwickelt sich...
                         </p>
                       </div>
@@ -187,15 +191,15 @@ export default function Archive() {
                         <img
                           src={commitment.imageData}
                           alt={`Bekenntnis ${commitment.date}`}
-                          className="w-full aspect-square object-cover border-2 border-brown/20"
+                          className="w-full aspect-square object-cover border-2 rounded" style={{ borderColor: '#e0e0e0' }}
                         />
                         {commitment.signatureInitials && (
-                          <div className="absolute bottom-2 right-2 bg-brown/90 text-cream px-2 py-1 text-xs font-bold border-2 border-cream">
+                          <div className="absolute bottom-2 right-2 bg-white/95 px-2 py-1 text-xs font-bold border-2 rounded shadow-md" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
                             {commitment.signatureInitials}
                           </div>
                         )}
                         {commitment.completed && (
-                          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 text-xs font-bold border-2 border-white">
+                          <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded shadow-md">
                             ✓ Erledigt
                           </div>
                         )}
@@ -204,12 +208,12 @@ export default function Archive() {
                   </div>
                   <div className="flex-1">
                     <div className="mb-2">
-                      <span className="text-sm font-bold text-brown/60">Datum:</span>
-                      <span className="ml-2 text-lg font-bold text-brown">{commitment.date}</span>
+                      <span className="text-sm font-bold" style={{ color: '#999' }}>Datum:</span>
+                      <span className="ml-2 text-lg font-bold" style={{ color: '#2d2e2e' }}>{commitment.date}</span>
                     </div>
                     <div className="mb-4">
-                      <span className="text-sm font-bold text-brown/60 block mb-2">Ziele:</span>
-                      <p className="text-lg text-brown whitespace-pre-line">{commitment.goals}</p>
+                      <span className="text-sm font-bold block mb-2" style={{ color: '#999' }}>Ziele:</span>
+                      <p className="text-lg whitespace-pre-line" style={{ color: '#2d2e2e' }}>{commitment.goals}</p>
                     </div>
 
                     {/* Action Buttons */}
@@ -218,14 +222,14 @@ export default function Archive() {
                         {canMarkAsCompleted(commitment.date) && !commitment.completed && (
                           <button
                             onClick={() => handleMarkCompleted(commitment.id)}
-                            className="bg-green-600 text-white px-4 py-2 text-sm font-bold hover:bg-green-700 transition-colors border-2 border-green-600"
+                            className="bg-green-500 text-white px-4 py-2 text-sm font-bold hover:bg-green-600 transition-colors rounded-lg shadow-sm"
                           >
                             ✓ Als erledigt markieren
                           </button>
                         )}
                         <button
                           onClick={() => handleDelete(commitment.id)}
-                          className="bg-red-600 text-white px-4 py-2 text-sm font-bold hover:bg-red-700 transition-colors border-2 border-red-600"
+                          className="bg-red-500 text-white px-4 py-2 text-sm font-bold hover:bg-red-600 transition-colors rounded-lg shadow-sm"
                         >
                           🗑 Löschen
                         </button>
@@ -240,12 +244,12 @@ export default function Archive() {
 
         {/* Paywall Notice */}
         {!appState.hasPaid && appState.commitments.length > 7 && (
-          <div className="mt-8 text-center border-4 border-brown/30 p-8 bg-vintage/20">
-            <p className="text-xl text-brown/70 italic mb-4">
+          <div className="mt-8 text-center border-2 p-8 bg-white rounded-xl shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+            <p className="text-xl italic mb-4" style={{ color: '#666' }}>
               Dein Archiv ist verblasst...<br />
               {appState.commitments.length - 7} Bekenntnisse sind nicht mehr sichtbar.
             </p>
-            <p className="text-lg text-brown font-bold">
+            <p className="text-lg font-bold" style={{ color: '#2d2e2e' }}>
               Bekenne dich für 1 €/Monat, um alles zu bewahren.
             </p>
           </div>
@@ -253,11 +257,11 @@ export default function Archive() {
 
         {/* Empty State */}
         {commitments.length === 0 && (
-          <div className="text-center py-20 border-4 border-brown/30 bg-white/50">
-            <p className="text-2xl text-brown/70">
+          <div className="text-center py-20 border-2 bg-white rounded-xl shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+            <p className="text-2xl" style={{ color: '#666' }}>
               Noch keine Bekenntnisse vorhanden.
             </p>
-            <p className="text-sm text-brown/50 mt-4">
+            <p className="text-sm mt-4" style={{ color: '#999' }}>
               Komm zwischen 20:00 und 02:00 Uhr zurück.
             </p>
           </div>

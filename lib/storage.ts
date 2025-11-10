@@ -11,15 +11,15 @@ export interface Commitment {
 
 export interface NotificationSettings {
   enabled: boolean;
-  count: 0 | 1 | 2 | 3;
-  morning: string; // HH:MM format
-  afternoon: string; // HH:MM format
-  evening: string; // HH:MM format
+  morning: boolean; // 9:30
+  afternoon: boolean; // 15:00
+  evening: boolean; // 19:00
 }
 
 export interface AppState {
   hasCompletedOnboarding: boolean;
   hasPaid: boolean;
+  isPro: boolean;
   userName: string;
   commitments: Commitment[];
   currentStreak: number;
@@ -36,10 +36,9 @@ const STORAGE_KEY = 'papyr_state';
 
 const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
   enabled: false,
-  count: 0,
-  morning: '08:00',
-  afternoon: '14:00',
-  evening: '20:00',
+  morning: false,
+  afternoon: false,
+  evening: false,
 };
 
 export const getAppState = (): AppState => {
@@ -47,6 +46,7 @@ export const getAppState = (): AppState => {
     return {
       hasCompletedOnboarding: false,
       hasPaid: false,
+      isPro: false,
       userName: '',
       commitments: [],
       currentStreak: 0,
@@ -65,6 +65,7 @@ export const getAppState = (): AppState => {
     return {
       hasCompletedOnboarding: false,
       hasPaid: false,
+      isPro: false,
       userName: '',
       commitments: [],
       currentStreak: 0,

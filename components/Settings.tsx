@@ -12,14 +12,14 @@ export default function Settings() {
 
   // Notification settings
   const [notifEnabled, setNotifEnabled] = useState(appState.notificationSettings.enabled);
-  const [notifCount, setNotifCount] = useState<0 | 1 | 2 | 3>(appState.notificationSettings.count);
-  const [morningTime, setMorningTime] = useState(appState.notificationSettings.morning);
-  const [afternoonTime, setAfternoonTime] = useState(appState.notificationSettings.afternoon);
-  const [eveningTime, setEveningTime] = useState(appState.notificationSettings.evening);
+  const [morningEnabled, setMorningEnabled] = useState(appState.notificationSettings.morning);
+  const [afternoonEnabled, setAfternoonEnabled] = useState(appState.notificationSettings.afternoon);
+  const [eveningEnabled, setEveningEnabled] = useState(appState.notificationSettings.evening);
   const [notifSaved, setNotifSaved] = useState(false);
   const [showNotifDialog, setShowNotifDialog] = useState(false);
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [showProDialog, setShowProDialog] = useState(false);
 
   const handleSave = () => {
     const state = getAppState();
@@ -50,12 +50,29 @@ export default function Settings() {
     window.location.reload();
   };
 
+  const handleUpgradeToPro = () => {
+    setShowProDialog(true);
+  };
+
+  const confirmUpgradeToPro = () => {
+    // TODO: Integrate payment processing
+    // For now, just set isPro to true
+    const state = getAppState();
+    state.isPro = true;
+    state.hasPaid = true;
+    saveAppState(state);
+    setAppState(state);
+    alert('🎉 Willkommen als Pro Member! Du erhältst jetzt alle Pro-Vorteile.');
+  };
+
   const handleEnableNotifications = () => {
     if (!notifEnabled) {
       setShowNotifDialog(true);
     } else {
       setNotifEnabled(false);
-      setNotifCount(0);
+      setMorningEnabled(false);
+      setAfternoonEnabled(false);
+      setEveningEnabled(false);
     }
   };
 
@@ -63,7 +80,7 @@ export default function Settings() {
     const granted = await requestNotificationPermission();
     if (granted) {
       setNotifEnabled(true);
-      setNotifCount(1); // Default to 1 notification
+      setMorningEnabled(true); // Default to morning notification
     } else {
       alert('Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
     }
@@ -72,10 +89,9 @@ export default function Settings() {
   const handleSaveNotifications = () => {
     updateNotificationSettings(
       notifEnabled,
-      notifCount,
-      morningTime,
-      afternoonTime,
-      eveningTime
+      morningEnabled,
+      afternoonEnabled,
+      eveningEnabled
     );
     setNotifSaved(true);
     setTimeout(() => setNotifSaved(false), 2000);
@@ -87,33 +103,34 @@ export default function Settings() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-cream py-12 px-4">
+    <div className="min-h-screen py-12 px-4" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-brown mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: '#2d2e2e' }}>
           Einstellungen
         </h1>
 
         {/* Profile Section */}
-        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
-          <h2 className="text-2xl font-bold text-brown mb-6">Profil</h2>
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Profil</h2>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-lg font-bold text-brown mb-2">
+              <label className="block text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
                 Dein Name
               </label>
               <input
                 type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                className="w-full border-2 rounded-xl p-4 text-lg bg-white focus:outline-none focus:ring-2"
+                style={{ borderColor: '#e0e0e0', color: '#2d2e2e' }}
                 placeholder="Wie heißt du?"
               />
             </div>
 
             <button
               onClick={handleSave}
-              className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown rounded-2xl shadow-lg"
+              className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
             >
               {saved ? '✓ Gespeichert!' : 'Speichern'}
             </button>
@@ -121,57 +138,154 @@ export default function Settings() {
         </div>
 
         {/* Stats Section */}
-        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
-          <h2 className="text-2xl font-bold text-brown mb-6">Statistiken</h2>
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Statistiken</h2>
 
           <div className="grid grid-cols-2 gap-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-brown mb-2">
+              <div className="text-4xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
                 {appState.currentStreak}
               </div>
-              <div className="text-sm text-brown/70">Tage Streak</div>
+              <div className="text-sm" style={{ color: '#666' }}>Tage Streak</div>
             </div>
 
             <div className="text-center">
-              <div className="text-4xl font-bold text-brown mb-2">
+              <div className="text-4xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
                 {appState.commitments.length}
               </div>
-              <div className="text-sm text-brown/70">Bekenntnisse</div>
+              <div className="text-sm" style={{ color: '#666' }}>Bekenntnisse</div>
             </div>
           </div>
 
           {appState.tenYearVision && (
-            <div className="mt-6 pt-6 border-t-2 border-brown/20">
-              <h3 className="text-lg font-bold text-brown mb-3">
+            <div className="mt-6 pt-6 border-t-2" style={{ borderColor: '#e0e0e0' }}>
+              <h3 className="text-lg font-bold mb-3" style={{ color: '#2d2e2e' }}>
                 Deine 10-Jahres-Vision
               </h3>
-              <p className="text-brown/80 italic whitespace-pre-line">
+              <p className="italic whitespace-pre-line" style={{ color: '#666' }}>
                 {appState.tenYearVision}
               </p>
             </div>
           )}
         </div>
 
+        {/* Pro Subscription Section - Only show if streak >= 30 */}
+        {appState.currentStreak >= 30 && !appState.isPro && (
+          <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+            <div className="text-center">
+              <div className="text-4xl mb-3">✨</div>
+              <h2 className="text-2xl font-bold mb-3" style={{ color: '#2d2e2e' }}>
+                Werde Pro Member
+              </h2>
+              <p className="mb-6" style={{ color: '#666' }}>
+                Du hast {appState.currentStreak} Tage durchgezogen! Zeit für das nächste Level.
+              </p>
+
+              <div className="bg-white border-2 rounded-xl p-5 mb-6" style={{ borderColor: '#e0e0e0' }}>
+                <div className="text-3xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                  4,99€ <span className="text-lg font-normal">/Monat</span>
+                </div>
+                <div className="text-sm italic" style={{ color: '#666' }}>
+                  Ein Bekenntnis. Ein Statement.
+                </div>
+              </div>
+
+              <div className="text-left space-y-3 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">🃏</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Extra-Joker jeden Monat</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Zusätzlicher Schutz für deinen Streak
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">🛒</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>20% Rabatt im Shop</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Dauerhaft auf alle Produkte
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">🌍</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Teile deine Meilensteine</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Inspiriere die Community
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">💚</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Unterstütze soziale Projekte</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Jede Mitgliedschaft hilft anderen
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleUpgradeToPro}
+                className="w-full bg-black text-white px-8 py-4 text-xl font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
+              >
+                ✨ Jetzt Pro Member werden
+              </button>
+
+              <p className="text-xs mt-4" style={{ color: '#999' }}>
+                Du hast bereits alles, was du brauchst: Zettel, Stift, Disziplin. Pro ist ein Bekenntnis.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Pro Status Display - If already Pro */}
+        {appState.isPro && (
+          <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+            <div className="text-center">
+              <div className="text-4xl mb-3">✨</div>
+              <h2 className="text-2xl font-bold mb-3" style={{ color: '#2d2e2e' }}>
+                Pro Member
+              </h2>
+              <p className="mb-4" style={{ color: '#666' }}>
+                Danke für dein Bekenntnis! Du unterstützt soziale Projekte und inspirierst andere.
+              </p>
+              <div className="bg-white border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+                <div className="text-sm" style={{ color: '#666' }}>
+                  🃏 Extra-Joker jeden Monat<br />
+                  🛒 20% Rabatt im Shop<br />
+                  🌍 Teile deine Meilensteine
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Notifications Section */}
-        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
-          <h2 className="text-2xl font-bold text-brown mb-6">🔔 Benachrichtigungen</h2>
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>🔔 Benachrichtigungen</h2>
 
           <div className="space-y-6">
             {/* Enable/Disable */}
-            <div className="flex items-center justify-between p-4 bg-vintage/20 border-2 border-brown/30">
+            <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
               <div>
-                <div className="font-bold text-brown">Benachrichtigungen</div>
-                <div className="text-sm text-brown/70">
+                <div className="font-bold" style={{ color: '#2d2e2e' }}>Benachrichtigungen</div>
+                <div className="text-sm" style={{ color: '#666' }}>
                   {notifEnabled ? 'Aktiviert' : 'Deaktiviert'}
                 </div>
               </div>
               <button
                 onClick={handleEnableNotifications}
-                className={`px-6 py-2 font-bold border-4 transition-colors ${
+                className={`px-6 py-2 font-bold border-2 rounded-xl transition-colors ${
                   notifEnabled
-                    ? 'bg-brown text-cream border-brown'
-                    : 'bg-cream text-brown border-brown hover:bg-vintage/30'
+                    ? 'bg-black text-white hover:bg-gray-900'
+                    : 'bg-white text-black hover:bg-gray-50'
                 }`}
+                style={{ borderColor: '#e0e0e0' }}
               >
                 {notifEnabled ? 'Deaktivieren' : 'Aktivieren'}
               </button>
@@ -179,80 +293,67 @@ export default function Settings() {
 
             {notifEnabled && (
               <>
-                {/* Notification Count */}
                 <div>
-                  <label className="block text-lg font-bold text-brown mb-3">
-                    Anzahl der Benachrichtigungen pro Tag
+                  <label className="block text-lg font-bold mb-4" style={{ color: '#2d2e2e' }}>
+                    Wähle deine Erinnerungszeiten
                   </label>
-                  <div className="grid grid-cols-4 gap-3">
-                    {[0, 1, 2, 3].map((count) => (
-                      <button
-                        key={count}
-                        onClick={() => setNotifCount(count as 0 | 1 | 2 | 3)}
-                        className={`py-4 text-xl font-bold border-4 transition-all ${
-                          notifCount === count
-                            ? 'bg-brown text-cream border-brown scale-105'
-                            : 'bg-white text-brown border-brown hover:bg-vintage/20'
-                        }`}
-                      >
-                        {count}
-                      </button>
-                    ))}
+                  <div className="space-y-3">
+                    {/* Morning Checkbox */}
+                    <label className="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: '#e0e0e0' }}>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={morningEnabled}
+                          onChange={(e) => setMorningEnabled(e.target.checked)}
+                          className="w-6 h-6 cursor-pointer"
+                          style={{ accentColor: '#2d2e2e' }}
+                        />
+                        <div>
+                          <div className="font-bold" style={{ color: '#2d2e2e' }}>🌅 Morgens</div>
+                          <div className="text-sm" style={{ color: '#666' }}>09:30 Uhr</div>
+                        </div>
+                      </div>
+                    </label>
+
+                    {/* Afternoon Checkbox */}
+                    <label className="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: '#e0e0e0' }}>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={afternoonEnabled}
+                          onChange={(e) => setAfternoonEnabled(e.target.checked)}
+                          className="w-6 h-6 cursor-pointer"
+                          style={{ accentColor: '#2d2e2e' }}
+                        />
+                        <div>
+                          <div className="font-bold" style={{ color: '#2d2e2e' }}>☀️ Mittags</div>
+                          <div className="text-sm" style={{ color: '#666' }}>15:00 Uhr</div>
+                        </div>
+                      </div>
+                    </label>
+
+                    {/* Evening Checkbox */}
+                    <label className="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: '#e0e0e0' }}>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={eveningEnabled}
+                          onChange={(e) => setEveningEnabled(e.target.checked)}
+                          className="w-6 h-6 cursor-pointer"
+                          style={{ accentColor: '#2d2e2e' }}
+                        />
+                        <div>
+                          <div className="font-bold" style={{ color: '#2d2e2e' }}>🌙 Abends</div>
+                          <div className="text-sm" style={{ color: '#666' }}>19:00 Uhr</div>
+                        </div>
+                      </div>
+                    </label>
                   </div>
-                  <p className="text-sm text-brown/60 mt-2">
-                    {notifCount === 0 && 'Keine Benachrichtigungen'}
-                    {notifCount === 1 && 'Eine Benachrichtigung pro Tag'}
-                    {notifCount === 2 && 'Zwei Benachrichtigungen pro Tag'}
-                    {notifCount === 3 && 'Drei Benachrichtigungen pro Tag'}
-                  </p>
                 </div>
-
-                {/* Time Settings */}
-                {notifCount >= 1 && (
-                  <div>
-                    <label className="block text-lg font-bold text-brown mb-2">
-                      🌅 Morgens
-                    </label>
-                    <input
-                      type="time"
-                      value={morningTime}
-                      onChange={(e) => setMorningTime(e.target.value)}
-                      className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
-                    />
-                  </div>
-                )}
-
-                {notifCount >= 2 && (
-                  <div>
-                    <label className="block text-lg font-bold text-brown mb-2">
-                      ☀️ Mittags
-                    </label>
-                    <input
-                      type="time"
-                      value={afternoonTime}
-                      onChange={(e) => setAfternoonTime(e.target.value)}
-                      className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
-                    />
-                  </div>
-                )}
-
-                {notifCount >= 3 && (
-                  <div>
-                    <label className="block text-lg font-bold text-brown mb-2">
-                      🌙 Abends
-                    </label>
-                    <input
-                      type="time"
-                      value={eveningTime}
-                      onChange={(e) => setEveningTime(e.target.value)}
-                      className="w-full border-4 border-brown rounded-2xl p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
-                    />
-                  </div>
-                )}
 
                 <button
                   onClick={handleSaveNotifications}
-                  className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown rounded-2xl shadow-lg"
+                  className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
                 >
                   {notifSaved ? '✓ Gespeichert!' : 'Benachrichtigungen speichern'}
                 </button>
@@ -262,19 +363,19 @@ export default function Settings() {
         </div>
 
         {/* Account Section */}
-        <div className="bg-white border-4 border-brown rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
-          <h2 className="text-2xl font-bold text-brown mb-6">Account</h2>
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Account</h2>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-vintage/20 border-2 border-brown/30">
+            <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
               <div>
-                <div className="font-bold text-brown">Status</div>
-                <div className="text-sm text-brown/70">
+                <div className="font-bold" style={{ color: '#2d2e2e' }}>Status</div>
+                <div className="text-sm" style={{ color: '#666' }}>
                   {appState.hasPaid ? 'Premium (1€/Monat)' : 'Free Trial'}
                 </div>
               </div>
               {!appState.hasPaid && (
-                <div className="text-sm text-brown/60">
+                <div className="text-sm" style={{ color: '#666' }}>
                   {14 - appState.commitments.length} Tage übrig
                 </div>
               )}
@@ -283,20 +384,21 @@ export default function Settings() {
         </div>
 
         {/* Danger Zone */}
-        <div className="bg-white border-4 border-red-600 p-6 md:p-8 shadow-xl">
+        <div className="bg-white border-2 border-red-600 rounded-xl p-6 md:p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-red-600 mb-6">Danger Zone</h2>
 
           <div className="space-y-4">
             <button
               onClick={handleResetOnboarding}
-              className="w-full bg-white text-brown px-6 py-3 text-lg font-medium border-2 border-brown hover:bg-vintage/30 transition-colors"
+              className="w-full bg-white px-6 py-3 text-lg font-medium border-2 rounded-xl hover:bg-gray-50 transition-colors"
+              style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}
             >
               Onboarding zurücksetzen
             </button>
 
             <button
               onClick={handleClearData}
-              className="w-full bg-red-600 text-white px-6 py-3 text-lg font-bold hover:bg-red-700 transition-colors border-4 border-red-600"
+              className="w-full bg-red-600 text-white px-6 py-3 text-lg font-bold hover:bg-red-700 transition-colors border-2 border-red-600 rounded-xl"
             >
               Alle Daten löschen
             </button>
@@ -358,6 +460,25 @@ export default function Settings() {
             text: 'Abbrechen',
             action: () => {},
             primary: true,
+          },
+        ]}
+      />
+
+      {/* Pro Upgrade Dialog */}
+      <ConfirmDialog
+        title="✨ Pro Member werden"
+        message="Du bist bereit für das nächste Level!\n\nFür 4,99€/Monat erhältst du:\n\n🃏 Jeden Monat einen Extra-Joker\n🛒 20% Rabatt im Shop\n🌍 Teile deine Meilensteine\n💚 Unterstütze soziale Projekte\n\nDu hast {streak} Tage geschafft. Bist du bereit für dieses Bekenntnis?"
+        isOpen={showProDialog}
+        onClose={() => setShowProDialog(false)}
+        buttons={[
+          {
+            text: '✨ Ja, Pro Member werden',
+            action: confirmUpgradeToPro,
+            primary: true,
+          },
+          {
+            text: 'Nicht jetzt',
+            action: () => {},
           },
         ]}
       />

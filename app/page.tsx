@@ -42,10 +42,12 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="text-4xl font-bold text-brown animate-pulse">
-          P A P Y R
-        </div>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <img
+          src="/assets/PAPYR.jpg"
+          alt="PAPYR"
+          className="max-w-md w-full h-auto animate-pulse"
+        />
       </div>
     );
   }

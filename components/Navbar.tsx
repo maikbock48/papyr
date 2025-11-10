@@ -9,22 +9,27 @@ interface NavbarProps {
   onOpenInspiration: () => void;
   sidebarOpen: boolean;
   onSidebarToggle: (open: boolean) => void;
+  globalPulse: number;
 }
 
-export default function Navbar({ currentView, onNavigate, onOpenInspiration, sidebarOpen, onSidebarToggle }: NavbarProps) {
+export default function Navbar({ currentView, onNavigate, onOpenInspiration, sidebarOpen, onSidebarToggle, globalPulse }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const appState = getAppState();
+
+  const menuStyle = {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif'
+  };
 
   return (
     <>
       {/* Top Navbar */}
-      <nav className="bg-brown border-b-4 border-brown shadow-lg sticky top-0 z-50">
+      <nav className="border-b-2 shadow-sm sticky top-0 z-50" style={{ backgroundColor: '#171717', borderColor: '#2d2e2e' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between md:justify-center items-center h-16">
             {/* Desktop Toggle Button - Left */}
             <button
               onClick={() => onSidebarToggle(!sidebarOpen)}
-              className="hidden md:block absolute left-6 text-cream hover:text-vintage transition-colors"
+              className="hidden md:block absolute left-6 text-cream hover:text-cream/70 transition-colors"
             >
               <svg
                 className="w-7 h-7"
@@ -41,30 +46,31 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               </svg>
             </button>
 
-            {/* Logo - Centered */}
-            <div className="flex items-center flex-1 md:flex-none justify-center">
-              <button
-                onClick={() => onNavigate('dashboard')}
-                className="hover:opacity-80 transition-opacity"
-              >
-                <img
-                  src="/assets/PAPYR.png"
-                  alt="PAPYR Logo"
-                  className="h-14 md:h-12 w-auto"
-                />
-              </button>
+            {/* Global Counter - Centered */}
+            <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
+              <div className="flex items-center gap-2">
+                <span className="text-sm md:text-base text-white/80 whitespace-nowrap">
+                  Heute wurden bereits
+                </span>
+                <span className="text-2xl md:text-3xl font-bold text-white">
+                  {globalPulse.toLocaleString()}
+                </span>
+                <span className="text-sm md:text-base text-white/80 whitespace-nowrap">
+                  Zettel abgegeben
+                </span>
+              </div>
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-2 absolute right-4">
               {appState.jokers > 0 && (
-                <div className="bg-vintage text-brown px-3 py-1 rounded-full font-bold text-sm">
+                <div className="bg-white px-3 py-1 rounded-full font-bold text-sm shadow-sm" style={{ color: '#2d2e2e' }}>
                   🃏 {appState.jokers}
                 </div>
               )}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-cream hover:text-vintage transition-colors"
+                className="text-white hover:text-white/70 transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -95,10 +101,10 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-brown border-t-2 border-cream/20">
+          <div className="md:hidden border-t" style={{ backgroundColor: '#1f1f1f', borderColor: '#2d2e2e' }}>
             <div className="px-4 pt-2 pb-4 space-y-3">
               {appState.userName && (
-                <div className="text-cream/60 text-sm pb-2 border-b border-cream/20">
+                <div className="text-white/60 text-sm pb-2 border-b" style={{ borderColor: '#2d2e2e' }}>
                   Hallo, {appState.userName}
                 </div>
               )}
@@ -107,10 +113,11 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   onNavigate('dashboard');
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                style={menuStyle}
+                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
                   currentView === 'dashboard'
-                    ? 'bg-cream text-brown'
-                    : 'text-cream hover:bg-brown/50'
+                    ? 'bg-white text-black'
+                    : 'text-white hover:bg-white/10'
                 }`}
               >
                 Dashboard
@@ -120,10 +127,11 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   onNavigate('archive');
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                style={menuStyle}
+                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
                   currentView === 'archive'
-                    ? 'bg-cream text-brown'
-                    : 'text-cream hover:bg-brown/50'
+                    ? 'bg-white text-black'
+                    : 'text-white hover:bg-white/10'
                 }`}
               >
                 Archiv
@@ -133,32 +141,35 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   onOpenInspiration();
                   setMobileMenuOpen(false);
                 }}
-                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-cream hover:bg-brown/50"
+                style={menuStyle}
+                className="block w-full text-left px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-white/10"
               >
-                🎲 Inspiration
+                Inspiration
               </button>
               <button
                 onClick={() => {
                   onNavigate('shop');
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                style={menuStyle}
+                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
                   currentView === 'shop'
-                    ? 'bg-cream text-brown'
-                    : 'text-cream hover:bg-brown/50'
+                    ? 'bg-white text-black'
+                    : 'text-white hover:bg-white/10'
                 }`}
               >
-                🛒 Shop
+                Shop
               </button>
               <button
                 onClick={() => {
                   onNavigate('settings');
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                style={menuStyle}
+                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
                   currentView === 'settings'
-                    ? 'bg-cream text-brown'
-                    : 'text-cream hover:bg-brown/50'
+                    ? 'bg-white text-black'
+                    : 'text-white hover:bg-white/10'
                 }`}
               >
                 Einstellungen
@@ -170,10 +181,10 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
 
       {/* Desktop Sidebar */}
       <div
-        className={`hidden md:block fixed left-0 top-16 bottom-0 bg-brown border-r-4 border-brown shadow-2xl z-40 transition-transform duration-300 ease-in-out ${
+        className={`hidden md:block fixed left-0 top-16 bottom-0 border-r-2 shadow-lg z-40 transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ width: '280px' }}
+        style={{ width: '280px', backgroundColor: '#171717', borderColor: '#2d2e2e' }}
       >
         <div className="flex flex-col h-full p-6">
           {/* User Info */}
@@ -184,7 +195,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               </div>
             )}
             {appState.jokers > 0 && (
-              <div className="bg-vintage text-brown px-4 py-2 rounded-full font-bold text-lg border-2 border-vintage inline-block">
+              <div className="bg-white px-4 py-2 rounded-full font-bold text-lg border-2 inline-block shadow-sm" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
                 🃏 {appState.jokers} Joker
               </div>
             )}
@@ -194,68 +205,70 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           <nav className="flex-1 space-y-2">
             <button
               onClick={() => onNavigate('dashboard')}
+              style={menuStyle}
               className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
                 currentView === 'dashboard'
-                  ? 'bg-cream text-brown shadow-lg scale-105'
-                  : 'text-cream hover:bg-cream/10'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
               }`}
             >
-              📊 Dashboard
+              Dashboard
             </button>
             <button
               onClick={() => onNavigate('archive')}
+              style={menuStyle}
               className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
                 currentView === 'archive'
-                  ? 'bg-cream text-brown shadow-lg scale-105'
-                  : 'text-cream hover:bg-cream/10'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
               }`}
             >
-              📦 Archiv
+              Archiv
             </button>
             <button
               onClick={onOpenInspiration}
-              className="w-full text-left px-4 py-3 rounded-lg text-lg font-medium text-cream hover:bg-cream/10 transition-all"
+              style={menuStyle}
+              className="w-full text-left px-4 py-3 rounded-lg text-lg font-medium text-white hover:bg-white/10 transition-all"
             >
-              🎲 Inspiration
+              Inspiration
             </button>
             <button
               onClick={() => onNavigate('shop')}
+              style={menuStyle}
               className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
                 currentView === 'shop'
-                  ? 'bg-cream text-brown shadow-lg scale-105'
-                  : 'text-cream hover:bg-cream/10'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
               }`}
             >
-              🛒 Shop
+              Shop
             </button>
             <button
               onClick={() => onNavigate('settings')}
+              style={menuStyle}
               className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
                 currentView === 'settings'
-                  ? 'bg-cream text-brown shadow-lg scale-105'
-                  : 'text-cream hover:bg-cream/10'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
               }`}
             >
-              ⚙️ Einstellungen
+              Einstellungen
             </button>
           </nav>
 
           {/* Footer */}
-          <div className="pt-6 border-t-2 border-cream/20">
-            <div className="text-cream/60 text-sm">
-              PAPYR v1.0
+          <div className="pt-6 border-t" style={{ borderColor: '#2d2e2e' }}>
+            <div className="flex justify-center">
+              <img
+                src="/assets/PAPYR.jpg"
+                alt="PAPYR"
+                className="h-16 w-auto opacity-80"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Overlay for sidebar (optional - for closing when clicking outside) */}
-      {sidebarOpen && (
-        <div
-          className="hidden md:block fixed inset-0 bg-black/20 z-30 top-16"
-          onClick={() => onSidebarToggle(false)}
-        />
-      )}
     </>
   );
 }

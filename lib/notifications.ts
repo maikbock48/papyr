@@ -37,18 +37,14 @@ export function scheduleNotifications() {
   // Clear any existing scheduled notifications
   clearScheduledNotifications();
 
-  if (!settings.enabled || settings.count === 0) {
+  if (!settings.enabled) {
     return;
   }
 
-  const times: string[] = [];
-  if (settings.count >= 1) times.push(settings.morning);
-  if (settings.count >= 2) times.push(settings.afternoon);
-  if (settings.count >= 3) times.push(settings.evening);
-
-  times.forEach((time) => {
-    scheduleNotificationForTime(time);
-  });
+  // Schedule notifications at fixed times if enabled
+  if (settings.morning) scheduleNotificationForTime('09:30');
+  if (settings.afternoon) scheduleNotificationForTime('15:00');
+  if (settings.evening) scheduleNotificationForTime('19:00');
 }
 
 function scheduleNotificationForTime(time: string) {
@@ -80,10 +76,8 @@ function scheduleNotificationForTime(time: string) {
 function clearScheduledNotifications() {
   if (typeof window === 'undefined') return;
 
-  const state = getAppState();
-  const settings = state.notificationSettings;
-
-  [settings.morning, settings.afternoon, settings.evening].forEach((time) => {
+  // Clear all fixed-time notifications
+  ['09:30', '15:00', '19:00'].forEach((time) => {
     const key = `notification_timeout_${time}`;
     const timeoutId = (window as any)[key];
     if (timeoutId) {
@@ -117,15 +111,13 @@ function showNotification() {
 
 export function updateNotificationSettings(
   enabled: boolean,
-  count: 0 | 1 | 2 | 3,
-  morning: string,
-  afternoon: string,
-  evening: string
+  morning: boolean,
+  afternoon: boolean,
+  evening: boolean
 ) {
   const state = getAppState();
   state.notificationSettings = {
     enabled,
-    count,
     morning,
     afternoon,
     evening,

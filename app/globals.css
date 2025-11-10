@@ -4,10 +4,24 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  font-family: 'Courier Prime', 'Courier New', monospace;
-  background-color: #F9F9F0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
+  background-color: #FFFFFF;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    #E8E8E8 31px,
+    #E8E8E8 32px
+  );
+  background-size: 100% 32px;
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 /* Vintage grain overlay */
@@ -20,7 +34,7 @@ body::before {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 

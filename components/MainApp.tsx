@@ -187,9 +187,11 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
   if (showStreakSplash) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-9xl font-bold font-typewriter">
-          {appState.currentStreak}
-        </div>
+        <img
+          src="/assets/PAPYR.jpg"
+          alt="PAPYR"
+          className="max-w-md w-full h-auto"
+        />
       </div>
     );
   }
@@ -237,12 +239,15 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
         onOpenInspiration={() => setShowInspirationBrowser(true)}
         sidebarOpen={sidebarOpen}
         onSidebarToggle={setSidebarOpen}
+        globalPulse={globalPulse}
       />
 
-      {/* Content wrapper with sidebar offset */}
+      {/* Content wrapper - Shop and Archive adjust to sidebar */}
       <div
-        className={`transition-all duration-300 ${
-          sidebarOpen ? 'md:ml-[280px]' : 'md:ml-0'
+        className={`transition-all duration-300 m-0 p-0 ${
+          (currentView === 'shop' || currentView === 'archive')
+            ? (sidebarOpen ? 'md:ml-[280px] lg:ml-[280px]' : 'md:ml-0 lg:ml-0')
+            : ''
         }`}
       >
         {currentView === 'dashboard' && (
