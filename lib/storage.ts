@@ -8,6 +8,14 @@ export interface Commitment {
   signatureInitials: string | null;
 }
 
+export interface NotificationSettings {
+  enabled: boolean;
+  count: 0 | 1 | 2 | 3;
+  morning: string; // HH:MM format
+  afternoon: string; // HH:MM format
+  evening: string; // HH:MM format
+}
+
 export interface AppState {
   hasCompletedOnboarding: boolean;
   hasPaid: boolean;
@@ -20,9 +28,18 @@ export interface AppState {
   jokers: number;
   lastShownPopupDay: number | null;
   totalCommitments: number;
+  notificationSettings: NotificationSettings;
 }
 
 const STORAGE_KEY = 'papyr_state';
+
+const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
+  enabled: false,
+  count: 0,
+  morning: '08:00',
+  afternoon: '14:00',
+  evening: '20:00',
+};
 
 export const getAppState = (): AppState => {
   if (typeof window === 'undefined') {
@@ -38,6 +55,7 @@ export const getAppState = (): AppState => {
       jokers: 0,
       lastShownPopupDay: null,
       totalCommitments: 0,
+      notificationSettings: DEFAULT_NOTIFICATION_SETTINGS,
     };
   }
 
@@ -55,6 +73,7 @@ export const getAppState = (): AppState => {
       jokers: 0,
       lastShownPopupDay: null,
       totalCommitments: 0,
+      notificationSettings: DEFAULT_NOTIFICATION_SETTINGS,
     };
   }
 
@@ -68,6 +87,7 @@ export const getAppState = (): AppState => {
     jokers: parsed.jokers || 0,
     lastShownPopupDay: parsed.lastShownPopupDay || null,
     totalCommitments: parsed.totalCommitments || parsed.commitments?.length || 0,
+    notificationSettings: parsed.notificationSettings || DEFAULT_NOTIFICATION_SETTINGS,
   };
 };
 

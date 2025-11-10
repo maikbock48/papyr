@@ -2,11 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { getAppState, saveAppState } from '@/lib/storage';
+import { requestNotificationPermission, updateNotificationSettings, scheduleNotifications } from '@/lib/notifications';
 
 export default function Settings() {
   const [appState, setAppState] = useState(getAppState());
   const [userName, setUserName] = useState(appState.userName);
   const [saved, setSaved] = useState(false);
+
+  // Notification settings
+  const [notifEnabled, setNotifEnabled] = useState(appState.notificationSettings.enabled);
+  const [notifCount, setNotifCount] = useState<0 | 1 | 2 | 3>(appState.notificationSettings.count);
+  const [morningTime, setMorningTime] = useState(appState.notificationSettings.morning);
+  const [afternoonTime, setAfternoonTime] = useState(appState.notificationSettings.afternoon);
+  const [eveningTime, setEveningTime] = useState(appState.notificationSettings.evening);
+  const [notifSaved, setNotifSaved] = useState(false);
 
   const handleSave = () => {
     const state = getAppState();
@@ -34,6 +43,38 @@ export default function Settings() {
       }
     }
   };
+
+  const handleEnableNotifications = async () => {
+    if (!notifEnabled) {
+      const granted = await requestNotificationPermission();
+      if (granted) {
+        setNotifEnabled(true);
+        setNotifCount(1); // Default to 1 notification
+      } else {
+        alert('Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
+      }
+    } else {
+      setNotifEnabled(false);
+      setNotifCount(0);
+    }
+  };
+
+  const handleSaveNotifications = () => {
+    updateNotificationSettings(
+      notifEnabled,
+      notifCount,
+      morningTime,
+      afternoonTime,
+      eveningTime
+    );
+    setNotifSaved(true);
+    setTimeout(() => setNotifSaved(false), 2000);
+  };
+
+  useEffect(() => {
+    // Initialize notifications on mount
+    scheduleNotifications();
+  }, []);
 
   return (
     <div className="min-h-screen bg-cream py-12 px-4">
@@ -99,6 +140,115 @@ export default function Settings() {
               </p>
             </div>
           )}
+        </div>
+
+        {/* Notifications Section */}
+        <div className="bg-white border-4 border-brown p-6 md:p-8 mb-6 shadow-xl">
+          <h2 className="text-2xl font-bold text-brown mb-6">🔔 Benachrichtigungen</h2>
+
+          <div className="space-y-6">
+            {/* Enable/Disable */}
+            <div className="flex items-center justify-between p-4 bg-vintage/20 border-2 border-brown/30">
+              <div>
+                <div className="font-bold text-brown">Benachrichtigungen</div>
+                <div className="text-sm text-brown/70">
+                  {notifEnabled ? 'Aktiviert' : 'Deaktiviert'}
+                </div>
+              </div>
+              <button
+                onClick={handleEnableNotifications}
+                className={`px-6 py-2 font-bold border-4 transition-colors ${
+                  notifEnabled
+                    ? 'bg-brown text-cream border-brown'
+                    : 'bg-cream text-brown border-brown hover:bg-vintage/30'
+                }`}
+              >
+                {notifEnabled ? 'Deaktivieren' : 'Aktivieren'}
+              </button>
+            </div>
+
+            {notifEnabled && (
+              <>
+                {/* Notification Count */}
+                <div>
+                  <label className="block text-lg font-bold text-brown mb-3">
+                    Anzahl der Benachrichtigungen pro Tag
+                  </label>
+                  <div className="grid grid-cols-4 gap-3">
+                    {[0, 1, 2, 3].map((count) => (
+                      <button
+                        key={count}
+                        onClick={() => setNotifCount(count as 0 | 1 | 2 | 3)}
+                        className={`py-4 text-xl font-bold border-4 transition-all ${
+                          notifCount === count
+                            ? 'bg-brown text-cream border-brown scale-105'
+                            : 'bg-white text-brown border-brown hover:bg-vintage/20'
+                        }`}
+                      >
+                        {count}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-sm text-brown/60 mt-2">
+                    {notifCount === 0 && 'Keine Benachrichtigungen'}
+                    {notifCount === 1 && 'Eine Benachrichtigung pro Tag'}
+                    {notifCount === 2 && 'Zwei Benachrichtigungen pro Tag'}
+                    {notifCount === 3 && 'Drei Benachrichtigungen pro Tag'}
+                  </p>
+                </div>
+
+                {/* Time Settings */}
+                {notifCount >= 1 && (
+                  <div>
+                    <label className="block text-lg font-bold text-brown mb-2">
+                      🌅 Morgens
+                    </label>
+                    <input
+                      type="time"
+                      value={morningTime}
+                      onChange={(e) => setMorningTime(e.target.value)}
+                      className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                    />
+                  </div>
+                )}
+
+                {notifCount >= 2 && (
+                  <div>
+                    <label className="block text-lg font-bold text-brown mb-2">
+                      ☀️ Mittags
+                    </label>
+                    <input
+                      type="time"
+                      value={afternoonTime}
+                      onChange={(e) => setAfternoonTime(e.target.value)}
+                      className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                    />
+                  </div>
+                )}
+
+                {notifCount >= 3 && (
+                  <div>
+                    <label className="block text-lg font-bold text-brown mb-2">
+                      🌙 Abends
+                    </label>
+                    <input
+                      type="time"
+                      value={eveningTime}
+                      onChange={(e) => setEveningTime(e.target.value)}
+                      className="w-full border-4 border-brown p-4 text-lg bg-white focus:outline-none focus:ring-4 focus:ring-brown/50"
+                    />
+                  </div>
+                )}
+
+                <button
+                  onClick={handleSaveNotifications}
+                  className="w-full bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg"
+                >
+                  {notifSaved ? '✓ Gespeichert!' : 'Benachrichtigungen speichern'}
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Account Section */}

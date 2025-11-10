@@ -13,23 +13,25 @@ type CategoryKey = keyof typeof inspirationData.categories;
 export default function InspirationBrowser({ isOpen, onClose }: InspirationBrowserProps) {
   const [show, setShow] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('gesundheit');
-  const [randomItems, setRandomItems] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [shuffledItems, setShuffledItems] = useState<string[]>([]);
 
   const categories = inspirationData.categories;
 
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => setShow(true), 100);
-      loadRandomItems();
+      shuffleItems();
     } else {
       setShow(false);
     }
   }, [isOpen, selectedCategory]);
 
-  const loadRandomItems = () => {
+  const shuffleItems = () => {
     const category = categories[selectedCategory];
     const shuffled = [...category.items].sort(() => Math.random() - 0.5);
-    setRandomItems(shuffled.slice(0, 20)); // Show 20 random items
+    setShuffledItems(shuffled);
+    setCurrentIndex(0); // Reset to first item
   };
 
   const handleClose = () => {
@@ -41,11 +43,37 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
     setSelectedCategory(category);
   };
 
-  const handleRefresh = () => {
-    loadRandomItems();
+  const handleNext = () => {
+    if (currentIndex < shuffledItems.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+    } else {
+      setCurrentIndex(0); // Loop back to start
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1);
+    } else {
+      setCurrentIndex(shuffledItems.length - 1); // Loop to end
+    }
+  };
+
+  const handleShuffle = () => {
+    shuffleItems();
+  };
+
+  const handleCopy = () => {
+    const currentItem = shuffledItems[currentIndex];
+    if (currentItem) {
+      navigator.clipboard.writeText(currentItem);
+      alert(`"${currentItem}" in die Zwischenablage kopiert!`);
+    }
   };
 
   if (!isOpen) return null;
+
+  const currentItem = shuffledItems[currentIndex] || '';
 
   return (
     <div
@@ -100,27 +128,41 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {randomItems.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white border-4 border-brown p-4 hover:bg-vintage/20 transition-colors cursor-pointer group"
-                onClick={() => {
-                  // Copy to clipboard
-                  navigator.clipboard.writeText(item);
-                  alert(`"${item}" in die Zwischenablage kopiert!`);
-                }}
-              >
-                <p className="text-brown font-medium group-hover:font-bold transition-all">
-                  {item}
-                </p>
-                <p className="text-xs text-brown/50 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Klicken zum Kopieren
-                </p>
-              </div>
-            ))}
+        {/* Content - Single Card with Navigation */}
+        <div className="flex-1 overflow-hidden p-6 flex flex-col items-center justify-center">
+          {/* Card */}
+          <div className="relative w-full max-w-2xl">
+            <div className="bg-white border-8 border-brown p-8 md:p-12 shadow-2xl min-h-[200px] flex items-center justify-center">
+              <p className="text-2xl md:text-4xl text-brown font-bold text-center leading-relaxed">
+                {currentItem}
+              </p>
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={handlePrevious}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 bg-brown text-cream w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center hover:bg-brown/90 transition-all hover:scale-110 border-4 border-brown shadow-xl"
+            >
+              <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              onClick={handleNext}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 bg-brown text-cream w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center hover:bg-brown/90 transition-all hover:scale-110 border-4 border-brown shadow-xl"
+            >
+              <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Counter */}
+          <div className="mt-6 text-center">
+            <p className="text-lg text-brown/70 font-medium">
+              {currentIndex + 1} / {shuffledItems.length}
+            </p>
           </div>
         </div>
 
@@ -128,10 +170,16 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
         <div className="bg-vintage/20 px-6 py-4 border-t-4 border-brown/20 flex-shrink-0">
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={handleRefresh}
+              onClick={handleCopy}
+              className="flex-1 bg-vintage text-brown px-6 py-3 text-lg font-bold hover:bg-vintage/80 transition-colors border-4 border-brown"
+            >
+              📋 Kopieren
+            </button>
+            <button
+              onClick={handleShuffle}
               className="flex-1 bg-brown text-cream px-6 py-3 text-lg font-bold hover:bg-brown/90 transition-colors border-4 border-brown"
             >
-              🎲 Neue Inspirationen laden
+              🎲 Mischen
             </button>
             <button
               onClick={handleClose}
