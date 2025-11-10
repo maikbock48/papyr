@@ -1,15 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import { getAppState } from '@/lib/storage';
 
 interface UploadFlowProps {
   imageData: string;
-  onSubmit: (goals: string) => void;
+  onSubmit: (goals: string, signWithInitials: boolean) => void;
   onCancel: () => void;
 }
 
 export default function UploadFlow({ imageData, onSubmit, onCancel }: UploadFlowProps) {
   const [goals, setGoals] = useState('');
+  const [signWithInitials, setSignWithInitials] = useState(false);
+  const appState = getAppState();
+
+  // Extract initials from userName
+  const initials = appState.userName
+    ? appState.userName
+        .split(' ')
+        .map(name => name.charAt(0).toUpperCase())
+        .join('')
+    : '';
 
   const handleSubmit = () => {
     if (!goals.trim()) {
@@ -23,7 +34,7 @@ export default function UploadFlow({ imageData, onSubmit, onCancel }: UploadFlow
       return;
     }
 
-    onSubmit(goals);
+    onSubmit(goals, signWithInitials);
   };
 
   return (
@@ -60,6 +71,23 @@ export default function UploadFlow({ imageData, onSubmit, onCancel }: UploadFlow
               Jede Zeile = ein Ziel. Maximal 2. Das ist der Fokus.
             </p>
           </div>
+
+          {/* Signature Checkbox */}
+          {initials && (
+            <div className="border-4 border-brown/30 p-6 bg-white">
+              <label className="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={signWithInitials}
+                  onChange={(e) => setSignWithInitials(e.target.checked)}
+                  className="w-6 h-6 border-4 border-brown accent-brown cursor-pointer"
+                />
+                <span className="ml-4 text-lg font-bold text-brown group-hover:text-brown/70 transition-colors">
+                  Mit meinen Initialen signieren ({initials})
+                </span>
+              </label>
+            </div>
+          )}
 
           {/* Actions */}
           <div className="space-y-4">

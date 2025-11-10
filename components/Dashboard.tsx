@@ -57,10 +57,10 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             {isWithinWolfHour() && (
               <div className="mb-8 animate-pulse">
                 <p className="text-sm md:text-base text-brown/60 italic">
-                  In diesem Moment bekennen sich
+                  Heute wurden bereits
                 </p>
                 <p className="text-3xl md:text-5xl font-bold text-brown mt-2">
-                  {globalPulse.toLocaleString()} <span className="text-2xl md:text-4xl">Seelen</span>
+                  {globalPulse.toLocaleString()} <span className="text-2xl md:text-4xl">Zettel abgegeben</span>
                 </p>
               </div>
             )}
@@ -147,11 +147,18 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentCommitments.map((commitment) => (
               <div key={commitment.id} className="border-8 border-brown bg-white p-4 shadow-xl hover:shadow-2xl transition-shadow">
-                <img
-                  src={commitment.imageData}
-                  alt={`Bekenntnis ${commitment.date}`}
-                  className="w-full aspect-square object-cover mb-3"
-                />
+                <div className="relative">
+                  <img
+                    src={commitment.imageData}
+                    alt={`Bekenntnis ${commitment.date}`}
+                    className="w-full aspect-square object-cover mb-3"
+                  />
+                  {commitment.signatureInitials && (
+                    <div className="absolute bottom-3 right-0 bg-brown/90 text-cream px-3 py-1 text-sm font-bold border-2 border-cream">
+                      {commitment.signatureInitials}
+                    </div>
+                  )}
+                </div>
                 <div className="text-sm text-brown/70 space-y-1">
                   <p className="font-bold">{commitment.date}</p>
                   <p className="whitespace-pre-line line-clamp-2">{commitment.goals}</p>

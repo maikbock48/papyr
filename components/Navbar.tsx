@@ -20,9 +20,13 @@ export default function Navbar({ currentView, onNavigate }: NavbarProps) {
           <div className="flex items-center">
             <button
               onClick={() => onNavigate('dashboard')}
-              className="text-2xl md:text-3xl font-bold text-cream tracking-wider hover:text-vintage transition-colors"
+              className="hover:opacity-80 transition-opacity"
             >
-              P A P Y R
+              <img
+                src="/assets/PAPYR.png"
+                alt="PAPYR Logo"
+                className="h-10 md:h-12 w-auto"
+              />
             </button>
           </div>
 
@@ -61,7 +65,7 @@ export default function Navbar({ currentView, onNavigate }: NavbarProps) {
           </div>
 
           {/* User Info & Streak */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-4">
             {appState.userName && (
               <div className="text-cream/80 text-sm">
                 {appState.userName}
@@ -70,13 +74,23 @@ export default function Navbar({ currentView, onNavigate }: NavbarProps) {
             <div className="bg-cream text-brown px-4 py-2 rounded-full font-bold text-xl border-2 border-cream">
               🔥 {appState.currentStreak}
             </div>
+            {appState.jokers > 0 && (
+              <div className="bg-vintage text-brown px-4 py-2 rounded-full font-bold text-xl border-2 border-vintage">
+                🃏 {appState.jokers}
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-2">
             <div className="bg-cream text-brown px-3 py-1 rounded-full font-bold text-sm">
               🔥 {appState.currentStreak}
             </div>
+            {appState.jokers > 0 && (
+              <div className="bg-vintage text-brown px-3 py-1 rounded-full font-bold text-sm">
+                🃏 {appState.jokers}
+              </div>
+            )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-cream hover:text-vintage transition-colors"

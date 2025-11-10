@@ -102,11 +102,18 @@ export default function Archive() {
                     </div>
                   ) : (
                     <>
-                      <img
-                        src={commitment.imageData}
-                        alt={`Bekenntnis ${commitment.date}`}
-                        className="w-full aspect-square object-cover mb-2"
-                      />
+                      <div className="relative">
+                        <img
+                          src={commitment.imageData}
+                          alt={`Bekenntnis ${commitment.date}`}
+                          className="w-full aspect-square object-cover mb-2"
+                        />
+                        {commitment.signatureInitials && (
+                          <div className="absolute bottom-2 right-2 bg-brown/90 text-cream px-2 py-1 text-xs font-bold border-2 border-cream">
+                            {commitment.signatureInitials}
+                          </div>
+                        )}
+                      </div>
                       <div className="text-xs text-brown/70 space-y-1">
                         <p className="font-bold">{commitment.date}</p>
                         <p className="whitespace-pre-line line-clamp-3">{commitment.goals}</p>
@@ -133,11 +140,18 @@ export default function Archive() {
                         </p>
                       </div>
                     ) : (
-                      <img
-                        src={commitment.imageData}
-                        alt={`Bekenntnis ${commitment.date}`}
-                        className="w-full aspect-square object-cover border-2 border-brown/20"
-                      />
+                      <div className="relative">
+                        <img
+                          src={commitment.imageData}
+                          alt={`Bekenntnis ${commitment.date}`}
+                          className="w-full aspect-square object-cover border-2 border-brown/20"
+                        />
+                        {commitment.signatureInitials && (
+                          <div className="absolute bottom-2 right-2 bg-brown/90 text-cream px-2 py-1 text-xs font-bold border-2 border-cream">
+                            {commitment.signatureInitials}
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                   <div className="flex-1">

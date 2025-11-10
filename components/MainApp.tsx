@@ -106,10 +106,10 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
     input.click();
   };
 
-  const handleUploadSubmit = (goals: string) => {
+  const handleUploadSubmit = (goals: string, signWithInitials: boolean) => {
     if (!currentImage) return;
 
-    addCommitment(currentImage, goals);
+    const result = addCommitment(currentImage, goals, signWithInitials);
     const newState = getAppState();
     setAppState(newState);
     setIsUploading(false);
@@ -117,6 +117,11 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
 
     // Increment global pulse
     setGlobalPulse(prev => prev + 1);
+
+    // Show feedback if Joker was used
+    if (result.jokersUsed > 0) {
+      alert('🃏 Ein Joker wurde verwendet! Dein Streak bleibt bestehen.');
+    }
 
     // Check if we should show daily question
     if (shouldShowDailyQuestion(newState.currentStreak)) {

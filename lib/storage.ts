@@ -5,6 +5,7 @@ export interface Commitment {
   goals: string;
   isDeveloping: boolean;
   timestamp: number;
+  signatureInitials: string | null;
 }
 
 export interface AppState {
@@ -16,6 +17,7 @@ export interface AppState {
   lastCommitmentDate: string | null;
   tenYearVision: string | null;
   hasCompletedSevenDayReflection: boolean;
+  jokers: number;
 }
 
 const STORAGE_KEY = 'papyr_state';
@@ -31,6 +33,7 @@ export const getAppState = (): AppState => {
       lastCommitmentDate: null,
       tenYearVision: null,
       hasCompletedSevenDayReflection: false,
+      jokers: 0,
     };
   }
 
@@ -45,6 +48,7 @@ export const getAppState = (): AppState => {
       lastCommitmentDate: null,
       tenYearVision: null,
       hasCompletedSevenDayReflection: false,
+      jokers: 0,
     };
   }
 
@@ -55,6 +59,7 @@ export const getAppState = (): AppState => {
     userName: parsed.userName || '',
     tenYearVision: parsed.tenYearVision || null,
     hasCompletedSevenDayReflection: parsed.hasCompletedSevenDayReflection || false,
+    jokers: parsed.jokers || 0,
   };
 };
 
@@ -64,25 +69,47 @@ export const saveAppState = (state: AppState) => {
   }
 };
 
-export const addCommitment = (imageData: string, goals: string) => {
+export const addCommitment = (imageData: string, goals: string, signWithInitials: boolean = false) => {
   const state = getAppState();
   const today = new Date().toISOString().split('T')[0];
 
-  // Calculate streak
+  // Calculate streak with Joker system
   let newStreak = state.currentStreak;
+  let jokersUsed = 0;
+
   if (state.lastCommitmentDate) {
     const lastDate = new Date(state.lastCommitmentDate);
     const currentDate = new Date(today);
     const diffDays = Math.floor((currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
 
     if (diffDays === 1) {
+      // Consecutive day - continue streak
       newStreak += 1;
+    } else if (diffDays === 2 && state.jokers > 0) {
+      // Missed exactly 1 day - use Joker automatically
+      jokersUsed = 1;
+      newStreak += 1; // Continue streak
     } else if (diffDays > 1) {
+      // Missed more than 1 day or no Joker available - reset streak
       newStreak = 1;
     }
   } else {
     newStreak = 1;
   }
+
+  // Award Joker every 7 days of streak
+  let newJokers = state.jokers - jokersUsed;
+  if (newStreak > 0 && newStreak % 7 === 0) {
+    newJokers += 1;
+  }
+
+  // Extract initials from userName
+  const initials = signWithInitials && state.userName
+    ? state.userName
+        .split(' ')
+        .map(name => name.charAt(0).toUpperCase())
+        .join('')
+    : null;
 
   const newCommitment: Commitment = {
     id: Date.now().toString(),
@@ -91,14 +118,16 @@ export const addCommitment = (imageData: string, goals: string) => {
     goals,
     isDeveloping: true,
     timestamp: Date.now(),
+    signatureInitials: initials,
   };
 
   state.commitments.unshift(newCommitment);
   state.currentStreak = newStreak;
+  state.jokers = newJokers;
   state.lastCommitmentDate = today;
 
   saveAppState(state);
-  return newCommitment;
+  return { commitment: newCommitment, jokersUsed };
 };
 
 export const markCommitmentDeveloped = (id: string) => {
