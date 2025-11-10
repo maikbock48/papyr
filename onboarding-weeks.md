@@ -43,6 +43,13 @@ Willst du deine Erfolgsgeschichte lückenlos dokumentieren? Für 0,99€ im Mona
 - Button 1: Werde Member (0,99€ / Monat)
 - Button 2: Nur der nächste Zettel zählt (Basis bleiben)
 
+Tag 8: Geschafft!
+Titel: Du hast den Dreh raus!
+Text: Wenn du denkst, dass Zettel schreiben mit PAPYR wirklich funktioniert, dann erzähle deinem besten Freund hiervon und mach die Welt so ein kleines bisschen besser. Danke!
+
+Schreibe deinen Zettel!
+
+
 Langzeit-Onboarding: Meilensteine (Die "Karriere")
 Tag 10: Zweistellig!
 

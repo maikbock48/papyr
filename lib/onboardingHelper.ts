@@ -7,7 +7,7 @@ export interface PopupData {
   buttons: Array<{ text: string; action: string }>;
 }
 
-const MILESTONE_DAYS = [1, 2, 3, 4, 5, 6, 7, 10, 14, 30, 50, 100, 180, 365];
+const MILESTONE_DAYS = [1, 2, 3, 4, 5, 6, 7, 8, 10, 14, 30, 50, 100, 180, 365];
 
 export function shouldShowPopup(): boolean {
   const state = getAppState();
@@ -39,6 +39,7 @@ export function getPopupForDay(): PopupData | null {
       case 5: return 'day5';
       case 6: return 'day6';
       case 7: return 'day7';
+      case 8: return 'day8';
       case 10: return 'day10';
       case 14: return hasPaid ? 'day14_member' : 'day14';
       case 30: return 'day30';

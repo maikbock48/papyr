@@ -51,6 +51,13 @@
         { "text": "Nur der nächste Zettel zählt (Basis bleiben)", "action": "close" }
       ]
     },
+    "day8": {
+      "title": "Du hast den Dreh raus!",
+      "text": "Wenn du denkst, dass Zettel schreiben mit PAPYR wirklich funktioniert, dann erzähle deinem besten Freund hiervon und mach die Welt so ein kleines bisschen besser. Danke!\n\nSchreibe deinen Zettel morgen!",
+      "buttons": [
+        { "text": "Auf geht's!", "action": "close" }
+      ]
+    },
     "day10": {
       "title": "Level 10 erreicht.",
       "text": "Die meisten geben nach 3 Tagen auf. Du nicht. Du gehörst jetzt offiziell zu den Top 10% unserer User. Du bist ein Macher.\n\nDir gehen manchmal die Ideen für morgen aus? Hol dir Inspiration in der Community!",
