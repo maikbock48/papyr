@@ -75,7 +75,7 @@
     },
     "day30": {
       "title": "EIN MONAT!",
-      "text": "Das ist eine Ansage. 30 Tage Streak. Du hast dir nicht nur ein Badge \"Monats-Meister\" verdient, du kannst jetzt \"Pro\" Mitglied werden!\n\n\"Pro\" zu sein gibt dir keine neuen Features außer folgenden:\n• jeden Monat einen Extra-Joker für einen verpatzten STREAK\n• dauerhaft 20% auf unsern Merch-Shop\n• Teile erreichte Zettel als Meilensteine mit der Community\n\nDu hast bereits alles, was du brauchst: Zettel, Stift, Disziplin. \"Pro\" ist ein Bekenntnis. Ein Statement. Jede Pro Mitgliedschaft unterstütz soziale Projekte wie dieses.\n\nAls Pro Member (4,99€/Monat):\n\nDu hast 30 Tage geschafft. Bist du bereit für dieses Bekenntnis?",
+      "text": "Das ist eine Ansage. 30 Tage Streak. Du hast dir nicht nur ein Badge \"Monats-Meister\" verdient, du kannst jetzt \"Pro\" Mitglied werden!\n\"Pro\" zu sein gibt dir keine neuen Features außer folgenden:\njeden Monat einen Extra-Joker für einen verpatzten STREAK\ndauerhaft 20% auf unsern Merch-Shop\nTeile erreichte Zettel als Meilensteine mit der Community\n\nDu hast bereits alles, was du brauchst: Zettel, Stift, Disziplin. \"Pro\" ist ein Bekenntnis. Ein Statement. Jede Pro Mitgliedschaft unterstütz soziale Projekte wie dieses.\n\nText (Fortsetzung): Als Pro Member (4,99€/Monat):\n\nText (Abschluss): Du hast 30 Tage geschafft. Bist du bereit für dieses Bekenntnis?",
       "buttons": [
         { "text": "Werde Pro Member (Statement setzen)", "action": "showProPaywall" },
         { "text": "Nein, ich bleibe Basic (Trotzdem stolz sein)", "action": "close" }

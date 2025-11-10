@@ -6,6 +6,7 @@ export interface Commitment {
   isDeveloping: boolean;
   timestamp: number;
   signatureInitials: string | null;
+  completed: boolean;
 }
 
 export interface NotificationSettings {
@@ -88,6 +89,10 @@ export const getAppState = (): AppState => {
     lastShownPopupDay: parsed.lastShownPopupDay || null,
     totalCommitments: parsed.totalCommitments || parsed.commitments?.length || 0,
     notificationSettings: parsed.notificationSettings || DEFAULT_NOTIFICATION_SETTINGS,
+    commitments: parsed.commitments?.map((c: any) => ({
+      ...c,
+      completed: c.completed ?? false,
+    })) || [],
   };
 };
 
@@ -147,6 +152,7 @@ export const addCommitment = (imageData: string, goals: string, signWithInitials
     isDeveloping: true,
     timestamp: Date.now(),
     signatureInitials: initials,
+    completed: false,
   };
 
   state.commitments.unshift(newCommitment);
@@ -214,4 +220,19 @@ export const completeSevenDayReflection = (vision: string, hasPaid: boolean) => 
   state.hasCompletedSevenDayReflection = true;
   state.hasPaid = hasPaid;
   saveAppState(state);
+};
+
+export const deleteCommitment = (id: string) => {
+  const state = getAppState();
+  state.commitments = state.commitments.filter(c => c.id !== id);
+  saveAppState(state);
+};
+
+export const markCommitmentCompleted = (id: string) => {
+  const state = getAppState();
+  const commitment = state.commitments.find(c => c.id === id);
+  if (commitment) {
+    commitment.completed = true;
+    saveAppState(state);
+  }
 };

@@ -12,7 +12,7 @@ type CategoryKey = keyof typeof inspirationData.categories;
 
 export default function InspirationBrowser({ isOpen, onClose }: InspirationBrowserProps) {
   const [show, setShow] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('gesundheit');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('verbindung');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shuffledItems, setShuffledItems] = useState<string[]>([]);
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { getAppState, isWithinWolfHour, canCommitToday, needsPaywall } from '@/lib/storage';
+import { getAppState, isWithinWolfHour, canCommitToday, needsPaywall, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
 
 interface DashboardProps {
   onUpload: () => void;
@@ -10,7 +10,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: DashboardProps) {
-  const appState = getAppState();
+  const [appState, setAppState] = useState(getAppState());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCameraClick = () => {
@@ -40,6 +40,26 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm('Möchtest du diesen Zettel wirklich löschen? Das kann nicht rückgängig gemacht werden!')) {
+      deleteCommitment(id);
+      setAppState(getAppState());
+    }
+  };
+
+  const handleMarkCompleted = (id: string) => {
+    markCommitmentCompleted(id);
+    setAppState(getAppState());
+  };
+
+  const canMarkAsCompleted = (commitmentDate: string) => {
+    const today = new Date().toISOString().split('T')[0];
+    const commitDate = new Date(commitmentDate);
+    const currentDate = new Date(today);
+    const diffDays = Math.floor((currentDate.getTime() - commitDate.getTime()) / (1000 * 60 * 60 * 24));
+    return diffDays >= 1; // Can mark as completed from the next day onwards
   };
 
   // Latest 3 commitments for preview
@@ -158,10 +178,33 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                       {commitment.signatureInitials}
                     </div>
                   )}
+                  {commitment.completed && (
+                    <div className="absolute top-3 left-3 bg-green-600 text-white px-3 py-1 text-sm font-bold border-2 border-white">
+                      ✓ Erledigt
+                    </div>
+                  )}
                 </div>
                 <div className="text-sm text-brown/70 space-y-1">
                   <p className="font-bold">{commitment.date}</p>
                   <p className="whitespace-pre-line line-clamp-2">{commitment.goals}</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="mt-3 space-y-2">
+                  {canMarkAsCompleted(commitment.date) && !commitment.completed && (
+                    <button
+                      onClick={() => handleMarkCompleted(commitment.id)}
+                      className="w-full bg-green-600 text-white px-3 py-2 text-sm font-bold hover:bg-green-700 transition-colors border-2 border-green-600"
+                    >
+                      ✓ Als erledigt markieren
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(commitment.id)}
+                    className="w-full bg-red-600 text-white px-3 py-2 text-sm font-bold hover:bg-red-700 transition-colors border-2 border-red-600"
+                  >
+                    🗑 Löschen
+                  </button>
                 </div>
               </div>
             ))}

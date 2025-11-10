@@ -1,12 +1,32 @@
 'use client';
 
 import { useState } from 'react';
-import { getAppState } from '@/lib/storage';
+import { getAppState, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
 
 export default function Archive() {
-  const appState = getAppState();
+  const [appState, setAppState] = useState(getAppState());
   const [filter, setFilter] = useState<'all' | 'developed'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  const handleDelete = (id: string) => {
+    if (confirm('Möchtest du diesen Zettel wirklich löschen? Das kann nicht rückgängig gemacht werden!')) {
+      deleteCommitment(id);
+      setAppState(getAppState());
+    }
+  };
+
+  const handleMarkCompleted = (id: string) => {
+    markCommitmentCompleted(id);
+    setAppState(getAppState());
+  };
+
+  const canMarkAsCompleted = (commitmentDate: string) => {
+    const today = new Date().toISOString().split('T')[0];
+    const commitDate = new Date(commitmentDate);
+    const currentDate = new Date(today);
+    const diffDays = Math.floor((currentDate.getTime() - commitDate.getTime()) / (1000 * 60 * 60 * 24));
+    return diffDays >= 1; // Can mark as completed from the next day onwards
+  };
 
   const commitments = filter === 'all'
     ? appState.commitments
@@ -113,10 +133,33 @@ export default function Archive() {
                             {commitment.signatureInitials}
                           </div>
                         )}
+                        {commitment.completed && (
+                          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 text-xs font-bold border-2 border-white">
+                            ✓ Erledigt
+                          </div>
+                        )}
                       </div>
-                      <div className="text-xs text-brown/70 space-y-1">
+                      <div className="text-xs text-brown/70 space-y-1 mb-2">
                         <p className="font-bold">{commitment.date}</p>
                         <p className="whitespace-pre-line line-clamp-3">{commitment.goals}</p>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="space-y-1">
+                        {canMarkAsCompleted(commitment.date) && !commitment.completed && (
+                          <button
+                            onClick={() => handleMarkCompleted(commitment.id)}
+                            className="w-full bg-green-600 text-white px-2 py-1 text-xs font-bold hover:bg-green-700 transition-colors border-2 border-green-600"
+                          >
+                            ✓ Erledigt
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(commitment.id)}
+                          className="w-full bg-red-600 text-white px-2 py-1 text-xs font-bold hover:bg-red-700 transition-colors border-2 border-red-600"
+                        >
+                          🗑
+                        </button>
                       </div>
                     </>
                   )}
@@ -151,6 +194,11 @@ export default function Archive() {
                             {commitment.signatureInitials}
                           </div>
                         )}
+                        {commitment.completed && (
+                          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 text-xs font-bold border-2 border-white">
+                            ✓ Erledigt
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -159,10 +207,30 @@ export default function Archive() {
                       <span className="text-sm font-bold text-brown/60">Datum:</span>
                       <span className="ml-2 text-lg font-bold text-brown">{commitment.date}</span>
                     </div>
-                    <div>
+                    <div className="mb-4">
                       <span className="text-sm font-bold text-brown/60 block mb-2">Ziele:</span>
                       <p className="text-lg text-brown whitespace-pre-line">{commitment.goals}</p>
                     </div>
+
+                    {/* Action Buttons */}
+                    {!commitment.isDeveloping && (
+                      <div className="flex gap-2">
+                        {canMarkAsCompleted(commitment.date) && !commitment.completed && (
+                          <button
+                            onClick={() => handleMarkCompleted(commitment.id)}
+                            className="bg-green-600 text-white px-4 py-2 text-sm font-bold hover:bg-green-700 transition-colors border-2 border-green-600"
+                          >
+                            ✓ Als erledigt markieren
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(commitment.id)}
+                          className="bg-red-600 text-white px-4 py-2 text-sm font-bold hover:bg-red-700 transition-colors border-2 border-red-600"
+                        >
+                          🗑 Löschen
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
