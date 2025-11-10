@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { getAppState } from '@/lib/storage';
 
 interface NavbarProps {
-  currentView: 'dashboard' | 'archive' | 'settings';
-  onNavigate: (view: 'dashboard' | 'archive' | 'settings') => void;
+  currentView: 'dashboard' | 'archive' | 'settings' | 'shop';
+  onNavigate: (view: 'dashboard' | 'archive' | 'settings' | 'shop') => void;
   onOpenInspiration: () => void;
 }
 
@@ -16,9 +16,9 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
   return (
     <nav className="bg-brown border-b-4 border-brown shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center">
+        <div className="flex justify-between md:justify-between items-center h-16">
+          {/* Logo - Centered on mobile */}
+          <div className="flex items-center md:flex-initial flex-1 md:flex-none justify-center md:justify-start">
             <button
               onClick={() => onNavigate('dashboard')}
               className="hover:opacity-80 transition-opacity"
@@ -26,7 +26,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
               <img
                 src="/assets/PAPYR.png"
                 alt="PAPYR Logo"
-                className="h-10 md:h-12 w-auto"
+                className="h-14 md:h-12 w-auto"
               />
             </button>
           </div>
@@ -60,6 +60,16 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
               🎲 Inspiration
             </button>
             <button
+              onClick={() => onNavigate('shop')}
+              className={`text-lg font-medium transition-colors ${
+                currentView === 'shop'
+                  ? 'text-cream border-b-2 border-cream'
+                  : 'text-cream/70 hover:text-cream'
+              }`}
+            >
+              🛒 Shop
+            </button>
+            <button
               onClick={() => onNavigate('settings')}
               className={`text-lg font-medium transition-colors ${
                 currentView === 'settings'
@@ -71,16 +81,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
             </button>
           </div>
 
-          {/* User Info & Streak */}
+          {/* User Info & Jokers */}
           <div className="hidden md:flex items-center space-x-4">
             {appState.userName && (
               <div className="text-cream/80 text-sm">
                 {appState.userName}
               </div>
             )}
-            <div className="bg-cream text-brown px-4 py-2 rounded-full font-bold text-xl border-2 border-cream">
-              🔥 {appState.currentStreak}
-            </div>
             {appState.jokers > 0 && (
               <div className="bg-vintage text-brown px-4 py-2 rounded-full font-bold text-xl border-2 border-vintage">
                 🃏 {appState.jokers}
@@ -89,10 +96,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <div className="bg-cream text-brown px-3 py-1 rounded-full font-bold text-sm">
-              🔥 {appState.currentStreak}
-            </div>
+          <div className="md:hidden flex items-center space-x-2 absolute right-4">
             {appState.jokers > 0 && (
               <div className="bg-vintage text-brown px-3 py-1 rounded-full font-bold text-sm">
                 🃏 {appState.jokers}
@@ -172,6 +176,19 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration }: N
               className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-cream hover:bg-brown/50"
             >
               🎲 Inspiration
+            </button>
+            <button
+              onClick={() => {
+                onNavigate('shop');
+                setMobileMenuOpen(false);
+              }}
+              className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                currentView === 'shop'
+                  ? 'bg-cream text-brown'
+                  : 'text-cream hover:bg-brown/50'
+              }`}
+            >
+              🛒 Shop
             </button>
             <button
               onClick={() => {

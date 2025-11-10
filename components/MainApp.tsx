@@ -15,6 +15,7 @@ import Navbar from './Navbar';
 import Dashboard from './Dashboard';
 import Archive from './Archive';
 import Settings from './Settings';
+import Shop from './Shop';
 import UploadFlow from './UploadFlow';
 import DailyQuestion from './DailyQuestion';
 import SevenDayReflection from './SevenDayReflection';
@@ -26,7 +27,7 @@ interface MainAppProps {
   onSevenDayReflection: () => void;
 }
 
-type AppView = 'dashboard' | 'archive' | 'settings';
+type AppView = 'dashboard' | 'archive' | 'settings' | 'shop';
 
 export default function MainApp({ onPaywallRequired, onSevenDayReflection }: MainAppProps) {
   const [appState, setAppState] = useState(getAppState());
@@ -170,8 +171,7 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
         setCurrentView('archive');
         break;
       case 'openShop':
-        // TODO: Implement shop link
-        window.open('https://papyr.shop', '_blank');
+        setCurrentView('shop');
         break;
       default:
         break;
@@ -247,6 +247,8 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
       {currentView === 'archive' && <Archive />}
 
       {currentView === 'settings' && <Settings />}
+
+      {currentView === 'shop' && <Shop />}
 
       {/* Onboarding Popup */}
       {showOnboardingPopup && currentPopupData && (

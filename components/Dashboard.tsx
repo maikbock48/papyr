@@ -79,11 +79,26 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                 <p className="text-sm md:text-base text-brown/60 italic">
                   Heute wurden bereits
                 </p>
-                <p className="text-3xl md:text-5xl font-bold text-brown mt-2">
-                  {globalPulse.toLocaleString()} <span className="text-2xl md:text-4xl">Zettel abgegeben</span>
+                <p className="text-5xl md:text-6xl font-bold text-brown mt-2">
+                  {globalPulse.toLocaleString()}
+                </p>
+                <p className="text-xl md:text-2xl text-brown/70 mt-2">
+                  Zettel abgegeben
                 </p>
               </div>
             )}
+
+            {/* Streak Display */}
+            <div className="mb-8">
+              <p className="text-sm md:text-base text-brown/60 italic">
+                So viele Tage hast du durchgezogen
+              </p>
+              <div className="flex justify-center mt-3">
+                <div className="bg-cream text-brown px-8 py-4 rounded-full font-bold text-4xl md:text-5xl border-4 border-brown shadow-xl">
+                  🔥 {appState.currentStreak}
+                </div>
+              </div>
+            </div>
 
             {/* Paper & Pen Illustration Placeholder */}
             <div className="max-w-md mx-auto mb-8">
