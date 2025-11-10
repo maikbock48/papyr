@@ -1,0 +1,409 @@
+Kategorie 1: Verbindung
+
+- Einer Person ein ehrliches Kompliment machen.
+- Bei den Eltern/Großeltern anrufen, nur um "Hallo" zu sagen.
+- Einen Kaffee für einen Kollegen mitbringen.
+- Dem Busfahrer/der Kassiererin bewusst "Danke" sagen.
+- Einem Freund eine "Erinnerst du dich an..."-Nachricht schicken.
+- Für den Partner/Mitbewohner kochen.
+- Eine Postkarte schreiben und abschicken.
+- Einem Fremden mit etwas helfen (Tür aufhalten, etwas aufheben).
+- Meinem Haustier ein Lied vorsingen.
+- Jemandem 5 Minuten zuhören, ohne aufs Handy zu schauen.
+- Einem Freund ein lustiges Meme schicken.
+- Einem lokalen Geschäft eine gute Online-Bewertung hinterlassen.
+- Einem Obdachlosen eine Kleinigkeit zu essen kaufen.
+- Ein Kleidungsstück spenden.
+- Einen alten Freund fragen, wie es ihm wirklich geht.
+- "Guten Morgen" zu 5 fremden Menschen sagen.
+- Einem Kollegen/Kommilitonen Hilfe bei einer Kleinigkeit anbieten.
+- Einem Familienmitglied sagen, dass man es liebhat.
+- Einem Nachbarn "Hallo" im Treppenhaus sagen.
+- Einem Kind winken.
+- Meinen Partner nach seinem Tag fragen und aktiv zuhören.
+- Einem Freund ein Buch/Lied empfehlen.
+- Ein Geheimnis (ein positives) für jemanden bewahren.
+- Jemandem einen Gefallen tun, ohne eine Gegenleistung zu erwarten.
+- Meinen Pflanzen beim Gießen "gut zureden".
+- Ein Lächeln erwidern.
+- Mich bei jemandem für eine Kleinigkeit bedanken.
+- Einem Straßenmusiker etwas Kleingeld geben.
+- Einen "Nimm-dir-ein-Kompliment"-Zettel aufhängen.
+- Jemandem die Vorfahrt lassen (im Verkehr).
+- Einem Freund ein Foto von "unserem Ort" schicken.
+- Den Müll vom Nachbarn mit rausbringen.
+- Einem Freund verzeihen.
+- Einen Witz erzählen.
+- Jemandem ein Getränk ausgeben.
+- Meinen Partner umarmen (mindestens 10 Sekunden).
+- Jemandem sagen, dass man an ihn/sie gedacht hat.
+- Einem Freund beim Tragen helfen.
+- Eine positive Nachricht in einer Gruppen-Chat posten.
+- Jemandem die Tür aufhalten.
+- Einen Kuchen backen und ihn teilen.
+- Einem Freund beim Umzug helfen (oder zumindest anbieten).
+- Jemandem sagen, was man an ihm/ihr schätzt.
+- Einen Babysitter-Abend für Freunde anbieten.
+- Ein positives Gerücht über jemanden verbreiten.
+- Meinen Schreibtisch im Büro auch für den Kollegen sauber machen.
+- Jemandem beim Einparken helfen.
+- Ein "Danke"-Trinkgeld geben.
+- Einem Freund ein Mittagessen mitbringen.
+- Jemandem sagen: "Ich bin stolz auf dich."
+- Einem (ehemaligen) Lehrer oder Mentor eine Dankes-E-Mail schreiben.
+- Ein altes Foto von einem Freund raussuchen und es ihm/ihr schicken.
+- Meinen Partner nach seinem/ihrem größten Ziel für das Jahr fragen.
+- Meinem Haustier einen neuen (einfachen) Trick beibringen.
+- Einen "Gutschein" für eine Gefälligkeit (z.B. Babysitten) an einen Freund verschenken.
+- Jemandem im Supermarkt an der Kasse vorlassen.
+- Ein Gespräch mit einem Nachbarn über den Gartenzaun beginnen.
+- Einem Freund/Familienmitglied ein kleines Paket mit Snacks schicken.
+- Aktiv Hilfe für eine spezifische Aufgabe anbieten ("Soll ich morgen dein Paket annehmen?").
+- Einem Kind eine Geschichte vorlesen.
+- Einem Online-Creator (den ich mag) einen netten, ausführlichen Kommentar hinterlassen.
+- Meinen Partner 5 Minuten massieren (Schultern/Nacken).
+- Einen "schlechten Witz" (Dad-Joke) an 3 Leute schicken.
+- Jemandem beim Tragen des Einkaufs zum Auto helfen.
+- Einen "Care-Paket"-Entwurf für einen kranken Freund planen.
+- Einem Fremden ein Lächeln schenken (und Augenkontakt halten).
+- Einem Freund/Kollegen einen (Fach-)Artikel empfehlen, der ihm/ihr helfen könnte.
+- Mich für einen kleinen Fehler entschuldigen, auch wenn er unwichtig erscheint.
+- Jemandem meine Kopfhörer anbieten (um einen Song zu teilen).
+- Einem Freund einen Restaurant-Tipp geben.
+- Meiner Familie ein altes Rezept von früher kochen.
+- Meinen Partner fragen: "Was war heute das Beste an deinem Tag?"
+- Einem Kollegen für seine Arbeit in einem Meeting Anerkennung zollen.
+- Jemandem beim Ausparken zuwinken/helfen.
+- Einem Tier im Tierheim eine kleine Spende zukommen lassen (online).
+- Einem Freund ein "Gute Nacht" oder "Guten Morgen"-GIF schicken.
+- Eine gemeinsame "Bucket List" (nur 3 Punkte) mit meinem Partner schreiben.
+- Einem Freund ein Buch schicken, das ich ausgelesen habe.
+- Einen "Kaffee-Aufgeschoben" (Caffè sospeso) für einen Fremden bezahlen.
+- Meinen Arbeitskollegen (im Home-Office) "Hallo" im Chat schreiben, ohne Grund.
+- Jemandem meine Hilfe bei einem Computerproblem anbieten.
+- Einem Kind (Neffe/Nichte) eine Sprachnachricht mit einer lustigen Geschichte schicken.
+- Jemandem sagen, dass er/sie mich an etwas Positives erinnert hat.
+- Eine positive Erinnerung über eine Person mit einer dritten Person teilen.
+- Meinen Sitzplatz in Bus oder Bahn anbieten.
+- Einen Freund fragen, ob er einen Rat braucht (ohne ihn aufzudrängen).
+- Einem Freund eine Playlist mit Liedern erstellen, die ihn/sie aufmuntern.
+- Jemandem beim Tragen des Kinderwagens die Treppe hoch/runter helfen.
+- Eine Fahrgemeinschaft anbieten.
+- Einem Freund eine Sprachnachricht statt einer Textnachricht schicken.
+- Jemandem ein Kompliment für seinen/ihren Charakter machen (nicht das Aussehen).
+- Meinen Kindern/Partner einen Zettel mit "Ich liebe dich" in die Tasche stecken.
+- Meinen Müll (und ein Teil daneben) auf der Straße aufheben.
+- Jemandem zuhören, ohne Ratschläge zu geben.
+- Eine Sammelbestellung (Essen) im Büro organisieren.
+- Einem Freund ein Foto von einem "Insider-Witz" schicken.
+- Jemandem (online) eine Frage zu seinem Hobby stellen.
+- Einem neuen Nachbarn Brot und Salz (oder nur ein "Hallo") schenken.
+- Einem Freund zum "Halb-Geburtstag" gratulieren.
+- Jemandem sagen: "Du hast mir heute den Tag gerettet."
+
+---
+
+### Kategorie 2: Klarheit
+
+- Das Bett machen.
+- Den Schreibtisch komplett leer räumen und abwischen.
+- 10 Newsletter abbestellen.
+- Die "Junk-Schublade" aufräumen.
+- 5 Apps vom Handy löschen, die ich nicht nutze.
+- Den Müll rausbringen.
+- Eine Rechnung sofort bezahlen.
+- Den Bildschirmhintergrund (Handy/PC) aufräumen.
+- Einen Termin machen, den ich aufschiebe (Arzt, Werkstatt).
+- 10 Minuten ohne Musik/Podcast spazieren gehen.
+- Kleidung für morgen rauslegen.
+- Den Kühlschrank auf abgelaufene Lebensmittel prüfen.
+- Eine "Worry-List" schreiben (alles aufschreiben, was stresst).
+- 5 Minuten still dasitzen und nur atmen.
+- Socken sortieren und kaputte wegwerfen.
+- Die Spülmaschine ausräumen (oder einräumen).
+- Eine To-Do-Liste für übermorgen machen.
+- E-Mail-Posteingang "Inbox Zero" (oder 20 E-Mails archivieren).
+- Das Portemonnaie aufräumen.
+- Eine Sache reparieren (Knopf annähen, Stuhlbein leimen).
+- Den Desktop-Hintergrund am PC ändern.
+- 3 Dinge aufschreiben, für die ich dankbar bin.
+- Einem digitalen Dienst kündigen, den ich nicht nutze.
+- Das Auto von innen aufräumen.
+- 10 Minuten früher als sonst aufstehen.
+- Ein unangenehmes Telefonat führen.
+- Den Medizinschrank sortieren.
+- 5 Social-Media-Accounts entfolgen, die mir nichts geben.
+- Den Rucksack/die Handtasche komplett ausleeren und neu packen.
+- Alte Zeitschriften/Zeitungen entsorgen.
+- Die Mailbox (Anrufbeantworter) abhören und löschen.
+- Den Download-Ordner am PC löschen.
+- Einen Stapel Papierkram sortieren.
+- Eine "Was ich NICHT mehr mache"-Liste erstellen.
+- Einen Wocheneinkaufsplan schreiben.
+- Das Handy 1 Stunde vor dem Schlafen weglegen.
+- Ein Fenster putzen.
+- Den Kalender für die nächste Woche prüfen.
+- Alte Screenshots vom Handy löschen.
+- Ein Buch zu Ende lesen, das ich angefangen habe.
+- Einen Spar-Dauerauftrag einrichten (auch für 5€).
+- Das Haustier kämmen.
+- Meinen Schlüsselbund aussortieren.
+- Den Flur fegen.
+- Alle Stifte am Schreibtisch testen und kaputte wegwerfen.
+- Ein Backup vom Handy/PC machen.
+- Den Arbeitsweg planen (wenn es Stress gibt).
+- Ein "Nein" zu einer Anfrage sagen.
+- Alle offenen Tabs im Browser schließen.
+- 10 Minuten Tagebuch schreiben.
+- 100 alte Fotos vom Handy löschen (oder in einen Ordner verschieben).
+- Einen (digitalen) Ordner auf dem Computer umbenennen/aufräumen.
+- Den Spam-Ordner leeren und einen Absender blockieren.
+- Ein wichtiges Passwort aktualisieren.
+- Den Kleiderschrank: 3 Teile aussortieren, die ich spende.
+- Alle Tassen in der Wohnung sammeln und in die Spülmaschine stellen.
+- Das Auto durch die Waschanlage fahren.
+- Einen "Notfall-Kontakt" im Handy eintragen.
+- Das Erste-Hilfe-Set im Auto/Haus auf Vollständigkeit prüfen.
+- Eine "Wunschliste" (z.B. Amazon) aufräumen.
+- Das Fahrrad aufpumpen und die Kette ölen.
+- Die Kontakte im Handy aufräumen (5 Kontakte löschen/aktualisieren).
+- Den Inhalt des Gefrierschranks auflisten (damit nichts vergessen wird).
+- Die Gewürze im Regal sortieren.
+- Eine "Was wäre wenn..."-Notfall-Liste machen (z.B. Schlüssel verloren).
+- Den Wasserkocher entkalken.
+- Eine Versicherungspolice auf ihren Nutzen prüfen.
+- Den "Watch Later"-Ordner auf YouTube aufräumen (5 Videos löschen).
+- Batterien im Haus sammeln und zum Recycling bringen.
+- Eine App löschen, die mich stresst (z.B. News oder Social Media).
+- Den Staubsaugerbeutel wechseln/leeren.
+- Eine "digitale Erbschaft" (Passwörter) für den Notfall vorbereiten (nur anfangen).
+- Alte Medikamente aussortieren und zur Apotheke bringen.
+- Den Briefkasten von alter Werbung befreien.
+- 10 Minuten lang E-Mails "abmelden" (Unsubscribe).
+- Ein "Projekt" (z.B. Urlaub) für eine Stunde auf "Pause" setzen.
+- Eine Mahlzeit für die Woche vorkochen (Meal-Prep).
+- Den Schreibtischstuhl auf die richtige Ergonomie einstellen.
+- Eine Glühbirne wechseln.
+- Ein "Problem" auf einen Zettel schreiben und ihn in eine Box legen.
+- Alle Abonnements (Streaming, Software) in einer Liste sammeln.
+- Den Kühlschrank (nur ein Fach) auswischen.
+- Die Autoscheiben von innen putzen.
+- Eine "Wann habe ich zuletzt..."-Liste führen (z.B. ...Zahnarzt, ...Ölwechsel).
+- Den Arbeitsweg für morgen auf Störungen prüfen.
+- Das Handy-Display desinfizieren.
+- Einen "Keine Termine"-Block im Kalender für nächste Woche eintragen.
+- Den Anrufbeantworter neu besprechen.
+- Eine E-Mail schreiben, die ich seit einer Woche aufschiebe.
+- Die "Favoriten" im Browser aufräumen (5 Links löschen).
+- Einen Raum für 10 Minuten lüften (Stoßlüften).
+- Eine Liste mit 3 Dingen machen, die ich nicht mehr kaufen will.
+- Meine "Ziele für dieses Jahr" ansehen und eines streichen (das nicht mehr passt).
+- Eine Spendenquittung (für die Steuer) abheften.
+- Den Klingelton/Weckton des Handys ändern.
+- Einen "Aufschiebe-Aufgabe" in 5 kleine Schritte zerlegen.
+- Den Drucker/Scanner entstauben.
+- Die Schuhe im Flur ordentlich hinstellen.
+- Ein "Wenn-Dann"-Plan für eine schlechte Angewohnheit machen.
+- Eine Sache wegwerfen, die ich seit einem Jahr nicht benutzt habe.
+
+---
+
+### Kategorie 3: Neugier
+
+- Drei neue Wörter in einer Fremdsprache lernen.
+- Einen neuen Weg zur Arbeit/Uni nehmen.
+- Einen Wikipedia-Artikel von Anfang bis Ende lesen.
+- Eine 10-minütige Doku auf YouTube ansehen.
+- Ein Gericht kochen, das ich noch nie probiert habe.
+- "Hallo" in 5 verschiedenen Sprachen lernen.
+- Ein Buch aufschlagen und die erste Seite lesen.
+- Einen neuen Podcast für 15 Minuten anhören.
+- Eine Musik-Playlist eines Genres hören, das ich nicht kenne.
+- Den Namen eines Vogels/einer Pflanze in der Nachbarschaft lernen.
+- Einen 5-minütigen "How-to"-Skill lernen (z.B. Zwiebeln schneiden).
+- Ein Geschäft in meiner Straße betreten, in dem ich noch nie war.
+- Ein Lebensmittel probieren, das ich nicht kenne.
+- Die Geschichte meines Straßennamens googeln.
+- Einen (neuen) Yoga-Move für 1 Minute ausprobieren.
+- Ein Gedicht lesen.
+- Versuchen, mit der nicht-dominanten Hand zu schreiben.
+- Ein Museum (oder eine Galerie) online besuchen.
+- Einen neuen Tee oder Kaffee probieren.
+- Ein klassisches Musikstück bewusst anhören.
+- Ein "Life-Hack"-Video ansehen und es ausprobieren.
+- Den Sternenhimmel für 5 Minuten betrachten.
+- Ein Rätsel lösen (Sudoku, Kreuzworträtsel).
+- Einen Knoten lernen (z.B. Palstek).
+- Einen Artikel über ein Land lesen, in dem ich nie war.
+- Ein Instrument in die Hand nehmen (wenn vorhanden).
+- Einen TED-Talk zu einem unbekannten Thema ansehen.
+- Versuchen, etwas (einen Apfel, eine Tasse) zu zeichnen.
+- Ein Wort nachschlagen, das ich oft höre, aber nicht verstehe.
+- Ein neues (einfaches) Kartenspiel lernen.
+- Die Nachrichten eines anderen Landes lesen.
+- Einen neuen Geruch ausprobieren (Parfüm, Gewürz).
+- Einen "Code-along" (10 Min.) für Programmieren probieren.
+- Einen Baum umarmen (und schauen, wie es sich anfühlt).
+- Die Biografie einer Person lesen, die ich nicht kenne.
+- Ein neues Gewürz beim Kochen verwenden.
+- Einen "Mocktail" (alkoholfreien Cocktail) mixen.
+- Eine App herunterladen, die eine neue Fähigkeit lehrt.
+- 10 Minuten in einer Buchhandlung stöbern.
+- Die "Auf gut Glück"-Funktion bei Google nutzen.
+- Einen Film mit Untertiteln in einer Fremdsprache ansehen.
+- Versuchen, 2 Bälle zu jonglieren.
+- Einen neuen Park in der Stadt besuchen.
+- Ein Online-Quiz zu einem Sachthema machen.
+- Einen Zaubertrick lernen.
+- Einen Spaziergang machen und nur auf "runde Dinge" achten.
+- Ein Brettspiel-Café besuchen.
+- Ein "DIY" (Do-it-yourself)-Projekt anfangen (z.B. Origami).
+- Ein Gespräch mit jemandem beginnen, der einen anderen Job hat.
+- Die Geschichte hinter meinem Lieblingslied recherchieren.
+- Die "Top 10" Charts in einem fremden Land (z.B. Japan) auf Spotify anhören.
+- Einen (für mich) neuen Stadtteil zu Fuß erkunden (oder per Google Maps).
+- Die Bedeutung meines eigenen Namens (Vor- und Nachname) recherchieren.
+- Einen Film in einer Sprache ansehen, die ich nicht verstehe (ohne Untertitel, 10 Min.).
+- Einen "Street Art" Spaziergang machen (und 3 Werke fotografieren).
+- Herausfinden, wie ein Alltagsgegenstand (z.B. Reißverschluss) funktioniert.
+- Eine neue Tastenkombination (Shortcut) am PC lernen und 3x anwenden.
+- Ein Rezept nur anhand eines Bildes (ohne Anleitung) versuchen nachzukochen.
+- Einen (kostenlosen) Online-Persönlichkeitstest machen (z.B. 16 Personalities).
+- Auf Google Maps (Street View) an einen zufälligen Ort der Welt springen.
+- Ein "unbekanntes" Gemüse im Supermarkt kaufen und probieren.
+- Einem Tutorial für einen (einfachen) Kartentrick folgen.
+- Die "Was ist heute passiert" Seite auf Wikipedia lesen (für das morgige Datum).
+- Ein neues soziales Medium (z.B. BeReal, Mastodon) für 15 Minuten testen.
+- Einen Film-Klassiker ansehen, den "jeder" kennt (ich aber nicht).
+- Die 3 größten Nachrichten einer Lokalzeitung einer fremden Stadt lesen.
+- Versuchen, meinen Namen in Gebärdensprache (Fingeralphabet) zu buchstabieren.
+- Ein "Deep Dive" in ein Nischenthema machen (z.B. "Tiefseefische").
+- Ein Wort lernen, das es nur in einer anderen Sprache gibt (z.B. "Tsundoku").
+- Ein "Open-Source"-Programm (z.B. GIMP, Blender) herunterladen und öffnen.
+- Einen Online-Kurs (z.B. Coursera) für 15 Minuten "reinschnuppern".
+- Die Regeln einer Sportart lernen, die ich nicht verstehe (z.B. Cricket).
+- Ein "What's in my bag"-Video einer Person ansehen, die einen anderen Beruf hat.
+- Einen (neuen) Food-Blog lesen.
+- Einen Spaziergang machen und nur auf "Geräusche" achten.
+- Einen neuen "Filter" auf Instagram/TikTok ausprobieren.
+- Die Geschichte des Hauses/der Wohnung recherchieren, in dem/der ich lebe.
+- Ein Buch aus einem Genre lesen, das ich sonst meide (z.B. Sci-Fi, Romanze).
+- Einen neuen (einfachen) Cocktail oder Mocktail mixen.
+- Ein "unmögliches" Rätsel (z.B. 9-Punkte-Problem) versuchen zu lösen.
+- Einen virtuellen Rundgang durch ein berühmtes Museum machen.
+- Eine App zur Sternenbeobachtung herunterladen und 3 Sternbilder finden.
+- Einen "How-to"-Artikel über eine Überlebenstechnik lesen (z.B. Feuer machen).
+- Die Speisekarte eines exotischen Restaurants online lesen.
+- Ein Interview mit einer inspirierenden Person (z.B. Astronaut) ansehen.
+- Versuchen, 1 Minute lang zu meditieren (mit einer App).
+- Einen "Speedrun" eines alten Videospiels auf YouTube ansehen.
+- Einen neuen Weg zum Supermarkt finden.
+- Die Flaggen von 5 (neuen) Ländern lernen.
+- Einem Freund zuhören, wie er sein Hobby erklärt.
+- Einen Blog-Artikel über "Biohacking" (z.B. Kältedusche) lesen.
+- Einen neuen Joghurt/Käse/Wurst probieren.
+- Versuchen, ein einfaches Objekt (z.B. eine Tasse) "blind" zu zeichnen.
+- Eine "Tiny Desk"-Konzert auf YouTube ansehen.
+- Die Etymologie (Wortherkunft) eines alltäglichen Wortes (z.B. "Fenster") nachschlagen.
+- Einen Blumenladen besuchen und an 3 verschiedenen Blumen riechen.
+- Einen neuen (einfachen) "Dance-Move" (z.B. Moonwalk) lernen.
+- Einem Tutorial zum Thema "Körpersprache lesen" folgen (10 Min.).
+- Ein "Point-and-Click"-Adventure (Spiel) anfangen.
+- Herausfinden, was der "lokale Mythos" oder die "Sage" meiner Stadt ist.
+
+---
+
+### Kategorie 4: Spiel & Körper
+
+- Einen Song laut aufdrehen und 3 Minuten tanzen.
+- Ein 10-Minuten-Nickerchen (Power-Nap) machen.
+- Einen Spaziergang machen, ohne Ziel.
+- Ein Gericht kochen, ohne Rezept (nur nach Gefühl).
+- Ein Bad nehmen (oder eine extra lange Dusche).
+- Einen Papierflieger bauen und fliegen lassen.
+- 15 Minuten in die Sonne setzen.
+- Etwas malen oder kritzeln (ohne Ziel).
+- Einen Witz googeln und ihn jemandem erzählen.
+- Ein altes Fotoalbum durchblättern.
+- Eine Decke und Kissen holen und eine "Höhle" bauen.
+- Barfuß laufen (drinnen oder draußen).
+- Ein Eis essen.
+- Einen Lieblingsfilm (oder eine Folge) von früher ansehen.
+- 5 Minuten lang dehnen (Stretching).
+- Auf einer Schaukel schaukeln.
+- Ein Kompliment machen – an mich selbst im Spiegel.
+- 10 Liegestütze (oder Kniebeugen) machen.
+- Laut im Auto (oder unter der Dusche) mitsingen.
+- Ein Videospiel für 20 Minuten spielen.
+- Einen Abhang/Hügel hinunterrennen.
+- Ein Nickerchen in der Hängematte machen.
+- Einen Purzelbaum schlagen (oder es versuchen).
+- Blätter (oder Steine) sammeln.
+- 10 Minuten auf dem Boden liegen und Musik hören.
+- Eine Kerze anzünden und ihr 1 Minute zusehen.
+- Eine Tasse Tee/Kaffee bewusst genießen (ohne Ablenkung).
+- Mit Lego (oder Bauklötzen) etwas bauen.
+- Seifenblasen machen.
+- Einen "Fail-Video"-Zusammenschnitt ansehen und lachen.
+- Einem Tier beim Schlafen zusehen.
+- Meinen Lieblingssnack essen.
+- Einen Baumstamm balancieren.
+- Einen neuen Witz ausdenken.
+- 1G Minute lang auf einem Bein stehen.
+- Eine "To-Don't"-Liste schreiben (z.B. "nicht die E-Mails checken").
+- Einen Drachen steigen lassen.
+- Eine Grimasse im Spiegel schneiden.
+- Eine Handmassage (sich selbst geben).
+- Ein Kissen so fest wie möglich schlagen.
+- Einen Comic lesen.
+- Im Regen spazieren gehen.
+- Etwas mit den Händen kneten (Teig, Knete).
+- Eine Runde "Stadt, Land, Fluss" spielen.
+- In den Himmel schauen und Wolken beobachten.
+- Einen Stein über das Wasser hüpfen lassen.
+- Einen Lachanfall provozieren (z.B. durch Kitzeln).
+- Ein Spielzeug im Laden ausprobieren.
+- Eine "dumme" Tanzbewegung erfinden.
+- Mich 15 Minuten früher als sonst ins Bett legen.
+- Rückwärts gehen (1 Minute im Flur).
+- Versuchen, 10 Sekunden nicht an einen "rosa Elefanten" zu denken.
+- Eine "Gute-Laune-Playlist" erstellen (oder eine alte anhören).
+- Eine Gesichtsmaske auftragen.
+- Ein Duschgel/Shampoo mit einem neuen Duft benutzen.
+- Eine Tasse Tee/Kaffee am Fenster trinken und Vögel zählen.
+- Einen "perfekten" Kieselstein finden und ihn in die Tasche stecken.
+- Auf einem Bein Zähne putzen.
+- Einen Wecker für ein 15-Minuten-Nickerchen mitten am Tag stellen.
+- Ein altes Kinderlied summen.
+- "Luftgitarre" zu einem Rock-Song spielen.
+- Einen Sonnenaufgang (oder Sonnenuntergang) komplett ansehen.
+- Im Spiegel verschiedene Akzente (z.B. britisch, französisch) ausprobieren.
+- Ein warmes Fußbad nehmen.
+- 10 Mal die Treppe schnell hoch- und runterlaufen.
+- Ein Mandala ausmalen.
+- Einen Duft (Parfüm, Raumspray) benutzen, nur für das Gefühl.
+- Versuchen, eine Münze auf der Nase zu balancieren.
+- Ein altes Kinderspiel (Gummitwist, Seilspringen) ausprobieren.
+- Mich selbst 1 Minute lang kitzeln (oder es versuchen).
+- "Power-Posing" im Spiegel machen (2 Minuten).
+- Eine neue Frisur ausprobieren (auch wenn es nur für 10 Min. ist).
+- Ein Puzzle anfangen (oder 10 Teile legen).
+- Eine "dumme" App (z.B. Stimmverzerrer) für 5 Minuten nutzen.
+- Die Zunge rausstrecken zu meinem Spiegelbild.
+- 5 Minuten lang "Schattenboxen".
+- Einen Ball gegen eine Wand werfen und fangen (20 Mal).
+- Ein Kaugummi kauen und eine Blase machen.
+- Einen "Decken-Burrito" machen (mich fest in eine Decke einwickeln).
+- Mit den Fingern auf dem Tisch einen Rhythmus trommeln.
+- Ein "Konzert" für meine Zimmerpflanzen geben.
+- Eine "Challenge" von TikTok/YouTube ausprobieren (eine harmlose).
+- Einen "Spa-Moment" machen (Handcreme bewusst einmassieren).
+- Einen Luftballon aufblasen und hoch in der Luft halten.
+- 10 Mal auf der Stelle hüpfen (wie ein Kind).
+- Ein Schaumbad nehmen (oder Dusch-Schaum-Party).
+- Meinen Körper im Spiegel anlächeln.
+- Einen "Schrei" in ein Kissen loslassen.
+- Ein Nickerchen an einem ungewöhnlichen Ort machen (Sofa, Boden).
+- Ein Glas Wasser so langsam wie möglich trinken.
+- Ein "Luft-Schlagzeug"-Solo zu einem Song spielen.
+- Mich 1 Minute lang schütteln (Arme, Beine, Kopf).

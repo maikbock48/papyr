@@ -177,16 +177,24 @@ export const completeOnboarding = (hasPaid: boolean, userName: string) => {
 };
 
 export const isWithinWolfHour = (): boolean => {
-  const now = new Date();
-  const hour = now.getHours();
-  // 20:00 (8 PM) to 02:00 (2 AM) - Die Stunde des Wolfs
-  return hour >= 20 || hour < 2;
+  // TESTING MODE: Always return true to allow uploads anytime
+  return true;
+
+  // PRODUCTION CODE (commented out):
+  // const now = new Date();
+  // const hour = now.getHours();
+  // // 20:00 (8 PM) to 02:00 (2 AM) - Die Stunde des Wolfs
+  // return hour >= 20 || hour < 2;
 };
 
 export const canCommitToday = (): boolean => {
-  const state = getAppState();
-  const today = new Date().toISOString().split('T')[0];
-  return state.lastCommitmentDate !== today;
+  // TESTING MODE: Always return true to allow multiple uploads per day
+  return true;
+
+  // PRODUCTION CODE (commented out):
+  // const state = getAppState();
+  // const today = new Date().toISOString().split('T')[0];
+  // return state.lastCommitmentDate !== today;
 };
 
 export const needsPaywall = (): boolean => {
