@@ -347,25 +347,25 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
 
               {canCommit && (
                 <>
-                  <h1 className="text-2xl md:text-4xl font-bold mb-1" style={{ color: '#2d2e2e' }}>
+                  <h1 className="text-2xl md:text-4xl font-bold mb-1 mt-8" style={{ color: '#2d2e2e' }}>
                     Willkommen bei PAPYR.
                   </h1>
-                  <p className="text-xl md:text-2xl mb-4 mt-4" style={{ color: '#2d2e2e' }}>
+                  <p className="text-xl md:text-2xl mb-4 mt-12" style={{ color: '#2d2e2e' }}>
                     Dein Zettel fehlt.
                   </p>
                 </>
               )}
-              <h2 className="text-xl md:text-3xl font-bold mb-2 mt-4" style={{ color: '#2d2e2e' }}>
+              <h2 className="text-xl md:text-3xl font-bold mb-2 mt-40" style={{ color: '#2d2e2e' }}>
                 Schmiede Pläne..
               </h2>
-              <p className="text-base md:text-lg mb-8" style={{ color: '#2d2e2e' }}>
-                Jeden Abend. Auf Papier. Dann hier siegeln.
+              <p className="text-base md:text-lg mb-4" style={{ color: '#2d2e2e' }}>
+                Jeden Abend. Auf Papier. Schaffe dir Ziele.
               </p>
             </div>
 
             {/* Countdown to next upload window */}
             {!isWithinWolfHour() && (
-              <div className="mt-16 mb-8">
+              <div className="mt-8 mb-8">
                 <div className="bg-white rounded-2xl shadow-lg border-2 px-8 py-6 inline-block" style={{ borderColor: '#e0e0e0' }}>
                   <p className="text-sm font-bold mb-2 text-center" style={{ color: '#666' }}>
                     Nächstes Upload-Fenster in:
@@ -381,7 +381,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             )}
 
             {/* Upload Button - Fixed at bottom */}
-            <div className="mt-52">
+            <div className="mt-4">
               <button
                 onClick={handleCameraClick}
                 disabled={uploading}
