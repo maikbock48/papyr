@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { getAppState, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
+import { downloadCommitmentEvent } from '@/lib/calendar';
 
 export default function Archive() {
   const [appState, setAppState] = useState(getAppState());
@@ -18,6 +19,11 @@ export default function Archive() {
   const handleMarkCompleted = (id: string) => {
     markCommitmentCompleted(id);
     setAppState(getAppState());
+  };
+
+  const handleExportToCalendar = (commitment: any) => {
+    const date = new Date(commitment.timestamp);
+    downloadCommitmentEvent(date, commitment.goals);
   };
 
   const canMarkAsCompleted = (commitmentDate: string) => {
@@ -159,6 +165,12 @@ export default function Archive() {
                           </button>
                         )}
                         <button
+                          onClick={() => handleExportToCalendar(commitment)}
+                          className="w-full bg-blue-500 text-white px-2 py-1 text-xs font-bold hover:bg-blue-600 transition-colors rounded shadow-sm"
+                        >
+                          📅
+                        </button>
+                        <button
                           onClick={() => handleDelete(commitment.id)}
                           className="w-full bg-red-500 text-white px-2 py-1 text-xs font-bold hover:bg-red-600 transition-colors rounded shadow-sm"
                         >
@@ -227,6 +239,12 @@ export default function Archive() {
                             ✓ Als erledigt markieren
                           </button>
                         )}
+                        <button
+                          onClick={() => handleExportToCalendar(commitment)}
+                          className="bg-blue-500 text-white px-4 py-2 text-sm font-bold hover:bg-blue-600 transition-colors rounded-lg shadow-sm"
+                        >
+                          📅 Zu Kalender
+                        </button>
                         <button
                           onClick={() => handleDelete(commitment.id)}
                           className="bg-red-500 text-white px-4 py-2 text-sm font-bold hover:bg-red-600 transition-colors rounded-lg shadow-sm"

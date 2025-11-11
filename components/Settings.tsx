@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getAppState, saveAppState } from '@/lib/storage';
 import { requestNotificationPermission, updateNotificationSettings, scheduleNotifications } from '@/lib/notifications';
+import { downloadCalendarEvent, isMobileDevice, openInCalendarApp } from '@/lib/calendar';
 import ConfirmDialog from './ConfirmDialog';
 
 export default function Settings() {
@@ -110,6 +111,16 @@ export default function Settings() {
     );
     setNotifSaved(true);
     setTimeout(() => setNotifSaved(false), 2000);
+  };
+
+  const handleAddToCalendar = () => {
+    if (isMobileDevice()) {
+      // On mobile, try to open directly in calendar app
+      openInCalendarApp();
+    } else {
+      // On desktop, download the .ics file
+      downloadCalendarEvent();
+    }
   };
 
   useEffect(() => {
@@ -459,6 +470,71 @@ export default function Settings() {
                 </button>
               </>
             )}
+          </div>
+        </div>
+
+        {/* Calendar Integration Section */}
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>📅 Kalender-Integration</h2>
+
+          <div className="space-y-6">
+            <p className="text-base" style={{ color: '#666' }}>
+              Füge eine tägliche Erinnerung zu deinem Kalender hinzu. Das Upload-Fenster ist täglich von <strong>20:00 - 02:00 Uhr</strong>.
+            </p>
+
+            {/* Daily Reminder Card */}
+            <div className="bg-white border-2 rounded-xl p-5" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-4 mb-4">
+                <div className="text-4xl">📝</div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                    Tägliche PAPYR Erinnerung
+                  </h3>
+                  <div className="space-y-2 text-sm" style={{ color: '#666' }}>
+                    <div className="flex items-center gap-2">
+                      <span>🕐</span>
+                      <span><strong>Täglich</strong> von 20:00 - 02:00 Uhr</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>🔔</span>
+                      <span>Erinnerung 15 Minuten vorher (19:45 Uhr)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>🔁</span>
+                      <span>Wiederholt sich automatisch jeden Tag</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleAddToCalendar}
+                className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
+              >
+                📅 Zu Kalender hinzufügen
+              </button>
+
+              <p className="text-xs text-center mt-3" style={{ color: '#999' }}>
+                Funktioniert mit Google Calendar, Apple Kalender, Outlook und allen anderen Kalender-Apps
+              </p>
+            </div>
+
+            {/* Info Box */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-3">
+                <div className="text-xl">💡</div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-1" style={{ color: '#2d2e2e' }}>
+                    So funktioniert's:
+                  </p>
+                  <ul className="text-xs space-y-1" style={{ color: '#666' }}>
+                    <li><strong>Desktop:</strong> Die .ics Datei wird heruntergeladen. Öffne sie mit deinem Kalender.</li>
+                    <li><strong>Mobile:</strong> Der Kalender-Event öffnet sich direkt in deiner Kalender-App.</li>
+                    <li><strong>Danach:</strong> Bestätige den wiederkehrenden Event - fertig! 🎉</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
