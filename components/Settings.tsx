@@ -16,6 +16,7 @@ import {
   sendTestPush,
   setupScheduledNotifications
 } from '@/lib/pushNotifications';
+import { redirectToCheckout } from '@/lib/stripe/client';
 import ConfirmDialog from './ConfirmDialog';
 import AuthModal from './AuthModal';
 
@@ -119,22 +120,20 @@ export default function Settings() {
     }
   };
 
-  const handleBecomeMember = () => {
-    setShowMemberDialog(true);
+  const handleBecomeMember = async () => {
+    try {
+      // Redirect to Stripe Checkout
+      await redirectToCheckout();
+    } catch (error: any) {
+      console.error('Error redirecting to checkout:', error);
+      alert('Fehler beim Öffnen der Zahlung. Bitte versuche es erneut.');
+    }
   };
 
   const confirmBecomeMember = async () => {
-    try {
-      // TODO: Integrate payment processing
-      await updateProfile({
-        has_paid: true,
-      });
-      await refreshProfile();
-      alert('🎉 Willkommen als Member! Deine Zettel werden jetzt unbegrenzt gespeichert.');
-    } catch (error) {
-      console.error('Error becoming member:', error);
-      alert('Fehler beim Upgrade. Bitte versuche es erneut.');
-    }
+    // This function is no longer needed as payment is handled by Stripe
+    // Keeping it for backward compatibility with existing dialog
+    await handleBecomeMember();
   };
 
   const handleEnableNotifications = () => {
@@ -591,6 +590,48 @@ export default function Settings() {
             >
               📅 Zu Kalender hinzufügen
             </button>
+          </div>
+        </div>
+
+        {/* Support Section */}
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>💬 Support</h2>
+
+          <div className="space-y-6">
+            <p className="text-base" style={{ color: '#666' }}>
+              Brauchst du Hilfe oder hast Fragen? Wir sind für dich da!
+            </p>
+
+            {/* FAQ Section */}
+            <div className="space-y-4">
+              <div className="p-4 border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
+                <h3 className="font-bold mb-2" style={{ color: '#2d2e2e' }}>❓ Häufig gestellte Fragen</h3>
+                <ul className="space-y-2 text-sm" style={{ color: '#666' }}>
+                  <li>• <strong>Wann kann ich Zettel hochladen?</strong><br />Täglich zwischen 20:00 - 02:00 Uhr (Die Stunde des Wolfs)</li>
+                  <li>• <strong>Was passiert bei einem Streak-Verlust?</strong><br />Joker werden automatisch verwendet, wenn du einen hast</li>
+                  <li>• <strong>Wie bekomme ich Joker?</strong><br />Alle 7 Tage Streak erhältst du automatisch einen Joker</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div className="p-4 border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
+              <h3 className="font-bold mb-2" style={{ color: '#2d2e2e' }}>📧 Kontakt</h3>
+              <p className="text-sm mb-3" style={{ color: '#666' }}>
+                Hast du Fragen, Feedback oder Probleme? Schreib uns!
+              </p>
+              <a
+                href="mailto:support@papyr.app"
+                className="inline-block bg-black text-white px-6 py-3 text-base font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
+              >
+                ✉️ support@papyr.app
+              </a>
+            </div>
+
+            {/* Version */}
+            <div className="text-center text-sm" style={{ color: '#999' }}>
+              PAPYR Version 1.0.0
+            </div>
           </div>
         </div>
 

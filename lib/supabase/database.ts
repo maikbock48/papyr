@@ -16,6 +16,8 @@ export interface Profile {
   jokers: number
   last_shown_popup_day: number | null
   total_commitments: number
+  stripe_customer_id: string | null
+  stripe_subscription_id: string | null
   notification_settings: {
     enabled: boolean
     morning: boolean
@@ -284,6 +286,47 @@ export async function deleteCommitment(id: string) {
     .from('commitments')
     .delete()
     .eq('id', id)
+    .eq('user_id', user.id)
+
+  if (error) throw error
+}
+
+export async function deleteAllCommitments() {
+  const supabase = createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('No authenticated user')
+
+  // Get all commitments to delete their images
+  const { data: commitments } = await supabase
+    .from('commitments')
+    .select('image_url')
+    .eq('user_id', user.id)
+
+  if (commitments && commitments.length > 0) {
+    // Delete all images from storage
+    const fileNames = commitments
+      .map(c => {
+        if (c.image_url) {
+          const url = new URL(c.image_url)
+          const pathParts = url.pathname.split('/')
+          return pathParts.slice(-2).join('/') // user_id/filename.ext
+        }
+        return null
+      })
+      .filter(Boolean) as string[]
+
+    if (fileNames.length > 0) {
+      await supabase.storage
+        .from('commitment-images')
+        .remove(fileNames)
+    }
+  }
+
+  // Delete all commitments
+  const { error } = await supabase
+    .from('commitments')
+    .delete()
     .eq('user_id', user.id)
 
   if (error) throw error

@@ -15,6 +15,16 @@ export default function Home() {
   const { user, profile, loading: authLoading } = useAuth();
   const [currentView, setCurrentView] = useState<AppView>('auth');
   const [showInspirationBrowser, setShowInspirationBrowser] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
+
+  // Ensure splash screen shows for minimum 1.8 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 1800);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     console.log('[Page] Auth state changed:', {
@@ -24,8 +34,8 @@ export default function Home() {
       profileOnboarding: profile?.has_completed_onboarding
     });
 
-    if (authLoading) {
-      console.log('[Page] Still loading auth...');
+    if (authLoading || showSplash) {
+      console.log('[Page] Still loading auth or showing splash...');
       return;
     }
 
@@ -44,7 +54,7 @@ export default function Home() {
         setCurrentView('onboarding');
       }
     }
-  }, [user, profile, authLoading]);
+  }, [user, profile, authLoading, showSplash]);
 
   const handleOnboardingComplete = async (hasPaid: boolean, userName: string) => {
     try {
@@ -70,8 +80,8 @@ export default function Home() {
     setCurrentView('main');
   };
 
-  // Show loading screen while auth is loading
-  if (authLoading) {
+  // Show loading screen while auth is loading or splash is showing (minimum 1.8s)
+  if (authLoading || showSplash) {
     console.log('[Page] Rendering loading screen');
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4">
@@ -80,7 +90,6 @@ export default function Home() {
           alt="PAPYR"
           className="max-w-md w-full h-auto animate-pulse"
         />
-        <p className="text-white text-sm">Lädt...</p>
       </div>
     );
   }

@@ -20,42 +20,56 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif'
   };
 
+  // Helper function to color 4th letter green
+  const colorFourthLetter = (text: string) => {
+    if (text.length < 4) return text;
+    return (
+      <>
+        {text.substring(0, 3)}
+        <span style={{ color: '#10B981' }}>{text[3]}</span>
+        {text.substring(4)}
+      </>
+    );
+  };
+
   return (
     <>
       {/* Top Navbar */}
-      <nav className="border-b-2 shadow-sm sticky top-0 z-50" style={{ backgroundColor: '#171717', borderColor: '#2d2e2e' }}>
+      <nav className="border-b-2 shadow-sm sticky top-0 z-50" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#2d2e2e' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between md:justify-center items-center h-16">
             {/* Desktop Toggle Button - Left */}
             <button
               onClick={() => onSidebarToggle(!sidebarOpen)}
-              className="hidden md:block absolute left-6 text-cream hover:text-cream/70 transition-colors"
+              className="hidden md:block absolute left-6 w-7 h-7 flex flex-col justify-center items-center gap-1.5 group"
             >
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              <span
+                className={`block w-full h-0.5 bg-black transition-all duration-700 ${
+                  sidebarOpen
+                    ? 'rotate-[-360deg] bg-[#10B981]'
+                    : 'rotate-0'
+                }`}
+              />
+              <span className="block w-full h-0.5 bg-black" />
+              <span
+                className={`block w-full h-0.5 bg-black transition-all duration-500 ${
+                  sidebarOpen
+                    ? 'rotate-[-45deg]'
+                    : 'rotate-0'
+                }`}
+              />
             </button>
 
             {/* Global Counter - Centered */}
             <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
               <div className="flex items-center gap-2">
-                <span className="text-sm md:text-base text-white/80 whitespace-nowrap">
+                <span className="text-2xl md:text-3xl text-black whitespace-nowrap font-medium">
                   Heute wurden
                 </span>
-                <span className="text-2xl md:text-3xl font-bold text-white">
+                <span className="text-2xl md:text-3xl font-bold text-black">
                   {globalPulse.toLocaleString()}
                 </span>
-                <span className="text-sm md:text-base text-white/80 whitespace-nowrap">
+                <span className="text-2xl md:text-3xl text-black whitespace-nowrap font-medium">
                   Zettel abgegeben
                 </span>
               </div>
@@ -70,30 +84,23 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               )}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-white hover:text-white/70 transition-colors"
+                className="w-6 h-6 flex flex-col justify-center items-center gap-1.5"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  {mobileMenuOpen ? (
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  ) : (
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  )}
-                </svg>
+                <span
+                  className={`block w-full h-0.5 bg-black transition-all duration-700 ${
+                    mobileMenuOpen
+                      ? 'rotate-[-360deg] bg-[#10B981]'
+                      : 'rotate-0'
+                  }`}
+                />
+                <span className="block w-full h-0.5 bg-black" />
+                <span
+                  className={`block w-full h-0.5 bg-black transition-all duration-500 ${
+                    mobileMenuOpen
+                      ? 'rotate-[-45deg]'
+                      : 'rotate-0'
+                  }`}
+                />
               </button>
             </div>
           </div>
@@ -101,10 +108,10 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t" style={{ backgroundColor: '#1f1f1f', borderColor: '#2d2e2e' }}>
+          <div className="md:hidden border-t" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#2d2e2e' }}>
             <div className="px-4 pt-2 pb-4 space-y-3">
               {appState.userName && (
-                <div className="text-white/60 text-sm pb-2 border-b" style={{ borderColor: '#2d2e2e' }}>
+                <div className="text-black/70 text-base pb-2 border-b font-medium" style={{ borderColor: '#2d2e2e' }}>
                   Hallo, {appState.userName}
                 </div>
               )}
@@ -114,13 +121,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   setMobileMenuOpen(false);
                 }}
                 style={menuStyle}
-                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
+                className={`block w-full text-left px-3 py-2 rounded-lg text-lg font-bold ${
                   currentView === 'dashboard'
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-white/10'
+                    ? 'bg-black text-white'
+                    : 'text-black hover:bg-black/10'
                 }`}
               >
-                Dashboard
+                {colorFourthLetter('Dashboard')}
               </button>
               <button
                 onClick={() => {
@@ -128,13 +135,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   setMobileMenuOpen(false);
                 }}
                 style={menuStyle}
-                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
+                className={`block w-full text-left px-3 py-2 rounded-lg text-lg font-bold ${
                   currentView === 'archive'
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-white/10'
+                    ? 'bg-black text-white'
+                    : 'text-black hover:bg-black/10'
                 }`}
               >
-                Archiv
+                {colorFourthLetter('Archiv')}
               </button>
               <button
                 onClick={() => {
@@ -142,9 +149,9 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   setMobileMenuOpen(false);
                 }}
                 style={menuStyle}
-                className="block w-full text-left px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-white/10"
+                className="block w-full text-left px-3 py-2 rounded-lg text-lg font-bold text-black hover:bg-black/10"
               >
-                Inspiration
+                {colorFourthLetter('Inspiration')}
               </button>
               <button
                 onClick={() => {
@@ -152,13 +159,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   setMobileMenuOpen(false);
                 }}
                 style={menuStyle}
-                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
+                className={`block w-full text-left px-3 py-2 rounded-lg text-lg font-bold ${
                   currentView === 'shop'
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-white/10'
+                    ? 'bg-black text-white'
+                    : 'text-black hover:bg-black/10'
                 }`}
               >
-                Shop
+                {colorFourthLetter('Shop')}
               </button>
               <button
                 onClick={() => {
@@ -166,13 +173,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   setMobileMenuOpen(false);
                 }}
                 style={menuStyle}
-                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
+                className={`block w-full text-left px-3 py-2 rounded-lg text-lg font-bold ${
                   currentView === 'settings'
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-white/10'
+                    ? 'bg-black text-white'
+                    : 'text-black hover:bg-black/10'
                 }`}
               >
-                Einstellungen
+                {colorFourthLetter('Einstellungen')}
               </button>
               <button
                 onClick={() => {
@@ -180,13 +187,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   setMobileMenuOpen(false);
                 }}
                 style={menuStyle}
-                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
+                className={`block w-full text-left px-3 py-2 rounded-lg text-lg font-bold ${
                   currentView === 'rules'
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-white/10'
+                    ? 'bg-black text-white'
+                    : 'text-black hover:bg-black/10'
                 }`}
               >
-                Spielregeln
+                {colorFourthLetter('Spielregeln')}
               </button>
             </div>
           </div>
@@ -198,18 +205,18 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
         className={`hidden md:block fixed left-0 top-16 bottom-0 border-r-2 shadow-lg z-40 transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ width: '280px', backgroundColor: '#171717', borderColor: '#2d2e2e' }}
+        style={{ width: '280px', backgroundColor: 'rgb(206, 205, 203)', borderColor: '#2d2e2e' }}
       >
         <div className="flex flex-col h-full p-6">
           {/* User Info */}
-          <div className="mb-8 pb-6 border-b-2 border-cream/20">
+          <div className="mb-8 pb-6 border-b-2" style={{ borderColor: '#2d2e2e' }}>
             {appState.userName && (
-              <div className="text-cream text-lg font-bold mb-4">
+              <div className="text-black text-xl font-bold mb-4">
                 Hallo, {appState.userName}!
               </div>
             )}
             {appState.jokers > 0 && (
-              <div className="bg-white px-4 py-2 rounded-full font-bold text-lg border-2 inline-block shadow-sm" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
+              <div className="bg-white px-4 py-2 rounded-full font-bold text-lg border-2 inline-block shadow-sm" style={{ color: '#2d2e2e', borderColor: '#2d2e2e' }}>
                 🃏 {appState.jokers} Joker
               </div>
             )}
@@ -220,85 +227,85 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
             <button
               onClick={() => onNavigate('dashboard')}
               style={menuStyle}
-              className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
+              className={`w-full text-left px-4 py-3 rounded-lg text-xl font-bold transition-all ${
                 currentView === 'dashboard'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
+                  ? 'bg-black text-white shadow-lg'
+                  : 'text-black hover:bg-black/10'
               }`}
             >
-              Dashboard
+              {colorFourthLetter('Dashboard')}
             </button>
             <button
               onClick={() => onNavigate('archive')}
               style={menuStyle}
-              className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
+              className={`w-full text-left px-4 py-3 rounded-lg text-xl font-bold transition-all ${
                 currentView === 'archive'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
+                  ? 'bg-black text-white shadow-lg'
+                  : 'text-black hover:bg-black/10'
               }`}
             >
-              Archiv
+              {colorFourthLetter('Archiv')}
             </button>
             <button
               onClick={onOpenInspiration}
               style={menuStyle}
-              className="w-full text-left px-4 py-3 rounded-lg text-lg font-medium text-white hover:bg-white/10 transition-all"
+              className="w-full text-left px-4 py-3 rounded-lg text-xl font-bold text-black hover:bg-black/10 transition-all"
             >
-              Inspiration
+              {colorFourthLetter('Inspiration')}
             </button>
             <button
               onClick={() => onNavigate('shop')}
               style={menuStyle}
-              className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
+              className={`w-full text-left px-4 py-3 rounded-lg text-xl font-bold transition-all ${
                 currentView === 'shop'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
+                  ? 'bg-black text-white shadow-lg'
+                  : 'text-black hover:bg-black/10'
               }`}
             >
-              Shop
+              {colorFourthLetter('Shop')}
             </button>
             <button
               onClick={() => onNavigate('settings')}
               style={menuStyle}
-              className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
+              className={`w-full text-left px-4 py-3 rounded-lg text-xl font-bold transition-all ${
                 currentView === 'settings'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
+                  ? 'bg-black text-white shadow-lg'
+                  : 'text-black hover:bg-black/10'
               }`}
             >
-              Einstellungen
+              {colorFourthLetter('Einstellungen')}
             </button>
             <button
               onClick={() => onNavigate('rules')}
               style={menuStyle}
-              className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
+              className={`w-full text-left px-4 py-3 rounded-lg text-xl font-bold transition-all ${
                 currentView === 'rules'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
+                  ? 'bg-black text-white shadow-lg'
+                  : 'text-black hover:bg-black/10'
               }`}
             >
-              Spielregeln
+              {colorFourthLetter('Spielregeln')}
             </button>
           </nav>
 
           {/* Stamps Section */}
-          <div className="mt-6 flex justify-center gap-3">
+          <div className="mb-6 flex flex-col justify-center gap-3">
             {/* Streak Stamp */}
             <button
               onClick={() => onNavigate('subscription')}
-              className="rounded-xl p-3 shadow-lg relative transition-all hover:scale-105 cursor-pointer"
+              className="rounded-xl p-2 shadow-lg relative transition-all hover:scale-105 cursor-pointer overflow-hidden w-full"
               style={{
                 border: '3px solid #ffffff',
                 backgroundColor: 'transparent',
                 boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15)',
-                flexBasis: '40%'
+                height: '60px'
               }}
             >
-              <div className="flex flex-col items-center">
-                <span className="text-xs font-bold" style={{ color: '#ffffff' }}>
-                  🔥 STREAK
-                </span>
-                <span className="text-xl font-bold" style={{ color: '#ffffff' }}>
+              <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                <span style={{ fontSize: '3rem' }}>🔥</span>
+              </div>
+              <div className="relative flex items-center justify-center h-full">
+                <span className="text-2xl font-bold" style={{ color: '#ffffff' }}>
                   {appState.currentStreak}
                 </span>
               </div>
@@ -307,19 +314,19 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
             {/* Joker Stamp */}
             <button
               onClick={() => onNavigate('subscription')}
-              className="rounded-xl p-3 shadow-lg relative transition-all hover:scale-105 cursor-pointer"
+              className="rounded-xl p-2 shadow-lg relative transition-all hover:scale-105 cursor-pointer overflow-hidden w-full"
               style={{
                 border: '3px solid #ffffff',
                 backgroundColor: 'transparent',
                 boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15)',
-                flexBasis: '40%'
+                height: '60px'
               }}
             >
-              <div className="flex flex-col items-center">
-                <span className="text-xs font-bold" style={{ color: '#ffffff' }}>
-                  🃏 JOKER
-                </span>
-                <span className="text-xl font-bold" style={{ color: '#ffffff' }}>
+              <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                <span style={{ fontSize: '3rem' }}>🃏</span>
+              </div>
+              <div className="relative flex items-center justify-center h-full">
+                <span className="text-2xl font-bold" style={{ color: '#ffffff' }}>
                   {appState.jokers}
                 </span>
               </div>

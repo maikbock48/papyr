@@ -12,6 +12,7 @@ import {
 import { shouldShowDailyQuestion } from '@/lib/dailyQuestions';
 import { shouldShowPopup, getPopupForDay, markPopupAsShown } from '@/lib/onboardingHelper';
 import Navbar from './Navbar';
+import RightSidebar from './RightSidebar';
 import Dashboard from './Dashboard';
 import Archive from './Archive';
 import Settings from './Settings';
@@ -44,21 +45,40 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
   const [currentPopupData, setCurrentPopupData] = useState<any>(null);
   const [showInspirationBrowser, setShowInspirationBrowser] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(true); // Always open on desktop
 
-  // Collapse/expand sidebar on scroll
+  // Set initial state for right sidebar on desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && window.scrollY <= 50) { // md breakpoint and at top
+        setRightSidebarOpen(true);
+      }
+    };
+
+    handleResize(); // Check on mount
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Collapse/expand both sidebars on scroll
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // If at the top (or near top), open sidebar
+      // If at the top (or near top), open both sidebars
       if (currentScrollY <= 50) {
         setSidebarOpen(true);
+        setRightSidebarOpen(true);
       }
-      // If scrolling down and passed 100px, close sidebar
+      // If scrolling down and passed 100px, close both sidebars
       else if (currentScrollY > 100 && currentScrollY > lastScrollY) {
         setSidebarOpen(false);
+        setRightSidebarOpen(false);
       }
 
       lastScrollY = currentScrollY;
@@ -270,11 +290,13 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
         globalPulse={globalPulse}
       />
 
-      {/* Content wrapper - Shop, Archive, Settings, Rules, and Subscription adjust to sidebar */}
+      <RightSidebar isOpen={rightSidebarOpen} />
+
+      {/* Content wrapper - Shop, Archive, Settings, Rules, and Subscription adjust to sidebars */}
       <div
         className={`transition-all duration-300 m-0 p-0 ${
           (currentView === 'shop' || currentView === 'archive' || currentView === 'settings' || currentView === 'rules' || currentView === 'subscription')
-            ? (sidebarOpen ? 'md:ml-[280px] lg:ml-[280px]' : 'md:ml-0 lg:ml-0')
+            ? `${sidebarOpen ? 'md:ml-[280px] lg:ml-[280px]' : 'md:ml-0 lg:ml-0'} ${rightSidebarOpen ? 'md:mr-[280px] lg:mr-[280px]' : 'md:mr-0 lg:mr-0'}`
             : ''
         }`}
       >

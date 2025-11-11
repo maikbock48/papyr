@@ -1,39 +1,74 @@
 'use client';
 
-import { getAppState, saveAppState } from '@/lib/storage';
+import { useState } from 'react';
+import { useAuth } from '@/lib/supabase/context';
+import { updateProfile, deleteAllCommitments } from '@/lib/supabase/database';
+import { redirectToCheckout } from '@/lib/stripe/client';
 
 interface PaywallProps {
   onComplete: () => void;
 }
 
 export default function Paywall({ onComplete }: PaywallProps) {
-  const handlePay = () => {
-    // In a real app, this would integrate with Stripe/PayPal
-    const state = getAppState();
-    state.hasPaid = true;
-    saveAppState(state);
-    onComplete();
+  const { profile, refreshProfile } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlePay = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Redirect to Stripe Checkout
+      await redirectToCheckout();
+    } catch (err: any) {
+      console.error('Payment error:', err);
+      setError('Fehler beim Öffnen der Zahlung. Bitte versuche es erneut.');
+      setLoading(false);
+    }
   };
 
-  const handleDecline = () => {
-    // Reset streak and commitments
-    const state = getAppState();
-    state.currentStreak = 0;
-    state.commitments = [];
-    state.lastCommitmentDate = null;
-    saveAppState(state);
-    onComplete();
+  const handleDecline = async () => {
+    if (!confirm('Bist du sicher? Dies löscht deinen gesamten Fortschritt und alle Zettel.')) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Reset streak and delete all commitments
+      await updateProfile({
+        current_streak: 0,
+        last_commitment_date: null,
+      });
+
+      await deleteAllCommitments();
+      await refreshProfile();
+
+      onComplete();
+    } catch (err: any) {
+      console.error('Error resetting progress:', err);
+      setError('Fehler beim Zurücksetzen. Bitte versuche es erneut.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const state = getAppState();
+  if (!profile) return null;
 
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-6">
       <div className="max-w-2xl w-full">
         <div className="text-center space-y-8">
           <h1 className="text-4xl md:text-5xl font-bold text-brown mb-8">
-            Dein {state.currentStreak}-Tage-Streak ist beeindruckend.
+            Dein {profile.current_streak}-Tage-Streak ist beeindruckend.
           </h1>
+
+          {error && (
+            <div className="bg-red-100 border-2 border-red-400 text-red-700 px-4 py-3 mb-4">
+              {error}
+            </div>
+          )}
 
           <p className="text-2xl text-brown leading-relaxed mb-8">
             Aber bist du bereit für ein echtes Bekenntnis?
@@ -70,13 +105,15 @@ export default function Paywall({ onComplete }: PaywallProps) {
           <div className="space-y-4 pt-4">
             <button
               onClick={handlePay}
-              className="w-full bg-brown text-cream px-8 py-6 text-2xl font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg"
+              disabled={loading}
+              className="w-full bg-brown text-cream px-8 py-6 text-2xl font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Ja, ich bekenne mich. (0,99€)
+              {loading ? 'Lädt...' : 'Ja, ich bekenne mich. (0,99€)'}
             </button>
             <button
               onClick={handleDecline}
-              className="w-full bg-cream text-brown/50 px-8 py-3 text-sm border-2 border-brown/30 hover:bg-vintage/20 transition-colors"
+              disabled={loading}
+              className="w-full bg-cream text-brown/50 px-8 py-3 text-sm border-2 border-brown/30 hover:bg-vintage/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Nein, ich war noch nicht so weit.
             </button>
