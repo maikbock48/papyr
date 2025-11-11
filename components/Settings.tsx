@@ -4,6 +4,16 @@ import { useState, useEffect } from 'react';
 import { getAppState, saveAppState } from '@/lib/storage';
 import { requestNotificationPermission, updateNotificationSettings, scheduleNotifications } from '@/lib/notifications';
 import { downloadCalendarEvent, isMobileDevice, openInCalendarApp } from '@/lib/calendar';
+import {
+  isPushSupported,
+  initializePushNotifications,
+  requestPushPermission,
+  subscribeToPush,
+  unsubscribeFromPush,
+  isPushSubscribed,
+  sendTestPush,
+  setupScheduledNotifications
+} from '@/lib/pushNotifications';
 import ConfirmDialog from './ConfirmDialog';
 
 export default function Settings() {
@@ -22,6 +32,11 @@ export default function Settings() {
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [showProDialog, setShowProDialog] = useState(false);
   const [showMemberDialog, setShowMemberDialog] = useState(false);
+
+  // Push notifications state
+  const [pushSupported, setPushSupported] = useState(false);
+  const [pushEnabled, setPushEnabled] = useState(false);
+  const [pushSubscribed, setPushSubscribed] = useState(false);
 
   const handleSave = () => {
     const state = getAppState();
@@ -126,7 +141,65 @@ export default function Settings() {
   useEffect(() => {
     // Initialize notifications on mount
     scheduleNotifications();
+
+    // Check if push notifications are supported
+    const checkPushSupport = async () => {
+      const supported = isPushSupported();
+      setPushSupported(supported);
+
+      if (supported) {
+        // Initialize push notifications
+        await initializePushNotifications();
+
+        // Check if already subscribed
+        const subscribed = await isPushSubscribed();
+        setPushSubscribed(subscribed);
+        setPushEnabled(subscribed);
+      }
+    };
+
+    checkPushSupport();
   }, []);
+
+  const handleEnablePush = async () => {
+    if (!pushEnabled) {
+      // Enable push notifications
+      const permitted = await requestPushPermission();
+      if (permitted) {
+        const subscription = await subscribeToPush();
+        if (subscription) {
+          setPushEnabled(true);
+          setPushSubscribed(true);
+
+          // Setup scheduled notifications
+          await setupScheduledNotifications(morningEnabled, afternoonEnabled, eveningEnabled);
+
+          alert('✅ Push-Benachrichtigungen aktiviert! Du erhältst jetzt Erinnerungen auch wenn die App geschlossen ist.');
+        } else {
+          alert('❌ Fehler beim Aktivieren der Push-Benachrichtigungen.');
+        }
+      } else {
+        alert('❌ Push-Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
+      }
+    } else {
+      // Disable push notifications
+      const unsubscribed = await unsubscribeFromPush();
+      if (unsubscribed) {
+        setPushEnabled(false);
+        setPushSubscribed(false);
+        alert('Push-Benachrichtigungen deaktiviert.');
+      }
+    }
+  };
+
+  const handleTestPush = async () => {
+    const sent = await sendTestPush();
+    if (sent) {
+      alert('✅ Test-Benachrichtigung gesendet!');
+    } else {
+      alert('❌ Fehler beim Senden der Test-Benachrichtigung.');
+    }
+  };
 
   return (
     <div className="min-h-screen py-12 px-4" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
@@ -472,6 +545,80 @@ export default function Settings() {
             )}
           </div>
         </div>
+
+        {/* Push Notifications Section */}
+        {pushSupported && (
+          <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+            <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>🔔 Push-Benachrichtigungen</h2>
+
+            <div className="space-y-6">
+              <p className="text-base" style={{ color: '#666' }}>
+                Erhalte Benachrichtigungen auch wenn die App geschlossen ist. Push-Benachrichtigungen funktionieren im Hintergrund über einen Service Worker.
+              </p>
+
+              {/* Enable/Disable Push */}
+              <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
+                <div>
+                  <div className="font-bold" style={{ color: '#2d2e2e' }}>Push-Benachrichtigungen</div>
+                  <div className="text-sm" style={{ color: '#666' }}>
+                    {pushEnabled ? '✅ Aktiviert' : '⚪ Deaktiviert'}
+                  </div>
+                  {pushSubscribed && (
+                    <div className="text-xs mt-1" style={{ color: '#00e676' }}>
+                      Service Worker registriert
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={handleEnablePush}
+                  className={`px-6 py-2 font-bold border-2 rounded-xl transition-colors ${
+                    pushEnabled
+                      ? 'bg-black text-white hover:bg-gray-900'
+                      : 'bg-white text-black hover:bg-gray-50'
+                  }`}
+                  style={{ borderColor: '#e0e0e0' }}
+                >
+                  {pushEnabled ? 'Deaktivieren' : 'Aktivieren'}
+                </button>
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-gradient-to-r from-green-50 to-teal-50 border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">💡</div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2" style={{ color: '#2d2e2e' }}>
+                      Vorteile von Push-Benachrichtigungen:
+                    </p>
+                    <ul className="text-xs space-y-1" style={{ color: '#666' }}>
+                      <li>✅ Funktionieren auch wenn die App geschlossen ist</li>
+                      <li>✅ Zuverlässiger als Browser-Benachrichtigungen</li>
+                      <li>✅ Keine Batterie-Verschwendung durch offene Tabs</li>
+                      <li>✅ Automatische Synchronisation mit deinen Einstellungen</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Test Push Button */}
+              {pushEnabled && (
+                <button
+                  onClick={handleTestPush}
+                  className="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white px-6 py-3 text-lg font-bold hover:from-green-600 hover:to-teal-600 transition-colors rounded-xl shadow-md"
+                >
+                  🔔 Test-Benachrichtigung senden
+                </button>
+              )}
+
+              {/* Technical Info */}
+              <div className="border-t-2 pt-4" style={{ borderColor: '#e0e0e0' }}>
+                <p className="text-xs" style={{ color: '#999' }}>
+                  <strong>Hinweis:</strong> Push-Benachrichtigungen erfordern HTTPS und werden über einen Service Worker verwaltet. Deine Benachrichtigungseinstellungen werden automatisch synchronisiert.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Calendar Integration Section */}
         <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
