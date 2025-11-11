@@ -2,7 +2,7 @@
 
 export default function Rules() {
   return (
-    <div className="min-h-screen py-12 px-4" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
+    <div className="min-h-screen py-12 px-4" >
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: '#2d2e2e' }}>
           Spielregeln

@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/supabase/context';
-import { updateProfile } from '@/lib/supabase/database';
-import { signOut } from '@/lib/supabase/auth';
+import { getAppState, saveAppState } from '@/lib/storage';
 import { requestNotificationPermission, updateNotificationSettings, scheduleNotifications } from '@/lib/notifications';
 import { downloadCalendarEvent, isMobileDevice, openInCalendarApp } from '@/lib/calendar';
 import {
@@ -17,124 +15,85 @@ import {
   setupScheduledNotifications
 } from '@/lib/pushNotifications';
 import ConfirmDialog from './ConfirmDialog';
-import AuthModal from './AuthModal';
 
 export default function Settings() {
-  const { user, profile, loading: authLoading, refreshProfile } = useAuth();
-  const [userName, setUserName] = useState('');
+  const [appState, setAppState] = useState(getAppState());
+  const [userName, setUserName] = useState(appState.userName);
   const [saved, setSaved] = useState(false);
 
   // Notification settings
-  const [notifEnabled, setNotifEnabled] = useState(false);
-  const [morningEnabled, setMorningEnabled] = useState(false);
-  const [afternoonEnabled, setAfternoonEnabled] = useState(false);
-  const [eveningEnabled, setEveningEnabled] = useState(false);
+  const [notifEnabled, setNotifEnabled] = useState(appState.notificationSettings.enabled);
+  const [morningEnabled, setMorningEnabled] = useState(appState.notificationSettings.morning);
+  const [afternoonEnabled, setAfternoonEnabled] = useState(appState.notificationSettings.afternoon);
+  const [eveningEnabled, setEveningEnabled] = useState(appState.notificationSettings.evening);
   const [notifSaved, setNotifSaved] = useState(false);
   const [showNotifDialog, setShowNotifDialog] = useState(false);
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [showProDialog, setShowProDialog] = useState(false);
   const [showMemberDialog, setShowMemberDialog] = useState(false);
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   // Push notifications state
   const [pushSupported, setPushSupported] = useState(false);
   const [pushEnabled, setPushEnabled] = useState(false);
   const [pushSubscribed, setPushSubscribed] = useState(false);
 
-  // Initialize state from profile
-  useEffect(() => {
-    if (profile) {
-      setUserName(profile.user_name || '');
-      setNotifEnabled(profile.notification_settings.enabled);
-      setMorningEnabled(profile.notification_settings.morning);
-      setAfternoonEnabled(profile.notification_settings.afternoon);
-      setEveningEnabled(profile.notification_settings.evening);
-    }
-  }, [profile]);
-
-  const handleSave = async () => {
-    try {
-      await updateProfile({
-        user_name: userName.trim(),
-      });
-      await refreshProfile();
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    } catch (error) {
-      console.error('Error saving profile:', error);
-      alert('Fehler beim Speichern. Bitte versuche es erneut.');
-    }
+  const handleSave = () => {
+    const state = getAppState();
+    state.userName = userName.trim();
+    saveAppState(state);
+    setAppState(state);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   const handleResetOnboarding = () => {
     setShowResetDialog(true);
   };
 
-  const confirmResetOnboarding = async () => {
-    try {
-      await updateProfile({
-        has_completed_onboarding: false,
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error('Error resetting onboarding:', error);
-      alert('Fehler beim Zurücksetzen. Bitte versuche es erneut.');
-    }
+  const confirmResetOnboarding = () => {
+    const state = getAppState();
+    state.hasCompletedOnboarding = false;
+    saveAppState(state);
+    window.location.reload();
   };
 
   const handleClearData = () => {
     setShowClearDialog(true);
   };
 
-  const confirmClearData = async () => {
-    try {
-      // Sign out which will clear local cache
-      await signOut();
-      // TODO: Add server function to delete all user data
-      alert('Alle Daten wurden gelöscht.');
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Error clearing data:', error);
-      alert('Fehler beim Löschen. Bitte versuche es erneut.');
-    }
+  const confirmClearData = () => {
+    localStorage.removeItem('papyr_state');
+    window.location.reload();
   };
 
   const handleUpgradeToPro = () => {
     setShowProDialog(true);
   };
 
-  const confirmUpgradeToPro = async () => {
-    try {
-      // TODO: Integrate payment processing
-      await updateProfile({
-        is_pro: true,
-        has_paid: true,
-      });
-      await refreshProfile();
-      alert('🎉 Willkommen als Pro Member! Du erhältst jetzt alle Pro-Vorteile.');
-    } catch (error) {
-      console.error('Error upgrading to pro:', error);
-      alert('Fehler beim Upgrade. Bitte versuche es erneut.');
-    }
+  const confirmUpgradeToPro = () => {
+    // TODO: Integrate payment processing
+    // For now, just set isPro to true
+    const state = getAppState();
+    state.isPro = true;
+    state.hasPaid = true;
+    saveAppState(state);
+    setAppState(state);
+    alert('🎉 Willkommen als Pro Member! Du erhältst jetzt alle Pro-Vorteile.');
   };
 
   const handleBecomeMember = () => {
     setShowMemberDialog(true);
   };
 
-  const confirmBecomeMember = async () => {
-    try {
-      // TODO: Integrate payment processing
-      await updateProfile({
-        has_paid: true,
-      });
-      await refreshProfile();
-      alert('🎉 Willkommen als Member! Deine Zettel werden jetzt unbegrenzt gespeichert.');
-    } catch (error) {
-      console.error('Error becoming member:', error);
-      alert('Fehler beim Upgrade. Bitte versuche es erneut.');
-    }
+  const confirmBecomeMember = () => {
+    // TODO: Integrate payment processing
+    // For now, just set hasPaid to true
+    const state = getAppState();
+    state.hasPaid = true;
+    saveAppState(state);
+    setAppState(state);
+    alert('🎉 Willkommen als Member! Deine Zettel werden jetzt unbegrenzt gespeichert.');
   };
 
   const handleEnableNotifications = () => {
@@ -152,55 +111,47 @@ export default function Settings() {
     const granted = await requestNotificationPermission();
     if (granted) {
       setNotifEnabled(true);
-      setMorningEnabled(true);
+      setMorningEnabled(true); // Default to morning notification
     } else {
       alert('Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
     }
   };
 
-  const handleSaveNotifications = async () => {
-    try {
-      updateNotificationSettings(
-        notifEnabled,
-        morningEnabled,
-        afternoonEnabled,
-        eveningEnabled
-      );
-
-      await updateProfile({
-        notification_settings: {
-          enabled: notifEnabled,
-          morning: morningEnabled,
-          afternoon: afternoonEnabled,
-          evening: eveningEnabled,
-        },
-      });
-
-      setNotifSaved(true);
-      setTimeout(() => setNotifSaved(false), 2000);
-    } catch (error) {
-      console.error('Error saving notifications:', error);
-      alert('Fehler beim Speichern. Bitte versuche es erneut.');
-    }
+  const handleSaveNotifications = () => {
+    updateNotificationSettings(
+      notifEnabled,
+      morningEnabled,
+      afternoonEnabled,
+      eveningEnabled
+    );
+    setNotifSaved(true);
+    setTimeout(() => setNotifSaved(false), 2000);
   };
 
   const handleAddToCalendar = () => {
     if (isMobileDevice()) {
+      // On mobile, try to open directly in calendar app
       openInCalendarApp();
     } else {
+      // On desktop, download the .ics file
       downloadCalendarEvent();
     }
   };
 
   useEffect(() => {
+    // Initialize notifications on mount
     scheduleNotifications();
 
+    // Check if push notifications are supported
     const checkPushSupport = async () => {
       const supported = isPushSupported();
       setPushSupported(supported);
 
       if (supported) {
+        // Initialize push notifications
         await initializePushNotifications();
+
+        // Check if already subscribed
         const subscribed = await isPushSubscribed();
         setPushSubscribed(subscribed);
         setPushEnabled(subscribed);
@@ -212,13 +163,17 @@ export default function Settings() {
 
   const handleEnablePush = async () => {
     if (!pushEnabled) {
+      // Enable push notifications
       const permitted = await requestPushPermission();
       if (permitted) {
         const subscription = await subscribeToPush();
         if (subscription) {
           setPushEnabled(true);
           setPushSubscribed(true);
+
+          // Setup scheduled notifications
           await setupScheduledNotifications(morningEnabled, afternoonEnabled, eveningEnabled);
+
           alert('✅ Push-Benachrichtigungen aktiviert! Du erhältst jetzt Erinnerungen auch wenn die App geschlossen ist.');
         } else {
           alert('❌ Fehler beim Aktivieren der Push-Benachrichtigungen.');
@@ -227,6 +182,7 @@ export default function Settings() {
         alert('❌ Push-Benachrichtigungen wurden abgelehnt. Bitte erlaube sie in den Browser-Einstellungen.');
       }
     } else {
+      // Disable push notifications
       const unsubscribed = await unsubscribeFromPush();
       if (unsubscribed) {
         setPushEnabled(false);
@@ -245,44 +201,8 @@ export default function Settings() {
     }
   };
 
-  const handleLogout = () => {
-    setShowLogoutDialog(true);
-  };
-
-  const confirmLogout = async () => {
-    try {
-      await signOut();
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Logout error:', error);
-      alert('Fehler beim Abmelden. Bitte versuche es erneut.');
-    }
-  };
-
-  // Show loading
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl font-bold" style={{ color: '#2d2e2e' }}>
-          Lädt...
-        </div>
-      </div>
-    );
-  }
-
-  // Show auth modal if not logged in
-  if (!user || !profile) {
-    return (
-      <AuthModal
-        isOpen={true}
-        onClose={() => {}}
-        onSuccess={() => window.location.reload()}
-      />
-    );
-  }
-
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-12 px-4" >
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: '#2d2e2e' }}>
           Einstellungen
@@ -293,15 +213,6 @@ export default function Settings() {
           <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Profil</h2>
 
           <div className="space-y-4">
-            <div>
-              <label className="block text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
-                E-Mail
-              </label>
-              <div className="w-full border-2 rounded-xl p-4 text-lg bg-gray-50" style={{ borderColor: '#e0e0e0', color: '#666' }}>
-                {user?.email}
-              </div>
-            </div>
-
             <div>
               <label className="block text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
                 Dein Name
@@ -332,26 +243,26 @@ export default function Settings() {
           <div className="grid grid-cols-2 gap-6">
             <div className="text-center">
               <div className="text-4xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
-                {profile.current_streak}
+                {appState.currentStreak}
               </div>
               <div className="text-sm" style={{ color: '#666' }}>Tage Streak</div>
             </div>
 
             <div className="text-center">
               <div className="text-4xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
-                {profile.total_commitments}
+                {appState.commitments.length}
               </div>
               <div className="text-sm" style={{ color: '#666' }}>Bekenntnisse</div>
             </div>
           </div>
 
-          {profile.ten_year_vision && (
+          {appState.tenYearVision && (
             <div className="mt-6 pt-6 border-t-2" style={{ borderColor: '#e0e0e0' }}>
               <h3 className="text-lg font-bold mb-3" style={{ color: '#2d2e2e' }}>
                 Deine 10-Jahres-Vision
               </h3>
               <p className="italic whitespace-pre-line" style={{ color: '#666' }}>
-                {profile.ten_year_vision}
+                {appState.tenYearVision}
               </p>
             </div>
           )}
@@ -366,17 +277,17 @@ export default function Settings() {
             <div className="p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
               <div className="font-bold mb-1" style={{ color: '#2d2e2e' }}>Aktueller Status</div>
               <div className="text-sm" style={{ color: '#666' }}>
-                {profile.has_paid ? '✓ Premium Member (0,99€/Monat)' : 'Free Trial'}
+                {appState.hasPaid ? '✓ Premium Member (0,99€/Monat)' : 'Free Trial'}
               </div>
-              {!profile.has_paid && (
+              {!appState.hasPaid && (
                 <div className="text-sm mt-2 font-medium" style={{ color: '#666' }}>
-                  Noch {Math.max(0, 14 - profile.total_commitments)} Zettel kostenlos
+                  Noch {Math.max(0, 14 - appState.commitments.length)} Zettel kostenlos
                 </div>
               )}
             </div>
 
-            {/* Membership Upgrade */}
-            {!profile.has_paid && (
+            {/* Membership Upgrade - Only show if not paid yet */}
+            {!appState.hasPaid && (
               <div className="border-2 rounded-xl p-6" style={{ borderColor: '#e0e0e0' }}>
                 <div className="text-center mb-5">
                   <div className="text-3xl mb-2">📁</div>
@@ -395,6 +306,36 @@ export default function Settings() {
                       Dein digitaler Aktenschrank
                     </div>
                   </div>
+
+                  <div className="text-left space-y-3 mb-5">
+                    <div className="flex items-start gap-3">
+                      <div className="text-lg">📸</div>
+                      <div>
+                        <div className="font-bold text-sm" style={{ color: '#2d2e2e' }}>Unbegrenzte Archivierung</div>
+                        <div className="text-xs" style={{ color: '#666' }}>
+                          Alle deine Zettel werden dauerhaft gespeichert
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="text-lg">☁️</div>
+                      <div>
+                        <div className="font-bold text-sm" style={{ color: '#2d2e2e' }}>Cloud-Speicher</div>
+                        <div className="text-xs" style={{ color: '#666' }}>
+                          Zugriff von überall, immer sicher
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="text-lg">📚</div>
+                      <div>
+                        <div className="font-bold text-sm" style={{ color: '#2d2e2e' }}>Dein Erfolgs-Archiv</div>
+                        <div className="text-xs" style={{ color: '#666' }}>
+                          Dokumentiere deinen kompletten Weg
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <button
@@ -403,13 +344,17 @@ export default function Settings() {
                 >
                   Jetzt Member werden
                 </button>
+
+                <p className="text-xs text-center mt-3" style={{ color: '#999' }}>
+                  Kostenlos testen: Deine ersten 14 Zettel sind gratis
+                </p>
               </div>
             )}
           </div>
         </div>
 
-        {/* Pro Subscription Section */}
-        {profile.current_streak >= 30 && !profile.is_pro && (
+        {/* Pro Subscription Section - Only show if streak >= 30 */}
+        {appState.currentStreak >= 30 && !appState.isPro && (
           <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <div className="text-center">
               <div className="text-4xl mb-3">✨</div>
@@ -417,8 +362,56 @@ export default function Settings() {
                 Werde Pro Member
               </h2>
               <p className="mb-6" style={{ color: '#666' }}>
-                Du hast {profile.current_streak} Tage durchgezogen! Zeit für das nächste Level.
+                Du hast {appState.currentStreak} Tage durchgezogen! Zeit für das nächste Level.
               </p>
+
+              <div className="bg-white border-2 rounded-xl p-5 mb-6" style={{ borderColor: '#e0e0e0' }}>
+                <div className="text-3xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                  4,99€ <span className="text-lg font-normal">/Monat</span>
+                </div>
+                <div className="text-sm italic" style={{ color: '#666' }}>
+                  Ein Bekenntnis. Ein Statement.
+                </div>
+              </div>
+
+              <div className="text-left space-y-3 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">🃏</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Extra-Joker jeden Monat</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Zusätzlicher Schutz für deinen Streak
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">🛒</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>20% Rabatt im Shop</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Dauerhaft auf alle Produkte
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">🌍</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Teile deine Meilensteine</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Inspiriere die Community
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">💚</div>
+                  <div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Unterstütze soziale Projekte</div>
+                    <div className="text-sm" style={{ color: '#666' }}>
+                      Jede Mitgliedschaft hilft anderen
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <button
                 onClick={handleUpgradeToPro}
@@ -426,12 +419,16 @@ export default function Settings() {
               >
                 ✨ Jetzt Pro Member werden
               </button>
+
+              <p className="text-xs mt-4" style={{ color: '#999' }}>
+                Du hast bereits alles, was du brauchst: Zettel, Stift, Disziplin. Pro ist ein Bekenntnis.
+              </p>
             </div>
           </div>
         )}
 
-        {/* Pro Status Display */}
-        {profile.is_pro && (
+        {/* Pro Status Display - If already Pro */}
+        {appState.isPro && (
           <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <div className="text-center">
               <div className="text-4xl mb-3">✨</div>
@@ -441,6 +438,13 @@ export default function Settings() {
               <p className="mb-4" style={{ color: '#666' }}>
                 Danke für dein Bekenntnis! Du unterstützt soziale Projekte und inspirierst andere.
               </p>
+              <div className="bg-white border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+                <div className="text-sm" style={{ color: '#666' }}>
+                  🃏 Extra-Joker jeden Monat<br />
+                  🛒 20% Rabatt im Shop<br />
+                  🌍 Teile deine Meilensteine
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -450,6 +454,7 @@ export default function Settings() {
           <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>🔔 Benachrichtigungen</h2>
 
           <div className="space-y-6">
+            {/* Enable/Disable */}
             <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
               <div>
                 <div className="font-bold" style={{ color: '#2d2e2e' }}>Benachrichtigungen</div>
@@ -477,6 +482,7 @@ export default function Settings() {
                     Wähle deine Erinnerungszeiten
                   </label>
                   <div className="space-y-3">
+                    {/* Morning Checkbox */}
                     <label className="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: '#e0e0e0' }}>
                       <div className="flex items-center gap-3">
                         <input
@@ -493,6 +499,7 @@ export default function Settings() {
                       </div>
                     </label>
 
+                    {/* Afternoon Checkbox */}
                     <label className="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: '#e0e0e0' }}>
                       <div className="flex items-center gap-3">
                         <input
@@ -509,6 +516,7 @@ export default function Settings() {
                       </div>
                     </label>
 
+                    {/* Evening Checkbox */}
                     <label className="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: '#e0e0e0' }}>
                       <div className="flex items-center gap-3">
                         <input
@@ -544,12 +552,22 @@ export default function Settings() {
             <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>🔔 Push-Benachrichtigungen</h2>
 
             <div className="space-y-6">
+              <p className="text-base" style={{ color: '#666' }}>
+                Erhalte Benachrichtigungen auch wenn die App geschlossen ist. Push-Benachrichtigungen funktionieren im Hintergrund über einen Service Worker.
+              </p>
+
+              {/* Enable/Disable Push */}
               <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
                 <div>
                   <div className="font-bold" style={{ color: '#2d2e2e' }}>Push-Benachrichtigungen</div>
                   <div className="text-sm" style={{ color: '#666' }}>
                     {pushEnabled ? '✅ Aktiviert' : '⚪ Deaktiviert'}
                   </div>
+                  {pushSubscribed && (
+                    <div className="text-xs mt-1" style={{ color: '#00e676' }}>
+                      Service Worker registriert
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={handleEnablePush}
@@ -564,6 +582,25 @@ export default function Settings() {
                 </button>
               </div>
 
+              {/* Info Box */}
+              <div className="bg-gradient-to-r from-green-50 to-teal-50 border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+                <div className="flex items-start gap-3">
+                  <div className="text-xl">💡</div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2" style={{ color: '#2d2e2e' }}>
+                      Vorteile von Push-Benachrichtigungen:
+                    </p>
+                    <ul className="text-xs space-y-1" style={{ color: '#666' }}>
+                      <li>✅ Funktionieren auch wenn die App geschlossen ist</li>
+                      <li>✅ Zuverlässiger als Browser-Benachrichtigungen</li>
+                      <li>✅ Keine Batterie-Verschwendung durch offene Tabs</li>
+                      <li>✅ Automatische Synchronisation mit deinen Einstellungen</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Test Push Button */}
               {pushEnabled && (
                 <button
                   onClick={handleTestPush}
@@ -572,6 +609,13 @@ export default function Settings() {
                   🔔 Test-Benachrichtigung senden
                 </button>
               )}
+
+              {/* Technical Info */}
+              <div className="border-t-2 pt-4" style={{ borderColor: '#e0e0e0' }}>
+                <p className="text-xs" style={{ color: '#999' }}>
+                  <strong>Hinweis:</strong> Push-Benachrichtigungen erfordern HTTPS und werden über einen Service Worker verwaltet. Deine Benachrichtigungseinstellungen werden automatisch synchronisiert.
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -585,26 +629,149 @@ export default function Settings() {
               Füge eine tägliche Erinnerung zu deinem Kalender hinzu. Das Upload-Fenster ist täglich von <strong>20:00 - 02:00 Uhr</strong>.
             </p>
 
-            <button
-              onClick={handleAddToCalendar}
-              className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
-            >
-              📅 Zu Kalender hinzufügen
-            </button>
+            {/* Daily Reminder Card */}
+            <div className="bg-white border-2 rounded-xl p-5" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-4 mb-4">
+                <div className="text-4xl">📝</div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                    Tägliche PAPYR Erinnerung
+                  </h3>
+                  <div className="space-y-2 text-sm" style={{ color: '#666' }}>
+                    <div className="flex items-center gap-2">
+                      <span>🕐</span>
+                      <span><strong>Täglich</strong> von 20:00 - 02:00 Uhr</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>🔔</span>
+                      <span>Erinnerung 15 Minuten vorher (19:45 Uhr)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>🔁</span>
+                      <span>Wiederholt sich automatisch jeden Tag</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleAddToCalendar}
+                className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
+              >
+                📅 Zu Kalender hinzufügen
+              </button>
+
+              <p className="text-xs text-center mt-3" style={{ color: '#999' }}>
+                Funktioniert mit Google Calendar, Apple Kalender, Outlook und allen anderen Kalender-Apps
+              </p>
+            </div>
+
+            {/* Info Box */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-3">
+                <div className="text-xl">💡</div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-1" style={{ color: '#2d2e2e' }}>
+                    So funktioniert's:
+                  </p>
+                  <ul className="text-xs space-y-1" style={{ color: '#666' }}>
+                    <li><strong>Desktop:</strong> Die .ics Datei wird heruntergeladen. Öffne sie mit deinem Kalender.</li>
+                    <li><strong>Mobile:</strong> Der Kalender-Event öffnet sich direkt in deiner Kalender-App.</li>
+                    <li><strong>Danach:</strong> Bestätige den wiederkehrenden Event - fertig! 🎉</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Account Actions */}
+        {/* Support Section */}
         <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
-          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Account-Aktionen</h2>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>💬 Support</h2>
 
-          <button
-            onClick={handleLogout}
-            className="w-full bg-white text-black px-6 py-3 text-lg font-bold border-2 rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
-            style={{ borderColor: '#e0e0e0' }}
-          >
-            🚪 Abmelden
-          </button>
+          <div className="space-y-4">
+            <p className="text-base mb-4" style={{ color: '#666' }}>
+              Hast du Fragen oder brauchst Hilfe? Wir sind für dich da!
+            </p>
+
+            {/* FAQ Link */}
+            <div className="bg-white border-2 rounded-xl p-5" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-4 mb-3">
+                <div className="text-3xl">❓</div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                    Häufig gestellte Fragen
+                  </h3>
+                  <p className="text-sm mb-3" style={{ color: '#666' }}>
+                    Finde Antworten auf die häufigsten Fragen zu PAPYR.
+                  </p>
+                  <a
+                    href="mailto:support@papyr.app?subject=FAQ Anfrage"
+                    className="inline-block bg-black text-white px-5 py-2 text-sm font-bold hover:bg-gray-900 transition-colors rounded-lg shadow-md"
+                  >
+                    FAQ ansehen
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Support */}
+            <div className="bg-white border-2 rounded-xl p-5" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-4 mb-3">
+                <div className="text-3xl">📧</div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                    Support kontaktieren
+                  </h3>
+                  <p className="text-sm mb-3" style={{ color: '#666' }}>
+                    Unser Team antwortet innerhalb von 24 Stunden.
+                  </p>
+                  <a
+                    href="mailto:support@papyr.app?subject=Support Anfrage"
+                    className="inline-block bg-black text-white px-5 py-2 text-sm font-bold hover:bg-gray-900 transition-colors rounded-lg shadow-md"
+                  >
+                    E-Mail senden
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Community */}
+            <div className="bg-white border-2 rounded-xl p-5" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-4 mb-3">
+                <div className="text-3xl">🌍</div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                    Community
+                  </h3>
+                  <p className="text-sm mb-3" style={{ color: '#666' }}>
+                    Tausche dich mit anderen PAPYR-Nutzern aus.
+                  </p>
+                  <a
+                    href="mailto:community@papyr.app?subject=Community Beitritt"
+                    className="inline-block bg-black text-white px-5 py-2 text-sm font-bold hover:bg-gray-900 transition-colors rounded-lg shadow-md"
+                  >
+                    Zur Community
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Info Box */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 rounded-xl p-4" style={{ borderColor: '#e0e0e0' }}>
+              <div className="flex items-start gap-3">
+                <div className="text-xl">💡</div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-2" style={{ color: '#2d2e2e' }}>
+                    Feedback & Verbesserungsvorschläge
+                  </p>
+                  <p className="text-xs" style={{ color: '#666' }}>
+                    Dein Feedback ist uns wichtig! Teile deine Ideen und hilf uns, PAPYR noch besser zu machen.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Danger Zone */}
@@ -630,71 +797,99 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* All Dialogs */}
+      {/* Notification Permission Dialog */}
       <ConfirmDialog
         title="Benachrichtigungen aktivieren"
         message="Möchtest du tägliche Erinnerungen erhalten? Du wirst jeden Tag zur richtigen Zeit daran erinnert, deinen Zettel zu schreiben."
         isOpen={showNotifDialog}
         onClose={() => setShowNotifDialog(false)}
         buttons={[
-          { text: '✓ Ja, erinnere mich!', action: confirmEnableNotifications, primary: true },
-          { text: 'Nicht jetzt', action: () => {} },
+          {
+            text: '✓ Ja, erinnere mich!',
+            action: confirmEnableNotifications,
+            primary: true,
+          },
+          {
+            text: 'Nicht jetzt',
+            action: () => {},
+          },
         ]}
       />
 
+      {/* Reset Onboarding Dialog */}
       <ConfirmDialog
         title="Onboarding zurücksetzen"
-        message="Möchtest du wirklich das Onboarding zurücksetzen? Du bleibst eingeloggt und behältst alle deine Daten."
+        message="Möchtest du wirklich das Onboarding zurücksetzen? Du bleibst eingeloggt und behältst alle deine Daten. Nur das Onboarding wird neu gestartet."
         isOpen={showResetDialog}
         onClose={() => setShowResetDialog(false)}
         buttons={[
-          { text: 'Ja, zurücksetzen', action: confirmResetOnboarding, primary: true },
-          { text: 'Abbrechen', action: () => {} },
+          {
+            text: 'Ja, zurücksetzen',
+            action: confirmResetOnboarding,
+            primary: true,
+          },
+          {
+            text: 'Abbrechen',
+            action: () => {},
+          },
         ]}
       />
 
+      {/* Clear Data Dialog */}
       <ConfirmDialog
         title="⚠️ ACHTUNG"
-        message="ALLE Daten werden unwiderruflich gelöscht! Dieser Vorgang kann NICHT rückgängig gemacht werden!"
+        message="ALLE Daten werden unwiderruflich gelöscht!\n\nDas umfasst:\n• Alle Bekenntnisse\n• Deinen Streak\n• Deine Jokers\n• Alle Einstellungen\n\nDieser Vorgang kann NICHT rückgängig gemacht werden!"
         isOpen={showClearDialog}
         onClose={() => setShowClearDialog(false)}
         buttons={[
-          { text: 'Ja, alles löschen', action: confirmClearData, danger: true },
-          { text: 'Abbrechen', action: () => {}, primary: true },
+          {
+            text: 'Ja, alles löschen',
+            action: confirmClearData,
+            danger: true,
+          },
+          {
+            text: 'Abbrechen',
+            action: () => {},
+            primary: true,
+          },
         ]}
       />
 
+      {/* Pro Upgrade Dialog */}
       <ConfirmDialog
         title="✨ Pro Member werden"
-        message="Für 4,99€/Monat erhältst du Extra-Joker, Shop-Rabatte und unterstützt soziale Projekte."
+        message="Du bist bereit für das nächste Level!\n\nFür 4,99€/Monat erhältst du:\n\n🃏 Jeden Monat einen Extra-Joker\n🛒 20% Rabatt im Shop\n🌍 Teile deine Meilensteine\n💚 Unterstütze soziale Projekte\n\nDu hast {streak} Tage geschafft. Bist du bereit für dieses Bekenntnis?"
         isOpen={showProDialog}
         onClose={() => setShowProDialog(false)}
         buttons={[
-          { text: '✨ Ja, Pro werden', action: confirmUpgradeToPro, primary: true },
-          { text: 'Nicht jetzt', action: () => {} },
+          {
+            text: '✨ Ja, Pro Member werden',
+            action: confirmUpgradeToPro,
+            primary: true,
+          },
+          {
+            text: 'Nicht jetzt',
+            action: () => {},
+          },
         ]}
       />
 
+      {/* Member Upgrade Dialog */}
       <ConfirmDialog
         title="📁 Member werden"
-        message="Für nur 0,99€/Monat: Unbegrenzte Archivierung, sicherer Cloud-Speicher. Die ersten 14 Zettel sind gratis!"
+        message="Sichere alle deine Erfolge!\n\nFür nur 0,99€/Monat erhältst du:\n\n📸 Unbegrenzte Archivierung aller Zettel\n☁️ Sicherer Cloud-Speicher\n📚 Dein komplettes Erfolgs-Archiv\n\nKostenlos testen: Die ersten 14 Zettel sind gratis!"
         isOpen={showMemberDialog}
         onClose={() => setShowMemberDialog(false)}
         buttons={[
-          { text: 'Jetzt Member werden', action: confirmBecomeMember, primary: true },
-          { text: 'Nicht jetzt', action: () => {} },
-        ]}
-      />
-
-      {/* Logout Dialog */}
-      <ConfirmDialog
-        title="🚪 Abmelden"
-        message="Möchtest du dich wirklich abmelden?\n\nDeine Daten sind sicher gespeichert und du kannst dich jederzeit wieder anmelden."
-        isOpen={showLogoutDialog}
-        onClose={() => setShowLogoutDialog(false)}
-        buttons={[
-          { text: 'Ja, abmelden', action: confirmLogout, primary: true },
-          { text: 'Abbrechen', action: () => {} },
+          {
+            text: 'Jetzt Member werden',
+            action: confirmBecomeMember,
+            primary: true,
+          },
+          {
+            text: 'Nicht jetzt',
+            action: () => {},
+          },
         ]}
       />
     </div>

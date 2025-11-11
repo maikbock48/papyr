@@ -288,17 +288,17 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               onClick={() => onNavigate('subscription')}
               className="rounded-xl p-3 shadow-lg relative transition-all hover:scale-105 cursor-pointer"
               style={{
-                border: '3px solid #69f0ae',
+                border: '3px solid #ffffff',
                 backgroundColor: 'transparent',
-                boxShadow: '0 0 20px rgba(105, 240, 174, 0.5), inset 0 0 20px rgba(105, 240, 174, 0.15)',
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15)',
                 flexBasis: '40%'
               }}
             >
               <div className="flex flex-col items-center">
-                <span className="text-xs font-bold" style={{ color: '#69f0ae' }}>
+                <span className="text-xs font-bold" style={{ color: '#ffffff' }}>
                   🔥 STREAK
                 </span>
-                <span className="text-xl font-bold" style={{ color: '#69f0ae' }}>
+                <span className="text-xl font-bold" style={{ color: '#ffffff' }}>
                   {appState.currentStreak}
                 </span>
               </div>
@@ -309,17 +309,17 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               onClick={() => onNavigate('subscription')}
               className="rounded-xl p-3 shadow-lg relative transition-all hover:scale-105 cursor-pointer"
               style={{
-                border: '3px solid #69f0ae',
+                border: '3px solid #ffffff',
                 backgroundColor: 'transparent',
-                boxShadow: '0 0 20px rgba(105, 240, 174, 0.5), inset 0 0 20px rgba(105, 240, 174, 0.15)',
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15)',
                 flexBasis: '40%'
               }}
             >
               <div className="flex flex-col items-center">
-                <span className="text-xs font-bold" style={{ color: '#69f0ae' }}>
+                <span className="text-xs font-bold" style={{ color: '#ffffff' }}>
                   🃏 JOKER
                 </span>
-                <span className="text-xl font-bold" style={{ color: '#69f0ae' }}>
+                <span className="text-xl font-bold" style={{ color: '#ffffff' }}>
                   {appState.jokers}
                 </span>
               </div>

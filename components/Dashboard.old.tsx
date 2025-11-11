@@ -2,20 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/supabase/context';
-import {
-  getCommitments,
-  createCommitment,
-  deleteCommitment as deleteCommitmentDB,
-  markCommitmentCompleted as markCommitmentCompletedDB,
-  canCommitToday as canCommitTodayDB,
-  needsPaywall as needsPaywallDB,
-  type Commitment
-} from '@/lib/supabase/database';
-import { isWithinWolfHour } from '@/lib/storage';
+import { getAppState, isWithinWolfHour, canCommitToday, needsPaywall, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
 import ConfirmDialog from './ConfirmDialog';
 import AddToHomeScreen from './AddToHomeScreen';
-import AuthModal from './AuthModal';
 
 interface DashboardProps {
   onUpload: () => void;
@@ -24,34 +13,11 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: DashboardProps) {
-  const { user, profile, loading: authLoading, refreshProfile } = useAuth();
-  const [commitments, setCommitments] = useState<Commitment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [appState, setAppState] = useState(getAppState());
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUploadChoice, setShowUploadChoice] = useState(false);
   const [uploadType, setUploadType] = useState<'camera' | 'gallery'>('camera');
   const [weekDaysToShow, setWeekDaysToShow] = useState(7);
-
-  // Load commitments
-  useEffect(() => {
-    if (user && !authLoading) {
-      loadCommitments();
-    }
-  }, [user, authLoading]);
-
-  const loadCommitments = async () => {
-    try {
-      setLoading(true);
-      const data = await getCommitments();
-      setCommitments(data);
-    } catch (error) {
-      console.error('Error loading commitments:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Adjust number of days shown based on screen width
   useEffect(() => {
@@ -66,21 +32,13 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
       }
     };
 
-    handleResize();
+    handleResize(); // Initial check
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleCameraClick = async () => {
-    // Check if user is logged in
-    if (!user) {
-      setShowAuthModal(true);
-      return;
-    }
-
-    // Check paywall
-    const needsPayment = await needsPaywallDB();
-    if (needsPayment) {
+  const handleCameraClick = () => {
+    if (needsPaywall()) {
       onPaywallRequired();
       return;
     }
@@ -90,12 +48,12 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
       return;
     }
 
-    const canCommit = await canCommitTodayDB();
-    if (!canCommit) {
+    if (!canCommitToday()) {
       alert('✅ Du hast heute bereits dein Bekenntnis abgelegt. Bis morgen Abend!');
       return;
     }
 
+    // Show choice dialog
     setShowUploadChoice(true);
   };
 
@@ -107,69 +65,26 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
     }, 100);
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      setUploading(true);
-
-      // For now, we'll use a simple prompt for goals
-      // TODO: Replace with proper modal/form
-      const goals = prompt('Was sind deine Ziele für morgen?');
-      if (!goals) {
-        setUploading(false);
-        return;
-      }
-
-      const signWithInitials = confirm('Möchtest du mit deinen Initialen unterschreiben?');
-
-      // Upload to Supabase
-      await createCommitment(file, goals, signWithInitials);
-
-      // Refresh profile to update streak
-      await refreshProfile();
-
-      // Reload commitments
-      await loadCommitments();
-
-      // Clear file input
+    if (file) {
+      onUpload();
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
-
-      // Call parent onUpload callback
-      onUpload();
-    } catch (error) {
-      console.error('Error uploading commitment:', error);
-      alert('Fehler beim Hochladen. Bitte versuche es erneut.');
-    } finally {
-      setUploading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Möchtest du diesen Zettel wirklich löschen? Das kann nicht rückgängig gemacht werden!')) {
-      return;
-    }
-
-    try {
-      await deleteCommitmentDB(id);
-      await loadCommitments();
-    } catch (error) {
-      console.error('Error deleting commitment:', error);
-      alert('Fehler beim Löschen. Bitte versuche es erneut.');
+  const handleDelete = (id: string) => {
+    if (confirm('Möchtest du diesen Zettel wirklich löschen? Das kann nicht rückgängig gemacht werden!')) {
+      deleteCommitment(id);
+      setAppState(getAppState());
     }
   };
 
-  const handleMarkCompleted = async (id: string) => {
-    try {
-      await markCommitmentCompletedDB(id);
-      await loadCommitments();
-    } catch (error) {
-      console.error('Error marking as completed:', error);
-      alert('Fehler beim Markieren. Bitte versuche es erneut.');
-    }
+  const handleMarkCompleted = (id: string) => {
+    markCommitmentCompleted(id);
+    setAppState(getAppState());
   };
 
   const canMarkAsCompleted = (commitmentDate: string) => {
@@ -177,38 +92,13 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
     const commitDate = new Date(commitmentDate);
     const currentDate = new Date(today);
     const diffDays = Math.floor((currentDate.getTime() - commitDate.getTime()) / (1000 * 60 * 60 * 24));
-    return diffDays >= 1;
+    return diffDays >= 1; // Can mark as completed from the next day onwards
   };
 
-  // Show loading state
-  if (authLoading || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl font-bold" style={{ color: '#2d2e2e' }}>
-          Lädt...
-        </div>
-      </div>
-    );
-  }
-
-  // Show auth modal if not logged in
-  if (!user) {
-    return (
-      <AuthModal
-        isOpen={true}
-        onClose={() => {}}
-        onSuccess={() => window.location.reload()}
-      />
-    );
-  }
-
   // Latest 3 commitments for preview
-  const recentCommitments = commitments
-    .filter(c => !c.is_developing)
+  const recentCommitments = appState.commitments
+    .filter(c => !c.isDeveloping)
     .slice(0, 3);
-
-  const currentStreak = profile?.current_streak || 0;
-  const canCommit = profile?.last_commitment_date !== new Date().toISOString().split('T')[0];
 
   return (
     <div className="min-h-screen">
@@ -230,7 +120,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
         <div className="relative z-10 w-full h-full flex flex-col">
           {/* Headline - Top */}
           <div className="pt-4 text-center">
-            {!canCommit && (
+            {!canCommitToday() && (
               <p className="text-base md:text-lg" style={{ color: '#2d2e2e' }}>
                 Dein Zettel ist Zettel {globalPulse.toLocaleString()}.
               </p>
@@ -296,8 +186,8 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
 
                         // Get commitment dates
                         const commitmentDates = new Set(
-                          commitments
-                            .filter(c => !c.is_developing)
+                          appState.commitments
+                            .filter(c => !c.isDeveloping)
                             .map(c => c.date)
                         );
 
@@ -339,7 +229,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                               {isToday ? (
                                 <div className="flex flex-col items-center">
                                   <div className="text-[10px] leading-none">{day}</div>
-                                  <div className="text-[8px] leading-none mt-0.5">🔥{currentStreak}</div>
+                                  <div className="text-[8px] leading-none mt-0.5">🔥{appState.currentStreak}</div>
                                 </div>
                               ) : (
                                 <>
@@ -385,14 +275,16 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                 <div className="flex gap-2">
                   {(() => {
                     const today = new Date();
-                    const currentDay = today.getDay();
+                    const currentDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
                     const monday = new Date(today);
+                    // Get Monday of current week
                     const diff = currentDay === 0 ? -6 : 1 - currentDay;
                     monday.setDate(today.getDate() + diff);
 
+                    // Get commitment dates
                     const commitmentDates = new Set(
-                      commitments
-                        .filter(c => !c.is_developing)
+                      appState.commitments
+                        .filter(c => !c.isDeveloping)
                         .map(c => c.date)
                     );
 
@@ -444,7 +336,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                 <div className="mb-4">
                   <div className="flex justify-center mb-3">
                     <div className="bg-white px-8 py-4 rounded-2xl font-bold text-4xl md:text-5xl border-2 shadow-lg" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
-                      🔥 {currentStreak}
+                      🔥 {appState.currentStreak}
                     </div>
                   </div>
                   <p className="text-sm md:text-base italic" style={{ color: '#2d2e2e', opacity: 0.6 }}>
@@ -453,7 +345,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                 </div>
               )}
 
-              {canCommit && (
+              {canCommitToday() && (
                 <>
                   <h1 className="text-2xl md:text-4xl font-bold mb-3" style={{ color: '#2d2e2e' }}>
                     Willkommen bei PAPYR.
@@ -475,8 +367,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             <div className="mt-32">
               <button
                 onClick={handleCameraClick}
-                disabled={uploading}
-                className="bg-transparent px-12 py-4 text-xl md:text-2xl font-bold hover:shadow-xl transition-all hover:scale-105 rounded-xl inline-flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-transparent px-12 py-4 text-xl md:text-2xl font-bold hover:shadow-xl transition-all hover:scale-105 rounded-xl inline-flex items-center gap-4"
                 style={{ border: '5px solid #4a4a4a', color: '#2d2e2e' }}
               >
                 <svg
@@ -498,7 +389,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                     d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                {uploading ? 'Lädt...' : 'Zettel scannen'}
+                Zettel scannen
               </button>
               <input
                 ref={fileInputRef}
@@ -548,13 +439,13 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
               <div key={commitment.id} className="border-2 rounded-xl bg-white p-4 shadow-lg hover:shadow-xl transition-shadow" style={{ borderColor: '#e0e0e0' }}>
                 <div className="relative">
                   <img
-                    src={commitment.image_url}
+                    src={commitment.imageData}
                     alt={`Bekenntnis ${commitment.date}`}
                     className="w-full aspect-square object-cover mb-3"
                   />
-                  {commitment.signature_initials && (
+                  {commitment.signatureInitials && (
                     <div className="absolute bottom-3 right-0 bg-white/95 px-3 py-1 text-sm font-bold border-2 rounded shadow-md" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
-                      {commitment.signature_initials}
+                      {commitment.signatureInitials}
                     </div>
                   )}
                   {commitment.completed && (
@@ -592,7 +483,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
       )}
 
       {/* Empty State */}
-      {commitments.length === 0 && (
+      {appState.commitments.length === 0 && (
         <div className="max-w-6xl mx-auto px-4 py-12 relative">
           <div className="text-center py-12 border-2 rounded-2xl bg-white shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <p className="text-xl mb-4" style={{ color: '#666' }}>
@@ -623,18 +514,6 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           },
         ]}
       />
-
-      {/* Auth Modal for login */}
-      {showAuthModal && (
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-          onSuccess={() => {
-            setShowAuthModal(false);
-            window.location.reload();
-          }}
-        />
-      )}
 
       {/* Add to Home Screen Prompt */}
       <AddToHomeScreen />

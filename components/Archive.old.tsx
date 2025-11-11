@@ -1,67 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/supabase/context';
-import {
-  getCommitments,
-  deleteCommitment as deleteCommitmentDB,
-  markCommitmentCompleted as markCommitmentCompletedDB,
-  type Commitment
-} from '@/lib/supabase/database';
+import { useState } from 'react';
+import { getAppState, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
 import { downloadCommitmentEvent } from '@/lib/calendar';
-import AuthModal from './AuthModal';
 
 export default function Archive() {
-  const { user, profile, loading: authLoading } = useAuth();
-  const [commitments, setCommitments] = useState<Commitment[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [appState, setAppState] = useState(getAppState());
   const [filter, setFilter] = useState<'all' | 'developed'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  useEffect(() => {
-    if (user && !authLoading) {
-      loadCommitments();
-    }
-  }, [user, authLoading]);
-
-  const loadCommitments = async () => {
-    try {
-      setLoading(true);
-      const data = await getCommitments();
-      setCommitments(data);
-    } catch (error) {
-      console.error('Error loading commitments:', error);
-    } finally {
-      setLoading(false);
+  const handleDelete = (id: string) => {
+    if (confirm('Möchtest du diesen Zettel wirklich löschen? Das kann nicht rückgängig gemacht werden!')) {
+      deleteCommitment(id);
+      setAppState(getAppState());
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Möchtest du diesen Zettel wirklich löschen? Das kann nicht rückgängig gemacht werden!')) {
-      return;
-    }
-
-    try {
-      await deleteCommitmentDB(id);
-      await loadCommitments();
-    } catch (error) {
-      console.error('Error deleting commitment:', error);
-      alert('Fehler beim Löschen. Bitte versuche es erneut.');
-    }
+  const handleMarkCompleted = (id: string) => {
+    markCommitmentCompleted(id);
+    setAppState(getAppState());
   };
 
-  const handleMarkCompleted = async (id: string) => {
-    try {
-      await markCommitmentCompletedDB(id);
-      await loadCommitments();
-    } catch (error) {
-      console.error('Error marking as completed:', error);
-      alert('Fehler beim Markieren. Bitte versuche es erneut.');
-    }
-  };
-
-  const handleExportToCalendar = (commitment: Commitment) => {
-    const date = new Date(commitment.created_at);
+  const handleExportToCalendar = (commitment: any) => {
+    const date = new Date(commitment.timestamp);
     downloadCommitmentEvent(date, commitment.goals);
   };
 
@@ -70,41 +31,19 @@ export default function Archive() {
     const commitDate = new Date(commitmentDate);
     const currentDate = new Date(today);
     const diffDays = Math.floor((currentDate.getTime() - commitDate.getTime()) / (1000 * 60 * 60 * 24));
-    return diffDays >= 1;
+    return diffDays >= 1; // Can mark as completed from the next day onwards
   };
 
-  // Show loading state
-  if (authLoading || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl font-bold" style={{ color: '#2d2e2e' }}>
-          Lädt...
-        </div>
-      </div>
-    );
-  }
+  const commitments = filter === 'all'
+    ? appState.commitments
+    : appState.commitments.filter(c => !c.isDeveloping);
 
-  // Show auth modal if not logged in
-  if (!user) {
-    return (
-      <AuthModal
-        isOpen={true}
-        onClose={() => {}}
-        onSuccess={() => window.location.reload()}
-      />
-    );
-  }
-
-  const filteredCommitments = filter === 'all'
+  const visibleCommitments = appState.hasPaid
     ? commitments
-    : commitments.filter(c => !c.is_developing);
-
-  const visibleCommitments = profile?.has_paid
-    ? filteredCommitments
-    : filteredCommitments.slice(0, 7);
+    : commitments.slice(0, 7);
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-12 px-4" >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -112,7 +51,7 @@ export default function Archive() {
             Dein Archiv
           </h1>
           <p className="text-lg" style={{ color: '#666' }}>
-            {commitments.length} {commitments.length === 1 ? 'Bekenntnis' : 'Bekenntnisse'} gesiegelt
+            {appState.commitments.length} {appState.commitments.length === 1 ? 'Bekenntnis' : 'Bekenntnisse'} gesiegelt
           </p>
         </div>
 
@@ -129,7 +68,7 @@ export default function Archive() {
               }`}
               style={filter === 'all' ? {} : { color: '#2d2e2e', borderColor: '#e0e0e0' }}
             >
-              Alle ({commitments.length})
+              Alle ({appState.commitments.length})
             </button>
             <button
               onClick={() => setFilter('developed')}
@@ -140,7 +79,7 @@ export default function Archive() {
               }`}
               style={filter === 'developed' ? {} : { color: '#2d2e2e', borderColor: '#e0e0e0' }}
             >
-              Entwickelt ({commitments.filter(c => !c.is_developing).length})
+              Entwickelt ({appState.commitments.filter(c => !c.isDeveloping).length})
             </button>
           </div>
 
@@ -183,7 +122,7 @@ export default function Archive() {
             {visibleCommitments.map((commitment) => (
               <div key={commitment.id} className="relative">
                 <div className="border-2 rounded-xl bg-white p-3 shadow-lg hover:shadow-xl transition-shadow" style={{ borderColor: '#e0e0e0' }}>
-                  {commitment.is_developing ? (
+                  {commitment.isDeveloping ? (
                     <div className="aspect-square bg-white flex items-center justify-center">
                       <div className="text-center">
                         <p className="text-sm font-bold animate-pulse" style={{ color: '#999' }}>
@@ -195,13 +134,13 @@ export default function Archive() {
                     <>
                       <div className="relative">
                         <img
-                          src={commitment.image_url}
+                          src={commitment.imageData}
                           alt={`Bekenntnis ${commitment.date}`}
                           className="w-full aspect-square object-cover mb-2 rounded"
                         />
-                        {commitment.signature_initials && (
+                        {commitment.signatureInitials && (
                           <div className="absolute bottom-2 right-2 bg-white/95 px-2 py-1 text-xs font-bold border-2 rounded shadow-md" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
-                            {commitment.signature_initials}
+                            {commitment.signatureInitials}
                           </div>
                         )}
                         {commitment.completed && (
@@ -253,7 +192,7 @@ export default function Archive() {
               <div key={commitment.id} className="border-2 rounded-xl bg-white p-6 shadow-lg hover:shadow-xl transition-shadow" style={{ borderColor: '#e0e0e0' }}>
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="w-full md:w-48 flex-shrink-0">
-                    {commitment.is_developing ? (
+                    {commitment.isDeveloping ? (
                       <div className="aspect-square bg-gray-50 flex items-center justify-center border-2 rounded" style={{ borderColor: '#e0e0e0' }}>
                         <p className="text-sm font-bold animate-pulse" style={{ color: '#999' }}>
                           Entwickelt sich...
@@ -262,13 +201,13 @@ export default function Archive() {
                     ) : (
                       <div className="relative">
                         <img
-                          src={commitment.image_url}
+                          src={commitment.imageData}
                           alt={`Bekenntnis ${commitment.date}`}
                           className="w-full aspect-square object-cover border-2 rounded" style={{ borderColor: '#e0e0e0' }}
                         />
-                        {commitment.signature_initials && (
+                        {commitment.signatureInitials && (
                           <div className="absolute bottom-2 right-2 bg-white/95 px-2 py-1 text-xs font-bold border-2 rounded shadow-md" style={{ color: '#2d2e2e', borderColor: '#e0e0e0' }}>
-                            {commitment.signature_initials}
+                            {commitment.signatureInitials}
                           </div>
                         )}
                         {commitment.completed && (
@@ -290,7 +229,7 @@ export default function Archive() {
                     </div>
 
                     {/* Action Buttons */}
-                    {!commitment.is_developing && (
+                    {!commitment.isDeveloping && (
                       <div className="flex gap-2">
                         {canMarkAsCompleted(commitment.date) && !commitment.completed && (
                           <button
@@ -322,11 +261,11 @@ export default function Archive() {
         )}
 
         {/* Paywall Notice */}
-        {!profile?.has_paid && commitments.length > 7 && (
+        {!appState.hasPaid && appState.commitments.length > 7 && (
           <div className="mt-8 text-center border-2 p-8 bg-white rounded-xl shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <p className="text-xl italic mb-4" style={{ color: '#666' }}>
               Dein Archiv ist verblasst...<br />
-              {commitments.length - 7} Bekenntnisse sind nicht mehr sichtbar.
+              {appState.commitments.length - 7} Bekenntnisse sind nicht mehr sichtbar.
             </p>
             <p className="text-lg font-bold" style={{ color: '#2d2e2e' }}>
               Bekenne dich für 1 €/Monat, um alles zu bewahren.
@@ -335,7 +274,7 @@ export default function Archive() {
         )}
 
         {/* Empty State */}
-        {filteredCommitments.length === 0 && (
+        {commitments.length === 0 && (
           <div className="text-center py-20 border-2 bg-white rounded-xl shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <p className="text-2xl" style={{ color: '#666' }}>
               Noch keine Bekenntnisse vorhanden.

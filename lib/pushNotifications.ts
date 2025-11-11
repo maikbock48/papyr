@@ -149,7 +149,6 @@ export async function sendTestPush(): Promise<boolean> {
         badge: '/assets/PAPYR.png',
         tag: 'papyr-test',
         requireInteraction: false,
-        vibrate: [200, 100, 200],
         data: {
           url: '/',
           timestamp: Date.now()
@@ -195,8 +194,7 @@ export async function scheduleNotification(hour: number, minute: number, message
           icon: '/assets/PAPYR.png',
           badge: '/assets/PAPYR.png',
           tag: 'papyr-scheduled',
-          requireInteraction: false,
-          vibrate: [200, 100, 200]
+          requireInteraction: false
         });
 
         // Reschedule for next day
@@ -233,7 +231,7 @@ export async function setupScheduledNotifications(
 }
 
 // Helper function to convert VAPID key
-function urlBase64ToUint8Array(base64String: string): Uint8Array {
+function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
     .replace(/-/g, '+')

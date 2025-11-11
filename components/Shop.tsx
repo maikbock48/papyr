@@ -58,7 +58,7 @@ export default function Shop() {
   ];
 
   return (
-    <div className="min-h-screen py-12 px-4" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
+    <div className="min-h-screen py-12 px-4" >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

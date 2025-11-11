@@ -37,7 +37,7 @@ export default function Subscription() {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
+    <div className="min-h-screen py-12 px-4" >
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#2d2e2e' }}>
@@ -62,7 +62,7 @@ export default function Subscription() {
             </div>
 
             {/* Content */}
-            <div className="p-8" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
+            <div className="p-8" >
               <p className="text-center mb-6 text-lg" style={{ color: '#2d2e2e' }}>
                 Dein digitaler Aktenschrank
               </p>
@@ -136,7 +136,7 @@ export default function Subscription() {
             </div>
 
             {/* Content */}
-            <div className="p-8" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
+            <div className="p-8" >
               <p className="text-center mb-6 text-lg font-bold" style={{ color: '#2d2e2e' }}>
                 Alles von Member, plus:
               </p>
