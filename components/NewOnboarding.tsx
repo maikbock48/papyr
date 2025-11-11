@@ -38,10 +38,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-brown leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight" style={{ color: '#2d2e2e' }}>
             LIEß DIR DAS NUR durch WENN DU ALLEINE BIST UND ZEIT HAST!!!
           </h1>
-          <p className="text-xl text-brown/70">- Albert Einstein :-)</p>
+          <p className="text-xl" style={{ color: '#666' }}>- Albert Einstein :-)</p>
         </div>
       ),
       buttonText: 'Weiter.'
@@ -50,10 +50,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <h2 className="text-4xl md:text-6xl font-bold text-brown">
+          <h2 className="text-4xl md:text-6xl font-bold" style={{ color: '#2d2e2e' }}>
             Willkommen Bro oder Sis!
           </h2>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Das einzige, was dich vom ,xxż**$\*** und dem Erreichen deiner Ziele fern hält, ist ein kleines simples Ritual vor dem Schlafen gehen.
           </p>
         </div>
@@ -64,10 +64,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-2xl md:text-3xl text-brown font-bold">
+          <p className="text-2xl md:text-3xl font-bold" style={{ color: '#2d2e2e' }}>
             Wie beten. Aber: Nicht beten.
           </p>
-          <p className="text-2xl md:text-3xl text-brown font-bold">
+          <p className="text-2xl md:text-3xl font-bold" style={{ color: '#2d2e2e' }}>
             Sondern Pläne schmieden.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Und du hast den ganzen Tag, um dich darauf vorzubereiten.
           </p>
         </div>
@@ -89,16 +89,16 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Such dir einen Notizblock, du weißt, einen von denen, die hinten kleben.
           </p>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed font-bold">
+          <p className="text-xl md:text-2xl leading-relaxed font-bold" style={{ color: '#2d2e2e' }}>
             Schreibe dir jeden Abend vor dem Schlafen 1-2 Dinge auf, die du morgen erledigen willst. Und erledige sie auch.
           </p>
-          <p className="text-2xl md:text-3xl text-brown font-bold">
+          <p className="text-2xl md:text-3xl font-bold" style={{ color: '#2d2e2e' }}>
             Das ist der ganze ganze Trick.
           </p>
-          <p className="text-2xl md:text-3xl text-brown font-bold">
+          <p className="text-2xl md:text-3xl font-bold" style={{ color: '#2d2e2e' }}>
             Das ist Perspektive.
           </p>
         </div>
@@ -109,7 +109,7 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-8">
-          <h2 className="text-4xl md:text-6xl font-bold text-brown">
+          <h2 className="text-4xl md:text-6xl font-bold" style={{ color: '#2d2e2e' }}>
             WIE HEISST DU???
           </h2>
           <input
@@ -118,7 +118,8 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
             onChange={(e) => setTempName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
             placeholder="Dein Name..."
-            className="w-full border-4 border-brown p-6 text-2xl bg-white focus:outline-none focus:ring-4 focus:ring-brown/50 font-typewriter text-center"
+            className="w-full border-2 p-6 text-2xl bg-white focus:outline-none focus:ring-2 focus:ring-black/50 text-center rounded-xl shadow-md"
+            style={{ borderColor: '#e0e0e0', color: '#2d2e2e' }}
             autoFocus
           />
         </div>
@@ -130,13 +131,13 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <h2 className="text-4xl md:text-6xl font-bold text-brown">
+          <h2 className="text-4xl md:text-6xl font-bold" style={{ color: '#2d2e2e' }}>
             {userName || 'NAME'},
           </h2>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Du wirst alles erreichen können im Leben, wie ein verdammter Superman.
           </p>
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Wenn du dir Pläne machst. Ab heute abend.
           </p>
         </div>
@@ -147,13 +148,13 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Das können kleine Dinge sein. Morgen zum Friseur, morgen Bewerbung schreiben, ein Instrument anfangen.
           </p>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed font-bold">
+          <p className="text-xl md:text-2xl leading-relaxed font-bold" style={{ color: '#2d2e2e' }}>
             Das können aber auch große Dinge sein.
           </p>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed font-bold">
+          <p className="text-xl md:text-2xl leading-relaxed font-bold" style={{ color: '#2d2e2e' }}>
             Was willst du in deinem Leben erreichen, was vorher nur ein Traum war?
           </p>
         </div>
@@ -164,16 +165,16 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <h2 className="text-4xl md:text-6xl font-bold text-brown">
+          <h2 className="text-4xl md:text-6xl font-bold" style={{ color: '#2d2e2e' }}>
             {userName || 'NAME'}!
           </h2>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Also warum die App?
           </p>
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Damit deine Träume greifbar werden.
           </p>
-          <p className="text-lg md:text-xl text-brown leading-relaxed">
+          <p className="text-lg md:text-xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Ich bin PAPYR, die dümmste App der Welt, weil ich dich bitte, deine Pläne auf Papier zu schrieben. Handschriftlich. Jeden Tag. Und mit deinen Initialen jeden Tag zu signieren... wenn du willst.
           </p>
         </div>
@@ -184,10 +185,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-sm md:text-base text-brown/60 italic">
+          <p className="text-sm md:text-base italic" style={{ color: '#666' }}>
             ((Du tauscht dir gerade 0,99€ct gegen dein Lebensglück ein!))
           </p>
-          <p className="text-xl md:text-2xl text-brown leading-relaxed font-bold">
+          <p className="text-xl md:text-2xl leading-relaxed font-bold" style={{ color: '#2d2e2e' }}>
             Du gibst dir Ziele im Leben, nicht nur Träume. Du gibst Dir einen Weg. Du siehst jeden Tag als kostbaren Lebensabschnitt an.
           </p>
         </div>
@@ -198,19 +199,19 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Durch Disziplin und Struktur im Leben:
           </p>
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Durch 1-2 Sachen, die du dir einfach auf einen simplen Zettel notierst.
           </p>
-          <p className="text-xl md:text-2xl text-brown">
+          <p className="text-xl md:text-2xl" style={{ color: '#2d2e2e' }}>
             Mehr ist das nicht. Kein Zaubertrick.
           </p>
-          <p className="text-lg md:text-xl text-brown leading-relaxed">
+          <p className="text-lg md:text-xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Also warum ne App? Es wird dein Fotobuch sein auf dem Weg zu .. egal wohin Du willst.
           </p>
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Das hier ist eine Bewegung und du wirst Teil davon sein. Wir brauchen keine Verkaufsmasche.
           </p>
         </div>
@@ -221,10 +222,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-xl md:text-2xl text-brown leading-relaxed">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Du dokumentierst hier deinen Weg zum deinem Erfolg. Ich nehm dir nur den Euro für die Cloud ab. Das ist dein Aktenschrank.
           </p>
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Damit du es dir beweisen kannst. Und es dokumentierst, um es der ganzen Welt zu beweisen!
           </p>
         </div>
@@ -235,16 +236,16 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
     {
       content: (
         <div className="space-y-6">
-          <p className="text-xl md:text-2xl text-brown leading-relaxed font-bold">
+          <p className="text-xl md:text-2xl leading-relaxed font-bold" style={{ color: '#2d2e2e' }}>
             Das hier hat schon längst gestartet, wenn du bis hierhin ausgehalten hast! Also herzlichen Glückwunsch, dich trennt nur noch eine Woche vom Erfolg!
           </p>
-          <p className="text-lg md:text-xl text-brown leading-relaxed">
+          <p className="text-lg md:text-xl leading-relaxed" style={{ color: '#2d2e2e' }}>
             Das ist alles. Keine Magie. Nur dein Commitment, digital verewigt: Dein Zettel, dein PAPYR.
           </p>
-          <p className="text-xl md:text-2xl text-brown font-bold">
+          <p className="text-xl md:text-2xl font-bold" style={{ color: '#2d2e2e' }}>
             Ist das die dümmste Idee aller Zeiten? Oder ist sie so simpel, dass sie genial ist?
           </p>
-          <p className="text-lg md:text-xl text-brown">
+          <p className="text-lg md:text-xl" style={{ color: '#2d2e2e' }}>
             Finde es heraus. Nachdem du eine Woche durchziehst, interessiert mich deine Meinung.
           </p>
         </div>
@@ -256,10 +257,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
   // Final screen is handled separately
   if (currentSection >= sections.length) {
     return (
-      <div className="min-h-screen bg-cream overflow-y-auto">
+      <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
         <div className="max-w-4xl mx-auto p-6 md:p-12">
           <div className="min-h-screen flex flex-col items-center justify-center space-y-12 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-brown">
+            <h1 className="text-4xl md:text-6xl font-bold" style={{ color: '#2d2e2e' }}>
               Schreibe deinen ersten<br />PAPYR
             </h1>
 
@@ -267,7 +268,7 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
               <div className="space-y-6 w-full">
                 <button
                   onClick={() => onComplete(false, userName)}
-                  className="w-full bg-brown text-cream px-12 py-6 text-2xl md:text-3xl font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-xl"
+                  className="w-full bg-black text-white px-12 py-6 text-2xl md:text-3xl font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-xl"
                 >
                   Los geht's!
                 </button>
@@ -275,7 +276,8 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
                 {onOpenInspiration && (
                   <button
                     onClick={onOpenInspiration}
-                    className="w-full bg-vintage text-brown px-8 py-4 text-lg border-4 border-brown hover:bg-vintage/80 transition-colors font-bold"
+                    className="w-full bg-white px-8 py-4 text-lg border-2 rounded-xl hover:bg-gray-50 transition-colors font-bold shadow-md"
+                    style={{ borderColor: '#e0e0e0', color: '#2d2e2e' }}
                   >
                     🎲 Lass dich inspirieren
                   </button>
@@ -283,17 +285,18 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
 
                 <button
                   onClick={() => setShowRules(true)}
-                  className="w-full bg-cream text-brown px-8 py-4 text-lg border-4 border-brown hover:bg-vintage/30 transition-colors"
+                  className="w-full px-8 py-4 text-lg border-2 rounded-xl hover:bg-white/30 transition-colors shadow-md"
+                  style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#e0e0e0', color: '#2d2e2e' }}
                 >
                   Die "Spielregeln" - dein Weg zu Erfolg
                 </button>
               </div>
             ) : (
               <div className="space-y-8 w-full text-left">
-                <div className="border-4 border-brown p-8 bg-white">
-                  <h2 className="text-2xl font-bold text-brown mb-6">Die Spielregeln</h2>
+                <div className="border-2 rounded-xl shadow-lg p-8 bg-white" style={{ border: '0.5px solid black' }}>
+                  <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Die Spielregeln</h2>
 
-                  <div className="space-y-6 text-lg text-brown">
+                  <div className="space-y-6 text-lg" style={{ color: '#2d2e2e' }}>
                     <div>
                       <strong>Dein Zettel:</strong> Lässt sich täglich nur von 20:00 - 02:00 Uhr hochladen. Wenn du es vergisst, kannst du deinen Tageserfolg nicht dokumentieren. Das ist das Spiel, das ist Disziplin.
                     </div>
@@ -310,7 +313,7 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
 
                 <button
                   onClick={() => onComplete(false, userName)}
-                  className="w-full bg-brown text-cream px-12 py-6 text-2xl md:text-3xl font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-xl"
+                  className="w-full bg-black text-white px-12 py-6 text-2xl md:text-3xl font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-xl"
                 >
                   Weiter zu PAPYR
                 </button>
@@ -327,8 +330,8 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-cream overflow-y-auto snap-y snap-mandatory"
-      style={{ scrollBehavior: 'smooth' }}
+      className="min-h-screen overflow-y-auto snap-y snap-mandatory"
+      style={{ backgroundColor: 'rgb(206, 205, 203)', scrollBehavior: 'smooth' }}
     >
       {sections.map((section, index) => (
         <div
@@ -345,7 +348,7 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
                   <button
                     onClick={section.customAction || handleNext}
                     disabled={index === 5 && !tempName.trim()} // Name input validation
-                    className="w-full bg-brown text-cream px-8 py-5 text-xl md:text-2xl font-bold hover:bg-brown/90 transition-colors border-4 border-brown shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-black text-white px-8 py-5 text-xl md:text-2xl font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {section.buttonText}
                   </button>
@@ -360,10 +363,10 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
                   key={i}
                   className={`w-2 h-2 rounded-full transition-all ${
                     i === currentSection
-                      ? 'bg-brown w-8'
+                      ? 'bg-black w-8'
                       : i < currentSection
-                      ? 'bg-brown/40'
-                      : 'bg-brown/10'
+                      ? 'bg-black/40'
+                      : 'bg-black/10'
                   }`}
                 />
               ))}

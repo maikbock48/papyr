@@ -43,39 +43,42 @@ export default function OnboardingPopup({
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
-        show ? 'bg-black/70 backdrop-blur-sm' : 'bg-black/0'
+        show ? 'backdrop-blur-md' : ''
       }`}
+      style={{ backgroundColor: show ? 'rgba(0, 0, 0, 0.92)' : 'rgba(0, 0, 0, 0)' }}
     >
       <div
-        className={`max-w-2xl w-full bg-cream border-8 border-brown shadow-2xl rounded-3xl overflow-hidden transform transition-all duration-300 ${
+        className={`max-w-2xl w-full bg-white shadow-2xl rounded-xl overflow-hidden transform transition-all duration-300 ${
           show ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
         }`}
+        style={{ border: '0.5px solid black' }}
       >
         {/* Header */}
-        <div className="bg-brown text-cream px-6 py-4 border-b-4 border-brown">
+        <div className="bg-black text-white px-6 py-4 border-b-2" style={{ borderColor: '#e0e0e0' }}>
           <h2 className="text-2xl md:text-3xl font-bold text-center">
             {title}
           </h2>
         </div>
 
         {/* Content */}
-        <div className="p-6 md:p-8">
-          <p className="text-lg md:text-xl text-brown leading-relaxed whitespace-pre-line">
+        <div className="p-6 md:p-8" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
+          <p className="text-lg md:text-xl leading-relaxed whitespace-pre-line" style={{ color: '#2d2e2e' }}>
             {text}
           </p>
         </div>
 
         {/* Buttons */}
-        <div className="px-6 pb-6 space-y-3">
+        <div className="px-6 pb-6 space-y-3" style={{ backgroundColor: 'rgb(206, 205, 203)' }}>
           {buttons.map((button, index) => (
             <button
               key={index}
               onClick={() => handleAction(button.action)}
-              className={`w-full px-6 py-4 text-lg md:text-xl font-bold transition-all border-4 rounded-xl ${
+              className={`w-full px-6 py-4 text-lg md:text-xl font-bold transition-all rounded-xl border-2 shadow-md ${
                 index === 0
-                  ? 'bg-brown text-cream border-brown hover:bg-brown/90 hover:scale-105'
-                  : 'bg-cream text-brown border-brown hover:bg-vintage/30'
+                  ? 'bg-black text-white hover:bg-gray-900 hover:scale-105'
+                  : 'bg-white hover:bg-gray-50'
               }`}
+              style={index === 0 ? { borderColor: 'transparent' } : { borderColor: '#e0e0e0', color: '#2d2e2e' }}
             >
               {button.text}
             </button>

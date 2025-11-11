@@ -20,6 +20,7 @@ export default function Settings() {
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [showProDialog, setShowProDialog] = useState(false);
+  const [showMemberDialog, setShowMemberDialog] = useState(false);
 
   const handleSave = () => {
     const state = getAppState();
@@ -63,6 +64,20 @@ export default function Settings() {
     saveAppState(state);
     setAppState(state);
     alert('🎉 Willkommen als Pro Member! Du erhältst jetzt alle Pro-Vorteile.');
+  };
+
+  const handleBecomeMember = () => {
+    setShowMemberDialog(true);
+  };
+
+  const confirmBecomeMember = () => {
+    // TODO: Integrate payment processing
+    // For now, just set hasPaid to true
+    const state = getAppState();
+    state.hasPaid = true;
+    saveAppState(state);
+    setAppState(state);
+    alert('🎉 Willkommen als Member! Deine Zettel werden jetzt unbegrenzt gespeichert.');
   };
 
   const handleEnableNotifications = () => {
@@ -167,6 +182,91 @@ export default function Settings() {
               </p>
             </div>
           )}
+        </div>
+
+        {/* Account & Membership Section */}
+        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Account</h2>
+
+          <div className="space-y-4">
+            {/* Current Status */}
+            <div className="p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
+              <div className="font-bold mb-1" style={{ color: '#2d2e2e' }}>Aktueller Status</div>
+              <div className="text-sm" style={{ color: '#666' }}>
+                {appState.hasPaid ? '✓ Premium Member (0,99€/Monat)' : 'Free Trial'}
+              </div>
+              {!appState.hasPaid && (
+                <div className="text-sm mt-2 font-medium" style={{ color: '#666' }}>
+                  Noch {Math.max(0, 14 - appState.commitments.length)} Zettel kostenlos
+                </div>
+              )}
+            </div>
+
+            {/* Membership Upgrade - Only show if not paid yet */}
+            {!appState.hasPaid && (
+              <div className="border-2 rounded-xl p-6" style={{ borderColor: '#e0e0e0' }}>
+                <div className="text-center mb-5">
+                  <div className="text-3xl mb-2">📁</div>
+                  <h3 className="text-xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                    Werde Member
+                  </h3>
+                  <p className="text-sm mb-4" style={{ color: '#666' }}>
+                    Unbegrenztes Archiv für alle deine Erfolge
+                  </p>
+
+                  <div className="bg-white border-2 rounded-xl p-4 mb-5" style={{ borderColor: '#e0e0e0' }}>
+                    <div className="text-2xl font-bold" style={{ color: '#2d2e2e' }}>
+                      0,99€ <span className="text-base font-normal">/Monat</span>
+                    </div>
+                    <div className="text-xs italic mt-1" style={{ color: '#666' }}>
+                      Dein digitaler Aktenschrank
+                    </div>
+                  </div>
+
+                  <div className="text-left space-y-3 mb-5">
+                    <div className="flex items-start gap-3">
+                      <div className="text-lg">📸</div>
+                      <div>
+                        <div className="font-bold text-sm" style={{ color: '#2d2e2e' }}>Unbegrenzte Archivierung</div>
+                        <div className="text-xs" style={{ color: '#666' }}>
+                          Alle deine Zettel werden dauerhaft gespeichert
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="text-lg">☁️</div>
+                      <div>
+                        <div className="font-bold text-sm" style={{ color: '#2d2e2e' }}>Cloud-Speicher</div>
+                        <div className="text-xs" style={{ color: '#666' }}>
+                          Zugriff von überall, immer sicher
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="text-lg">📚</div>
+                      <div>
+                        <div className="font-bold text-sm" style={{ color: '#2d2e2e' }}>Dein Erfolgs-Archiv</div>
+                        <div className="text-xs" style={{ color: '#666' }}>
+                          Dokumentiere deinen kompletten Weg
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleBecomeMember}
+                  className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
+                >
+                  Jetzt Member werden
+                </button>
+
+                <p className="text-xs text-center mt-3" style={{ color: '#999' }}>
+                  Kostenlos testen: Deine ersten 14 Zettel sind gratis
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Pro Subscription Section - Only show if streak >= 30 */}
@@ -362,27 +462,6 @@ export default function Settings() {
           </div>
         </div>
 
-        {/* Account Section */}
-        <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
-          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Account</h2>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
-              <div>
-                <div className="font-bold" style={{ color: '#2d2e2e' }}>Status</div>
-                <div className="text-sm" style={{ color: '#666' }}>
-                  {appState.hasPaid ? 'Premium (1€/Monat)' : 'Free Trial'}
-                </div>
-              </div>
-              {!appState.hasPaid && (
-                <div className="text-sm" style={{ color: '#666' }}>
-                  {14 - appState.commitments.length} Tage übrig
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* Danger Zone */}
         <div className="bg-white border-2 border-red-600 rounded-xl p-6 md:p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-red-600 mb-6">Danger Zone</h2>
@@ -474,6 +553,25 @@ export default function Settings() {
           {
             text: '✨ Ja, Pro Member werden',
             action: confirmUpgradeToPro,
+            primary: true,
+          },
+          {
+            text: 'Nicht jetzt',
+            action: () => {},
+          },
+        ]}
+      />
+
+      {/* Member Upgrade Dialog */}
+      <ConfirmDialog
+        title="📁 Member werden"
+        message="Sichere alle deine Erfolge!\n\nFür nur 0,99€/Monat erhältst du:\n\n📸 Unbegrenzte Archivierung aller Zettel\n☁️ Sicherer Cloud-Speicher\n📚 Dein komplettes Erfolgs-Archiv\n\nKostenlos testen: Die ersten 14 Zettel sind gratis!"
+        isOpen={showMemberDialog}
+        onClose={() => setShowMemberDialog(false)}
+        buttons={[
+          {
+            text: 'Jetzt Member werden',
+            action: confirmBecomeMember,
             primary: true,
           },
           {

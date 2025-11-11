@@ -16,6 +16,8 @@ import Dashboard from './Dashboard';
 import Archive from './Archive';
 import Settings from './Settings';
 import Shop from './Shop';
+import Rules from './Rules';
+import Subscription from './Subscription';
 import UploadFlow from './UploadFlow';
 import DailyQuestion from './DailyQuestion';
 import SevenDayReflection from './SevenDayReflection';
@@ -27,7 +29,7 @@ interface MainAppProps {
   onSevenDayReflection: () => void;
 }
 
-type AppView = 'dashboard' | 'archive' | 'settings' | 'shop';
+type AppView = 'dashboard' | 'archive' | 'settings' | 'shop' | 'rules' | 'subscription';
 
 export default function MainApp({ onPaywallRequired, onSevenDayReflection }: MainAppProps) {
   const [appState, setAppState] = useState(getAppState());
@@ -42,6 +44,32 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
   const [currentPopupData, setCurrentPopupData] = useState<any>(null);
   const [showInspirationBrowser, setShowInspirationBrowser] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Collapse/expand sidebar on scroll
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // If at the top (or near top), open sidebar
+      if (currentScrollY <= 50) {
+        setSidebarOpen(true);
+      }
+      // If scrolling down and passed 100px, close sidebar
+      else if (currentScrollY > 100 && currentScrollY > lastScrollY) {
+        setSidebarOpen(false);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Hide streak splash after 1.5 seconds, then check for what to show next
   useEffect(() => {
@@ -242,10 +270,10 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
         globalPulse={globalPulse}
       />
 
-      {/* Content wrapper - Shop and Archive adjust to sidebar */}
+      {/* Content wrapper - Shop, Archive, Settings, Rules, and Subscription adjust to sidebar */}
       <div
         className={`transition-all duration-300 m-0 p-0 ${
-          (currentView === 'shop' || currentView === 'archive')
+          (currentView === 'shop' || currentView === 'archive' || currentView === 'settings' || currentView === 'rules' || currentView === 'subscription')
             ? (sidebarOpen ? 'md:ml-[280px] lg:ml-[280px]' : 'md:ml-0 lg:ml-0')
             : ''
         }`}
@@ -263,6 +291,10 @@ export default function MainApp({ onPaywallRequired, onSevenDayReflection }: Mai
         {currentView === 'settings' && <Settings />}
 
         {currentView === 'shop' && <Shop />}
+
+        {currentView === 'rules' && <Rules />}
+
+        {currentView === 'subscription' && <Subscription />}
       </div>
 
       {/* Onboarding Popup */}

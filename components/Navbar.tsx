@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { getAppState } from '@/lib/storage';
 
 interface NavbarProps {
-  currentView: 'dashboard' | 'archive' | 'settings' | 'shop';
-  onNavigate: (view: 'dashboard' | 'archive' | 'settings' | 'shop') => void;
+  currentView: 'dashboard' | 'archive' | 'settings' | 'shop' | 'rules' | 'subscription';
+  onNavigate: (view: 'dashboard' | 'archive' | 'settings' | 'shop' | 'rules' | 'subscription') => void;
   onOpenInspiration: () => void;
   sidebarOpen: boolean;
   onSidebarToggle: (open: boolean) => void;
@@ -50,7 +50,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
             <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
               <div className="flex items-center gap-2">
                 <span className="text-sm md:text-base text-white/80 whitespace-nowrap">
-                  Heute wurden bereits
+                  Heute wurden
                 </span>
                 <span className="text-2xl md:text-3xl font-bold text-white">
                   {globalPulse.toLocaleString()}
@@ -174,6 +174,20 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               >
                 Einstellungen
               </button>
+              <button
+                onClick={() => {
+                  onNavigate('rules');
+                  setMobileMenuOpen(false);
+                }}
+                style={menuStyle}
+                className={`block w-full text-left px-3 py-2 rounded-lg text-base font-medium ${
+                  currentView === 'rules'
+                    ? 'bg-white text-black'
+                    : 'text-white hover:bg-white/10'
+                }`}
+              >
+                Spielregeln
+              </button>
             </div>
           </div>
         )}
@@ -254,7 +268,63 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
             >
               Einstellungen
             </button>
+            <button
+              onClick={() => onNavigate('rules')}
+              style={menuStyle}
+              className={`w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
+                currentView === 'rules'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
+              }`}
+            >
+              Spielregeln
+            </button>
           </nav>
+
+          {/* Stamps Section */}
+          <div className="mt-6 flex justify-center gap-3">
+            {/* Streak Stamp */}
+            <button
+              onClick={() => onNavigate('subscription')}
+              className="rounded-xl p-3 shadow-lg relative transition-all hover:scale-105 cursor-pointer"
+              style={{
+                border: '3px solid #69f0ae',
+                backgroundColor: 'transparent',
+                boxShadow: '0 0 20px rgba(105, 240, 174, 0.5), inset 0 0 20px rgba(105, 240, 174, 0.15)',
+                flexBasis: '40%'
+              }}
+            >
+              <div className="flex flex-col items-center">
+                <span className="text-xs font-bold" style={{ color: '#69f0ae' }}>
+                  🔥 STREAK
+                </span>
+                <span className="text-xl font-bold" style={{ color: '#69f0ae' }}>
+                  {appState.currentStreak}
+                </span>
+              </div>
+            </button>
+
+            {/* Joker Stamp */}
+            <button
+              onClick={() => onNavigate('subscription')}
+              className="rounded-xl p-3 shadow-lg relative transition-all hover:scale-105 cursor-pointer"
+              style={{
+                border: '3px solid #69f0ae',
+                backgroundColor: 'transparent',
+                boxShadow: '0 0 20px rgba(105, 240, 174, 0.5), inset 0 0 20px rgba(105, 240, 174, 0.15)',
+                flexBasis: '40%'
+              }}
+            >
+              <div className="flex flex-col items-center">
+                <span className="text-xs font-bold" style={{ color: '#69f0ae' }}>
+                  🃏 JOKER
+                </span>
+                <span className="text-xl font-bold" style={{ color: '#69f0ae' }}>
+                  {appState.jokers}
+                </span>
+              </div>
+            </button>
+          </div>
 
           {/* Footer */}
           <div className="pt-6 border-t" style={{ borderColor: '#2d2e2e' }}>

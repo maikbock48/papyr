@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { getAppState, isWithinWolfHour, canCommitToday, needsPaywall, deleteCommitment, markCommitmentCompleted } from '@/lib/storage';
 import ConfirmDialog from './ConfirmDialog';
+import AddToHomeScreen from './AddToHomeScreen';
 
 interface DashboardProps {
   onUpload: () => void;
@@ -15,6 +17,25 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUploadChoice, setShowUploadChoice] = useState(false);
   const [uploadType, setUploadType] = useState<'camera' | 'gallery'>('camera');
+  const [weekDaysToShow, setWeekDaysToShow] = useState(7);
+
+  // Adjust number of days shown based on screen width
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 430) {
+        setWeekDaysToShow(7);
+      } else if (width < 530) {
+        setWeekDaysToShow(8);
+      } else {
+        setWeekDaysToShow(9);
+      }
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleCameraClick = () => {
     if (needsPaywall()) {
@@ -86,28 +107,50 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
         <img
           src="/last.png"
           alt="PAPYR Block"
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-auto h-full object-contain"
+          className="absolute left-1/2 -translate-x-1/2 w-auto object-contain lg:h-full lg:top-0"
+          style={{
+            top: 'max(280px, 25vh)',
+            height: 'calc(100vh - max(280px, 25vh))',
+            maxHeight: '120%'
+          }}
         />
 
         {/* Hero Section - Overlay on top of block */}
         <div className="relative z-10 w-full h-full flex flex-col">
           {/* Headline - Top */}
-          <div className="pt-6 text-center">
-            <h1 className="text-3xl md:text-5xl font-bold" style={{ color: '#2d2e2e', marginBottom: '12px' }}>
-              Was steht an?
-            </h1>
+          <div className="pt-4 text-center">
             {!canCommitToday() && (
-              <p className="text-xl md:text-2xl" style={{ color: '#2d2e2e' }}>
+              <p className="text-base md:text-lg" style={{ color: '#2d2e2e' }}>
                 Dein Zettel ist Zettel {globalPulse.toLocaleString()}.
               </p>
             )}
           </div>
 
-          {/* Calendar - positioned in top right - Desktop only */}
-          <div className="relative hidden lg:block">
+          {/* Onboarding Video Card - Desktop only */}
+          <div className="relative hidden lg:block" style={{ zIndex: 20 }}>
             <div className="text-center">
-              <div className="absolute right-[2%] md:right-[6%] transform rotate-[3deg] scale-110" style={{ marginTop: '180px' }}>
-                  <div className="bg-white border-2 shadow-lg rounded-xl p-4 min-w-[200px]" style={{ borderColor: '#e0e0e0' }}>
+              <div className="absolute bg-white rounded-xl shadow-lg" style={{ right: '10px', marginTop: 'max(15vh, 80px)', border: '0.5px solid black', width: '260px', padding: '12px', zIndex: 20 }}>
+                <h3 className="text-lg font-bold mb-0.5" style={{ color: '#2d2e2e' }}>
+                  Go onboarding in 2 minutes
+                </h3>
+                <p className="text-sm mb-1.5" style={{ color: '#666', lineHeight: '1.3' }}>
+                  Verstehe das Spiel! Schau dir das kurze Onboarding Video an fuer mehr Disziplin, Fokus & Fantasie.
+                </p>
+                <Link
+                  href="/onboarding-video"
+                  className="inline-block bg-black text-white px-5 py-1.5 rounded-lg font-bold hover:bg-gray-900 transition-all hover:scale-105 shadow-md text-sm w-full text-center"
+                >
+                  Welcome to PAPYR
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Calendar - positioned in top right - Desktop only */}
+          <div className="relative hidden lg:block" style={{ zIndex: 15 }}>
+            <div className="text-center">
+              <div className="absolute transform rotate-[3deg]" style={{ right: '40px', marginTop: 'max(15vh, 80px)', zIndex: 15, transform: 'rotate(3deg) scale(1)' }}>
+                  <div className="bg-white shadow-lg rounded-xl p-4" style={{ border: '0.5px solid black', width: '260px' }}>
                     {/* Calendar Header */}
                     <div className="text-center mb-2 pb-2 border-b" style={{ borderColor: '#e0e0e0' }}>
                       <p className="text-sm font-bold" style={{ color: '#2d2e2e' }}>
@@ -192,10 +235,27 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
               </div>
             </div>
 
-          {/* Week Bar - Mobile/Tablet only */}
-          <div className="lg:hidden px-4 mt-8">
-            <div className="flex justify-center">
-              <div className="bg-white border-2 shadow-lg rounded-xl p-3" style={{ borderColor: '#e0e0e0' }}>
+          {/* Mobile/Tablet - Onboarding Card and Week Bar */}
+          <div className="lg:hidden px-4 mt-4 flex flex-col items-center gap-4">
+            {/* Onboarding Video Card */}
+            <div className="bg-white rounded-xl p-4 shadow-lg w-full max-w-md" style={{ border: '0.5px solid black' }}>
+              <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+                Go onboarding in 2 minutes
+              </h3>
+              <p className="text-xs mb-3" style={{ color: '#666' }}>
+                Verstehe das Spiel! Schau dir das kurze Onboarding Video an fuer mehr Disziplin, Fokus & Fantasie.
+              </p>
+              <Link
+                href="/onboarding-video"
+                className="inline-block bg-black text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-900 transition-all hover:scale-105 shadow-md text-sm w-full text-center"
+              >
+                Welcome to PAPYR
+              </Link>
+            </div>
+
+            {/* Week Bar */}
+            <div className="w-full max-w-md">
+              <div className="bg-white shadow-lg rounded-xl p-3" style={{ border: '0.5px solid black' }}>
                 <div className="flex gap-2">
                   {(() => {
                     const today = new Date();
@@ -212,10 +272,10 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                         .map(c => c.date)
                     );
 
-                    const weekDays = ['M', 'D', 'M', 'D', 'F', 'S', 'S'];
+                    const weekDays = ['M', 'D', 'M', 'D', 'F', 'S', 'S', 'M', 'D'];
                     const cells = [];
 
-                    for (let i = 0; i < 7; i++) {
+                    for (let i = 0; i < weekDaysToShow; i++) {
                       const date = new Date(monday);
                       date.setDate(monday.getDate() + i);
                       const dateStr = date.toISOString().split('T')[0];
@@ -253,7 +313,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           </div>
 
           {/* Center content area */}
-          <div className="flex-1 flex flex-col items-center pt-28 px-4 relative">
+          <div className="flex-1 flex flex-col items-center pt-32 px-4 relative">
             <div className="text-center max-w-6xl mx-auto">
               {/* Streak Display for when Wolf Hour is not active */}
               {!isWithinWolfHour() && (
@@ -270,9 +330,14 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
               )}
 
               {canCommitToday() && (
-                <p className="text-xl md:text-2xl mb-4" style={{ color: '#2d2e2e' }}>
-                  Dein Zettel fehlt.
-                </p>
+                <>
+                  <h1 className="text-2xl md:text-4xl font-bold mb-3" style={{ color: '#2d2e2e' }}>
+                    Willkommen bei PAPYR.
+                  </h1>
+                  <p className="text-xl md:text-2xl mb-4" style={{ color: '#2d2e2e' }}>
+                    Dein Zettel fehlt.
+                  </p>
+                </>
               )}
               <h2 className="text-xl md:text-3xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
                 Schmiede Pläne..
@@ -283,7 +348,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             </div>
 
             {/* Upload Button - Fixed at bottom */}
-            <div className="absolute bottom-40 left-1/2 -translate-x-1/2">
+            <div className="absolute bottom-30 left-1/2 -translate-x-1/2">
               <button
                 onClick={handleCameraClick}
                 className="bg-transparent px-12 py-4 text-xl md:text-2xl font-bold hover:shadow-xl transition-all hover:scale-105 rounded-xl inline-flex items-center gap-4"
@@ -423,16 +488,19 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
         onClose={() => setShowUploadChoice(false)}
         buttons={[
           {
-            text: '📷 Kamera öffnen',
+            text: 'Kamera öffnen',
             action: () => handleUploadChoice('camera'),
             primary: true,
           },
           {
-            text: '🖼 Galerie durchsuchen',
+            text: 'Galerie durchsuchen',
             action: () => handleUploadChoice('gallery'),
           },
         ]}
       />
+
+      {/* Add to Home Screen Prompt */}
+      <AddToHomeScreen />
     </div>
   );
 }

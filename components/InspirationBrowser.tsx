@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import inspirationData from '@/lib/inspirationData.json';
+import RitualPopup from './RitualPopup';
 
 interface InspirationBrowserProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('verbindung');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shuffledItems, setShuffledItems] = useState<string[]>([]);
+  const [showRitualPopup, setShowRitualPopup] = useState(false);
 
   const categories = inspirationData.categories;
 
@@ -66,8 +68,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
   const handleCopy = () => {
     const currentItem = shuffledItems[currentIndex];
     if (currentItem) {
-      navigator.clipboard.writeText(currentItem);
-      alert(`"${currentItem}" in die Zwischenablage kopiert!`);
+      setShowRitualPopup(true);
     }
   };
 
@@ -78,10 +79,10 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
-        show ? 'bg-black/70 backdrop-blur-sm' : 'bg-black/0'
+        show ? 'backdrop-blur-md' : ''
       }`}
       onClick={handleClose}
-      style={{ backgroundColor: show ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)' }}
+      style={{ backgroundColor: show ? 'rgba(0, 0, 0, 0.92)' : 'rgba(0, 0, 0, 0)' }}
     >
       <div
         className={`max-w-4xl w-full max-h-[90vh] bg-white border-2 shadow-2xl rounded-xl transform transition-all duration-300 overflow-hidden flex flex-col ${
@@ -94,10 +95,10 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
         <div className="bg-black text-white px-6 py-4 border-b-2 flex-shrink-0 relative" style={{ borderColor: '#e0e0e0' }}>
           <div className="text-center">
             <h2 className="text-2xl md:text-3xl font-bold">
-              🎲 Stöberkiste
+              Inspiration ❤️
             </h2>
             <p className="text-sm md:text-base text-white/80 mt-2">
-              Lass dich inspirieren von anderen Zielen
+              Lass dich inspirieren von den Zielen anderer!
             </p>
           </div>
           <button
@@ -109,15 +110,15 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
         </div>
 
         {/* Category Tabs */}
-        <div className="px-4 py-3 border-b-2 flex-shrink-0 overflow-x-auto" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#e0e0e0' }}>
-          <div className="flex gap-2 min-w-max justify-center">
+        <div className="px-4 py-3 border-b-2 flex-shrink-0" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#e0e0e0' }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {(Object.keys(categories) as CategoryKey[]).map((key) => {
               const category = categories[key];
               return (
                 <button
                   key={key}
                   onClick={() => handleCategoryChange(key)}
-                  className={`px-4 py-2 font-bold border-2 rounded-xl transition-all whitespace-nowrap ${
+                  className={`px-4 py-3 font-bold border-2 rounded-xl transition-all ${
                     selectedCategory === key
                       ? 'bg-black text-white scale-105'
                       : 'bg-white hover:bg-gray-50'
@@ -127,7 +128,10 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
                     color: selectedCategory === key ? 'white' : '#2d2e2e'
                   }}
                 >
-                  {category.icon} {category.name}
+                  <div className="flex items-center justify-center gap-2">
+                    <span>{category.icon}</span>
+                    <span>{category.name}</span>
+                  </div>
                 </button>
               );
             })}
@@ -182,7 +186,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
               className="flex-1 bg-white px-6 py-3 text-lg font-bold hover:bg-gray-50 transition-colors border-2 rounded-xl"
               style={{ borderColor: '#e0e0e0', color: '#2d2e2e' }}
             >
-              📋 Kopieren
+              Kopieren
             </button>
             <button
               onClick={handleShuffle}
@@ -201,6 +205,13 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
           </div>
         </div>
       </div>
+
+      {/* Ritual Popup */}
+      <RitualPopup
+        isOpen={showRitualPopup}
+        onClose={() => setShowRitualPopup(false)}
+        inspirationText={currentItem}
+      />
     </div>
   );
 }
