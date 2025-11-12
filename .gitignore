@@ -34,8 +34,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# PWA
-**/public/sw.js
+# PWA (keeping manual sw.js, ignoring auto-generated files)
 **/public/workbox-*.js
 **/public/worker-*.js
 **/public/sw.js.map
