@@ -133,11 +133,9 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   </div>
 
                   {/* Joker Badge - Small and Square */}
-                  {appState.jokers > 0 && (
-                    <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
-                      <span className="text-xs font-bold text-white">{appState.jokers}</span>
-                    </div>
-                  )}
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                    <span className="text-xs font-bold text-white">{appState.jokers}</span>
+                  </div>
 
                   {profile?.is_pro && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
@@ -251,11 +249,9 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                 </div>
 
                 {/* Joker Badge - Small and Square */}
-                {appState.jokers > 0 && (
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
-                    <span className="text-sm font-bold text-white">{appState.jokers}</span>
-                  </div>
-                )}
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                  <span className="text-sm font-bold text-white">{appState.jokers}</span>
+                </div>
 
                 {profile?.is_pro && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
