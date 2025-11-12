@@ -317,7 +317,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           </nav>
 
           {/* Stamps Section */}
-          <div className="mb-6 flex flex-col justify-center gap-3">
+          <div className="flex-1 mb-6 flex flex-col justify-center gap-3">
             {/* Streak Stamp */}
             <button
               onClick={() => onNavigate('subscription')}
