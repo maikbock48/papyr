@@ -131,6 +131,12 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               {(profile?.user_name || appState.userName) && (
                 <div className="text-black/70 text-base pb-2 border-b font-medium flex items-center gap-2" style={{ borderColor: '#2d2e2e' }}>
                   <span>Hallo, {profile?.user_name || appState.userName}</span>
+
+                  {/* Streak Badge - Small and Square */}
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
+                    <span className="text-xs font-bold text-white">{appState.currentStreak}</span>
+                  </div>
+
                   {profile?.is_pro && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
                       ✨ Pro
@@ -234,8 +240,14 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           {/* User Info */}
           <div className="mb-8 pb-6 border-b-2" style={{ borderColor: '#2d2e2e' }}>
             {(profile?.user_name || appState.userName) && (
-              <div className="text-black text-xl font-bold mb-4 flex items-center gap-2 flex-wrap">
+              <div className="text-black text-xl font-bold mb-4 flex items-center gap-3 flex-wrap">
                 <span>Hallo, {profile?.user_name || appState.userName}!</span>
+
+                {/* Streak Badge - Small and Square */}
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
+                  <span className="text-sm font-bold text-white">{appState.currentStreak}</span>
+                </div>
+
                 {profile?.is_pro && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
                     ✨ Pro
@@ -318,27 +330,6 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
 
           {/* Stamps Section */}
           <div className="flex-1 mb-6 flex flex-col justify-center gap-3">
-            {/* Streak Stamp */}
-            <button
-              onClick={() => onNavigate('subscription')}
-              className="rounded-xl p-2 shadow-lg relative transition-all hover:scale-105 cursor-pointer overflow-hidden w-full"
-              style={{
-                border: '3px solid #ffffff',
-                backgroundColor: 'transparent',
-                boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15)',
-                height: '60px'
-              }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                <span style={{ fontSize: '3rem' }}>🔥</span>
-              </div>
-              <div className="relative flex items-center justify-center h-full">
-                <span className="text-2xl font-bold" style={{ color: '#ffffff' }}>
-                  {appState.currentStreak}
-                </span>
-              </div>
-            </button>
-
             {/* Joker Stamp */}
             <button
               onClick={() => onNavigate('subscription')}

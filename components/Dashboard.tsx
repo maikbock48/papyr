@@ -434,18 +434,6 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             </div>
           </div>
 
-          {/* Countdown to next upload window - Below button */}
-          <div className="mb-24 flex justify-center w-full">
-            <div className="bg-white rounded-2xl shadow-lg border-2 px-8 py-3" style={{ borderColor: '#e0e0e0' }}>
-              <p className="text-sm font-bold mb-2 text-center" style={{ color: '#666' }}>
-                Nächstes Upload-Fenster in:
-              </p>
-              <p className="text-4xl md:text-5xl font-bold text-center font-mono" style={{ color: '#2d2e2e' }}>
-                {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
-              </p>
-            </div>
-          </div>
-
           {/* Scroll Down Arrow - Bottom Right */}
           <div className="absolute bottom-20 right-[19.5rem] flex flex-col items-center gap-2 animate-bounce">
             <p className="font-bold text-lg transform rotate-12" style={{ color: '#2d2e2e' }}>
