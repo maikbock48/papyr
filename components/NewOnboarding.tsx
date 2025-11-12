@@ -244,7 +244,7 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
                   />
                 </div>
               ) : currentScreenData.text && (
-                <div className="text-xl md:text-2xl leading-relaxed text-center" style={{ color: '#2d2e2e' }}>
+                <div className="text-xl md:text-2xl leading-relaxed text-left" style={{ color: '#2d2e2e' }}>
                   <TypewriterText
                     key={`text-${typewriterKey}`}
                     text={currentScreenData.text}

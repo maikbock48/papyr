@@ -210,7 +210,7 @@ export async function createCommitment(
       image_url: urlData.publicUrl,
       goals,
       signature_initials: initials,
-      is_developing: true,
+      is_developing: false,
     })
     .select()
     .single()

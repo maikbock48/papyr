@@ -247,7 +247,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
   return (
     <div className="min-h-screen">
       {/* Block Image Section - at the top after navbar */}
-      <div className="relative w-full h-screen overflow-hidden">
+      <div className="relative w-full min-h-screen">
         <img
           src="/assets/papyr-brand.png"
           alt="PAPYR Block"
