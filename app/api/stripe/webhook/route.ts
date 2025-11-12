@@ -40,21 +40,41 @@ export async function POST(request: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session
         const userId = session.metadata?.user_id
 
-        if (userId) {
-          // Update user's has_paid status
+        if (userId && session.subscription) {
+          // Get subscription to check the price
+          const subscription = await stripe.subscriptions.retrieve(
+            session.subscription as string
+          )
+
+          // Check if it's a Pro subscription
+          const proPriceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO!
+          const isPro = subscription.items.data.some(
+            item => item.price.id === proPriceId
+          )
+
+          // Prepare update data
+          const updateData: any = {
+            has_paid: true,
+            is_pro: isPro,
+            stripe_customer_id: session.customer as string,
+            stripe_subscription_id: session.subscription as string,
+          }
+
+          // If becoming Pro for the first time, initialize monthly joker date
+          if (isPro) {
+            updateData.last_monthly_joker_date = new Date().toISOString()
+          }
+
+          // Update user's payment status and pro status
           const { error } = await supabase
             .from('profiles')
-            .update({
-              has_paid: true,
-              stripe_customer_id: session.customer as string,
-              stripe_subscription_id: session.subscription as string,
-            })
+            .update(updateData)
             .eq('id', userId)
 
           if (error) {
             console.error('Error updating profile:', error)
           } else {
-            console.log('✅ User payment status updated:', userId)
+            console.log(`✅ User payment status updated: ${userId} (Pro: ${isPro})`)
           }
         }
         break
@@ -63,10 +83,13 @@ export async function POST(request: NextRequest) {
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription
 
-        // Find user by subscription ID and set has_paid to false
+        // Find user by subscription ID and set has_paid and is_pro to false
         const { error } = await supabase
           .from('profiles')
-          .update({ has_paid: false })
+          .update({
+            has_paid: false,
+            is_pro: false,
+          })
           .eq('stripe_subscription_id', subscription.id)
 
         if (error) {
@@ -83,15 +106,24 @@ export async function POST(request: NextRequest) {
         // Update subscription status based on Stripe status
         const isPaid = subscription.status === 'active' || subscription.status === 'trialing'
 
+        // Check if it's a Pro subscription
+        const proPriceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO!
+        const isPro = subscription.items.data.some(
+          item => item.price.id === proPriceId
+        )
+
         const { error } = await supabase
           .from('profiles')
-          .update({ has_paid: isPaid })
+          .update({
+            has_paid: isPaid,
+            is_pro: isPaid ? isPro : false, // Only set is_pro if subscription is active
+          })
           .eq('stripe_subscription_id', subscription.id)
 
         if (error) {
           console.error('Error updating subscription status:', error)
         } else {
-          console.log('✅ Subscription updated:', subscription.id, 'Status:', subscription.status)
+          console.log(`✅ Subscription updated: ${subscription.id} (Status: ${subscription.status}, Pro: ${isPro})`)
         }
         break
       }

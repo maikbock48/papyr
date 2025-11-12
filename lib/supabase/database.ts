@@ -18,6 +18,7 @@ export interface Profile {
   total_commitments: number
   stripe_customer_id: string | null
   stripe_subscription_id: string | null
+  last_monthly_joker_date: string | null
   notification_settings: {
     enabled: boolean
     morning: boolean
@@ -131,7 +132,7 @@ export async function getCommitments(limit?: number) {
 export async function createCommitment(
   imageFile: File,
   goals: string,
-  signWithInitials: boolean = false
+  initialsOrBoolean: string | boolean = false
 ) {
   const supabase = createClient()
 
@@ -189,13 +190,16 @@ export async function createCommitment(
     .from('commitment-images')
     .getPublicUrl(fileName)
 
-  // Extract initials from user_name
-  const initials = signWithInitials && profile.user_name
-    ? profile.user_name
-        .split(' ')
-        .map(name => name.charAt(0).toUpperCase())
-        .join('')
-    : null
+  // Handle initials - can be string (custom initials) or boolean (auto-generate from user_name)
+  let initials: string | null = null
+  if (typeof initialsOrBoolean === 'string' && initialsOrBoolean.trim()) {
+    initials = initialsOrBoolean.trim().toUpperCase()
+  } else if (initialsOrBoolean === true && profile.user_name) {
+    initials = profile.user_name
+      .split(' ')
+      .map(name => name.charAt(0).toUpperCase())
+      .join('')
+  }
 
   // Create commitment
   const { data: commitment, error: commitmentError } = await supabase
@@ -394,4 +398,38 @@ export async function uploadCommitmentImage(file: File): Promise<string> {
     .getPublicUrl(fileName)
 
   return urlData.publicUrl
+}
+
+// Pro User Functions
+export async function checkAndAwardMonthlyProJoker() {
+  const profile = await getProfile()
+  if (!profile) return { awarded: false }
+
+  // Only for Pro users
+  if (!profile.is_pro) return { awarded: false }
+
+  const now = new Date()
+
+  // If no last_monthly_joker_date, set it to now and award a joker (first time Pro)
+  if (!profile.last_monthly_joker_date) {
+    await updateProfile({
+      jokers: profile.jokers + 1,
+      last_monthly_joker_date: now.toISOString(),
+    })
+    return { awarded: true, message: '🎉 Willkommen als Pro! Du erhältst deinen ersten monatlichen Bonus-Joker!' }
+  }
+
+  // Check if 30 days (1 month) have passed
+  const lastJokerDate = new Date(profile.last_monthly_joker_date)
+  const daysSinceLastJoker = Math.floor((now.getTime() - lastJokerDate.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (daysSinceLastJoker >= 30) {
+    await updateProfile({
+      jokers: profile.jokers + 1,
+      last_monthly_joker_date: now.toISOString(),
+    })
+    return { awarded: true, message: '🃏 Pro Bonus! Du erhältst deinen monatlichen Extra-Joker!' }
+  }
+
+  return { awarded: false }
 }

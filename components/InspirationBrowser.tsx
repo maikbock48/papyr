@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import inspirationData from '@/lib/inspirationData.json';
 import RitualPopup from './RitualPopup';
+import { useAuth } from '@/lib/supabase/context';
 
 interface InspirationBrowserProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface InspirationBrowserProps {
 type CategoryKey = keyof typeof inspirationData.categories;
 
 export default function InspirationBrowser({ isOpen, onClose }: InspirationBrowserProps) {
+  const { profile } = useAuth();
   const [show, setShow] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('verbindung');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -66,6 +68,12 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
   };
 
   const handleCopy = () => {
+    // Check if user is Pro
+    if (!profile?.is_pro) {
+      alert('✨ Das Ritual ist nur für Pro Members verfügbar!\n\nWerde Pro Member und schalte exklusive Routinen für deinen Erfolg frei.');
+      return;
+    }
+
     const currentItem = shuffledItems[currentIndex];
     if (currentItem) {
       setShowRitualPopup(true);
@@ -181,10 +189,19 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleCopy}
-              className="flex-1 bg-white px-6 py-3 text-lg font-bold hover:bg-gray-50 transition-all hover:scale-105 border-2 rounded-xl shadow-md"
-              style={{ borderColor: '#2d2e2e', color: '#2d2e2e' }}
+              className={`flex-1 px-6 py-3 text-lg font-bold transition-all hover:scale-105 border-2 rounded-xl shadow-md relative ${
+                profile?.is_pro
+                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white hover:from-yellow-500 hover:to-yellow-700'
+                  : 'bg-white hover:bg-gray-50'
+              }`}
+              style={{
+                borderColor: profile?.is_pro ? '#d4af37' : '#2d2e2e',
+                color: profile?.is_pro ? 'white' : '#2d2e2e'
+              }}
             >
-              Kopieren
+              <span className="flex items-center justify-center gap-2">
+                {profile?.is_pro ? '✨' : '🔒'} Kopieren {!profile?.is_pro && '(Pro)'}
+              </span>
             </button>
             <button
               onClick={handleShuffle}

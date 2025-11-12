@@ -1,40 +1,75 @@
 'use client';
 
 import { useState } from 'react';
-import { getAppState, saveAppState } from '@/lib/storage';
-import ConfirmDialog from './ConfirmDialog';
+import { useAuth } from '@/lib/supabase/context';
 
 export default function Subscription() {
-  const [appState, setAppState] = useState(getAppState());
-  const [showMemberDialog, setShowMemberDialog] = useState(false);
-  const [showProDialog, setShowProDialog] = useState(false);
+  const { profile, loading } = useAuth();
+  const [processingMember, setProcessingMember] = useState(false);
+  const [processingPro, setProcessingPro] = useState(false);
 
-  const handleBecomeMember = () => {
-    setShowMemberDialog(true);
+  const currentStreak = profile?.current_streak || 0;
+  const hasPaid = profile?.has_paid || false;
+  const isPro = profile?.is_pro || false;
+  const canUpgradeToPro = currentStreak >= 30;
+
+  const handleCheckout = async (priceId: string, isPro: boolean) => {
+    if (isPro) {
+      setProcessingPro(true);
+    } else {
+      setProcessingMember(true);
+    }
+
+    try {
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ priceId }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Fehler beim Starten des Checkouts. Bitte versuche es erneut.');
+    } finally {
+      setProcessingMember(false);
+      setProcessingPro(false);
+    }
   };
 
-  const confirmBecomeMember = () => {
-    const state = getAppState();
-    state.hasPaid = true;
-    saveAppState(state);
-    setAppState(state);
-    alert('🎉 Willkommen als Member! Deine Zettel werden jetzt unbegrenzt gespeichert.');
-    setShowMemberDialog(false);
+  const handleBecomeMember = () => {
+    const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!;
+    handleCheckout(priceId, false);
   };
 
   const handleBecomePro = () => {
-    setShowProDialog(true);
+    if (!canUpgradeToPro) {
+      alert(`🔥 Du brauchst einen Streak von mindestens 30 Tagen!\n\nDein aktueller Streak: ${currentStreak} Tage\n\nPro ist nur für die Diszipliniertesten unter uns. Bleib dran!`);
+      return;
+    }
+
+    const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO!;
+    handleCheckout(priceId, true);
   };
 
-  const confirmBecomePro = () => {
-    const state = getAppState();
-    state.isPro = true;
-    state.hasPaid = true;
-    saveAppState(state);
-    setAppState(state);
-    alert('🎉 Willkommen als Pro Member! Du erhältst jetzt alle Pro-Vorteile.');
-    setShowProDialog(false);
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen py-12 px-4 flex items-center justify-center">
+        <p className="text-lg" style={{ color: '#666' }}>Lädt...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-12 px-4" >
@@ -99,12 +134,13 @@ export default function Subscription() {
                 </div>
               </div>
 
-              {!appState.hasPaid ? (
+              {!hasPaid ? (
                 <button
                   onClick={handleBecomeMember}
-                  className="w-full bg-gray-900 text-white px-6 py-4 text-xl font-bold hover:bg-gray-800 transition-colors rounded-xl shadow-lg"
+                  disabled={processingMember}
+                  className="w-full bg-gray-900 text-white px-6 py-4 text-xl font-bold hover:bg-gray-800 transition-colors rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Member werden
+                  {processingMember ? 'Lädt...' : 'Member werden'}
                 </button>
               ) : (
                 <div className="text-center py-4 px-6 bg-green-100 rounded-xl border-2 border-green-500">
@@ -155,41 +191,62 @@ export default function Subscription() {
                 <div className="flex items-start gap-3">
                   <div className="text-2xl">🛒</div>
                   <div>
-                    <div className="font-bold" style={{ color: '#2d2e2e' }}>20% Rabatt im Shop</div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>20% Rabatt dauerhaft</div>
                     <div className="text-sm" style={{ color: '#666' }}>
-                      Dauerhaft auf alle Produkte
+                      Auf unseren Merch-Shop
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="text-2xl">🌍</div>
+                  <div className="text-2xl">🧘</div>
                   <div>
-                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Teile deine Meilensteine</div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Schalte Rituale frei</div>
                     <div className="text-sm" style={{ color: '#666' }}>
-                      Inspiriere die Community
+                      Exklusive Routinen für deinen Erfolg
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="text-2xl">💚</div>
+                  <div className="text-2xl">✨</div>
                   <div>
-                    <div className="font-bold" style={{ color: '#2d2e2e' }}>Unterstütze soziale Projekte</div>
+                    <div className="font-bold" style={{ color: '#2d2e2e' }}>"Pro" Badge hinter deinem Namen</div>
                     <div className="text-sm" style={{ color: '#666' }}>
-                      Jede Mitgliedschaft hilft anderen
+                      Das ist Bekenntnis.
                     </div>
                   </div>
                 </div>
               </div>
 
-              {!appState.isPro ? (
-                <button
-                  onClick={handleBecomePro}
-                  className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-white px-6 py-4 text-xl font-bold hover:from-yellow-700 hover:to-yellow-800 transition-colors rounded-xl shadow-lg"
-                >
-                  ✨ Pro Member werden
-                </button>
+              {!isPro ? (
+                <>
+                  <button
+                    onClick={handleBecomePro}
+                    disabled={processingPro || !canUpgradeToPro}
+                    className={`w-full px-6 py-4 text-xl font-bold transition-colors rounded-xl shadow-lg ${
+                      canUpgradeToPro
+                        ? 'bg-gradient-to-r from-yellow-600 to-yellow-700 text-white hover:from-yellow-700 hover:to-yellow-800'
+                        : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                    } disabled:opacity-50`}
+                  >
+                    {processingPro ? 'Lädt...' : '✨ Pro Member werden'}
+                  </button>
+
+                  {!canUpgradeToPro && (
+                    <div className="mt-4 p-4 bg-orange-50 border-2 border-orange-300 rounded-xl">
+                      <p className="text-sm font-bold text-center" style={{ color: '#2d2e2e' }}>
+                        🔥 Erst ab 30 Tage Streak verfügbar!
+                      </p>
+                      <p className="text-xs text-center mt-2" style={{ color: '#666' }}>
+                        Dein aktueller Streak: {currentStreak} Tage
+                      </p>
+                      <p className="text-xs text-center mt-1" style={{ color: '#666' }}>
+                        Noch {30 - currentStreak} Tage bis Pro! 💪
+                      </p>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-center py-4 px-6 bg-yellow-100 rounded-xl border-2 border-yellow-500">
                   <div className="text-lg font-bold" style={{ color: '#2d2e2e' }}>✨ Pro Aktiv</div>
@@ -197,7 +254,7 @@ export default function Subscription() {
               )}
 
               <p className="text-xs text-center mt-4" style={{ color: '#999' }}>
-                Ein Bekenntnis zu deinem Erfolg
+                {canUpgradeToPro ? 'Du hast dir das verdient! 🔥' : 'Nur für die Diszipliniertesten'}
               </p>
             </div>
           </div>
@@ -210,45 +267,20 @@ export default function Subscription() {
             Die Mitgliedschaft ist ein Bekenntnis zu deinem Weg.
           </p>
         </div>
+
+        {/* Pro Requirement Note */}
+        {!canUpgradeToPro && (
+          <div className="mt-8 p-6 bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-300 rounded-xl">
+            <p className="text-center text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
+              🔥 Pro ist nur für die Elite
+            </p>
+            <p className="text-center" style={{ color: '#666' }}>
+              Zeige 30 Tage Disziplin und schalte das Pro-Level frei.<br />
+              Aktueller Streak: <strong>{currentStreak} Tage</strong> | Noch <strong>{30 - currentStreak} Tage</strong> bis Pro!
+            </p>
+          </div>
+        )}
       </div>
-
-      {/* Member Dialog */}
-      <ConfirmDialog
-        title="📁 Member werden"
-        message="Sichere alle deine Erfolge!\n\nFür nur 0,99€/Monat erhältst du:\n\n📸 Unbegrenzte Archivierung aller Zettel\n☁️ Sicherer Cloud-Speicher\n📚 Dein komplettes Erfolgs-Archiv\n\nKostenlos testen: Die ersten 14 Zettel sind gratis!"
-        isOpen={showMemberDialog}
-        onClose={() => setShowMemberDialog(false)}
-        buttons={[
-          {
-            text: 'Jetzt Member werden',
-            action: confirmBecomeMember,
-            primary: true,
-          },
-          {
-            text: 'Nicht jetzt',
-            action: () => setShowMemberDialog(false),
-          },
-        ]}
-      />
-
-      {/* Pro Dialog */}
-      <ConfirmDialog
-        title="✨ Pro Member werden"
-        message="Du bist bereit für das nächste Level!\n\nFür 4,99€/Monat erhältst du:\n\n🃏 Jeden Monat einen Extra-Joker\n🛒 20% Rabatt im Shop\n🌍 Teile deine Meilensteine\n💚 Unterstütze soziale Projekte\n\nBist du bereit für dieses Bekenntnis?"
-        isOpen={showProDialog}
-        onClose={() => setShowProDialog(false)}
-        buttons={[
-          {
-            text: '✨ Ja, Pro Member werden',
-            action: confirmBecomePro,
-            primary: true,
-          },
-          {
-            text: 'Nicht jetzt',
-            action: () => setShowProDialog(false),
-          },
-        ]}
-      />
     </div>
   );
 }

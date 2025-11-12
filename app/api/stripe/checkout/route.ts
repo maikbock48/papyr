@@ -20,6 +20,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Get price ID from request body
+    const { priceId } = await request.json()
+
+    if (!priceId) {
+      return NextResponse.json(
+        { error: 'Price ID is required' },
+        { status: 400 }
+      )
+    }
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -27,7 +37,7 @@ export async function POST(request: NextRequest) {
       customer_email: user.email,
       line_items: [
         {
-          price: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!, // Subscription price ID from Stripe
+          price: priceId,
           quantity: 1,
         },
       ],

@@ -184,13 +184,28 @@ export default function Archive() {
               <div key={commitment.id} className="relative">
                 <div className="border-2 rounded-xl bg-white p-3 shadow-lg hover:shadow-xl transition-shadow" style={{ borderColor: '#e0e0e0' }}>
                   {commitment.is_developing ? (
-                    <div className="aspect-square bg-white flex items-center justify-center">
-                      <div className="text-center">
-                        <p className="text-sm font-bold animate-pulse" style={{ color: '#999' }}>
-                          Entwickelt sich...
-                        </p>
+                    <>
+                      <div className="aspect-square bg-white flex items-center justify-center mb-2">
+                        <div className="text-center">
+                          <p className="text-sm font-bold animate-pulse" style={{ color: '#999' }}>
+                            Entwickelt sich...
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                      <div className="text-xs space-y-1 mb-2" style={{ color: '#666' }}>
+                        <p className="font-bold">{commitment.date}</p>
+                      </div>
+
+                      {/* Action Buttons for developing */}
+                      <div className="space-y-1">
+                        <button
+                          onClick={() => handleDelete(commitment.id)}
+                          className="w-full bg-black text-white px-2 py-1 text-xs font-bold hover:bg-gray-900 transition-colors rounded shadow-sm"
+                        >
+                          🗑
+                        </button>
+                      </div>
+                    </>
                   ) : (
                     <>
                       <div className="relative">
@@ -233,7 +248,7 @@ export default function Archive() {
                         </button>
                         <button
                           onClick={() => handleDelete(commitment.id)}
-                          className="w-full bg-red-500 text-white px-2 py-1 text-xs font-bold hover:bg-red-600 transition-colors rounded shadow-sm"
+                          className="w-full bg-black text-white px-2 py-1 text-xs font-bold hover:bg-gray-900 transition-colors rounded shadow-sm"
                         >
                           🗑
                         </button>
@@ -284,36 +299,40 @@ export default function Archive() {
                       <span className="text-sm font-bold" style={{ color: '#999' }}>Datum:</span>
                       <span className="ml-2 text-lg font-bold" style={{ color: '#2d2e2e' }}>{commitment.date}</span>
                     </div>
-                    <div className="mb-4">
-                      <span className="text-sm font-bold block mb-2" style={{ color: '#999' }}>Ziele:</span>
-                      <p className="text-lg whitespace-pre-line" style={{ color: '#2d2e2e' }}>{commitment.goals}</p>
-                    </div>
-
-                    {/* Action Buttons */}
                     {!commitment.is_developing && (
-                      <div className="flex gap-2">
-                        {canMarkAsCompleted(commitment.date) && !commitment.completed && (
-                          <button
-                            onClick={() => handleMarkCompleted(commitment.id)}
-                            className="bg-green-500 text-white px-4 py-2 text-sm font-bold hover:bg-green-600 transition-colors rounded-lg shadow-sm"
-                          >
-                            ✓ Als erledigt markieren
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleExportToCalendar(commitment)}
-                          className="bg-blue-500 text-white px-4 py-2 text-sm font-bold hover:bg-blue-600 transition-colors rounded-lg shadow-sm"
-                        >
-                          📅 Zu Kalender
-                        </button>
-                        <button
-                          onClick={() => handleDelete(commitment.id)}
-                          className="bg-red-500 text-white px-4 py-2 text-sm font-bold hover:bg-red-600 transition-colors rounded-lg shadow-sm"
-                        >
-                          🗑 Löschen
-                        </button>
+                      <div className="mb-4">
+                        <span className="text-sm font-bold block mb-2" style={{ color: '#999' }}>Ziele:</span>
+                        <p className="text-lg whitespace-pre-line" style={{ color: '#2d2e2e' }}>{commitment.goals}</p>
                       </div>
                     )}
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      {!commitment.is_developing && (
+                        <>
+                          {canMarkAsCompleted(commitment.date) && !commitment.completed && (
+                            <button
+                              onClick={() => handleMarkCompleted(commitment.id)}
+                              className="bg-green-500 text-white px-4 py-2 text-sm font-bold hover:bg-green-600 transition-colors rounded-lg shadow-sm"
+                            >
+                              ✓ Als erledigt markieren
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleExportToCalendar(commitment)}
+                            className="bg-blue-500 text-white px-4 py-2 text-sm font-bold hover:bg-blue-600 transition-colors rounded-lg shadow-sm"
+                          >
+                            📅 Zu Kalender
+                          </button>
+                        </>
+                      )}
+                      <button
+                        onClick={() => handleDelete(commitment.id)}
+                        className="bg-black text-white px-4 py-2 text-sm font-bold hover:bg-gray-900 transition-colors rounded-lg shadow-sm"
+                      >
+                        🗑 Löschen
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

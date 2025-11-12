@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getAppState } from '@/lib/storage';
+import { getTimeUntilNextWindow, formatCountdown } from '@/lib/countdown';
+import { isWithinWolfHour } from '@/lib/storage';
+import { useAuth } from '@/lib/supabase/context';
 
 interface NavbarProps {
   currentView: 'dashboard' | 'archive' | 'settings' | 'shop' | 'rules' | 'subscription';
@@ -15,6 +18,21 @@ interface NavbarProps {
 export default function Navbar({ currentView, onNavigate, onOpenInspiration, sidebarOpen, onSidebarToggle, globalPulse }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const appState = getAppState();
+  const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const { profile } = useAuth();
+
+  // Update countdown every second
+  useEffect(() => {
+    const updateCountdown = () => {
+      const time = getTimeUntilNextWindow();
+      setCountdown({ hours: time.hours, minutes: time.minutes, seconds: time.seconds });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const menuStyle = {
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif'
@@ -75,6 +93,20 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               </div>
             </div>
 
+            {/* Countdown - Desktop Right */}
+            <div className="hidden md:flex absolute right-6 items-center">
+              {!isWithinWolfHour() && (
+                <div className="bg-white rounded-xl px-4 py-2 shadow-md border-2" style={{ borderColor: '#2d2e2e' }}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium" style={{ color: '#666' }}>Upload in:</span>
+                    <span className="text-lg font-bold font-mono" style={{ color: '#2d2e2e' }}>
+                      {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-2 absolute right-4">
               {appState.jokers > 0 && (
@@ -111,8 +143,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           <div className="md:hidden border-t" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#2d2e2e' }}>
             <div className="px-4 pt-2 pb-4 space-y-3">
               {appState.userName && (
-                <div className="text-black/70 text-base pb-2 border-b font-medium" style={{ borderColor: '#2d2e2e' }}>
-                  Hallo, {appState.userName}
+                <div className="text-black/70 text-base pb-2 border-b font-medium flex items-center gap-2" style={{ borderColor: '#2d2e2e' }}>
+                  <span>Hallo, {appState.userName}</span>
+                  {profile?.is_pro && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
+                      ✨ Pro
+                    </span>
+                  )}
                 </div>
               )}
               <button
@@ -211,8 +248,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           {/* User Info */}
           <div className="mb-8 pb-6 border-b-2" style={{ borderColor: '#2d2e2e' }}>
             {appState.userName && (
-              <div className="text-black text-xl font-bold mb-4">
-                Hallo, {appState.userName}!
+              <div className="text-black text-xl font-bold mb-4 flex items-center gap-2 flex-wrap">
+                <span>Hallo, {appState.userName}!</span>
+                {profile?.is_pro && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
+                    ✨ Pro
+                  </span>
+                )}
               </div>
             )}
             {appState.jokers > 0 && (

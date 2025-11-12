@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { getCurrentUser, onAuthStateChange } from './auth';
-import { Profile, getProfile } from './database';
+import { Profile, getProfile, checkAndAwardMonthlyProJoker } from './database';
 
 interface AuthContextType {
   user: User | null;
@@ -36,6 +36,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const userProfile = await getProfile();
         console.log('[AuthProvider] Got profile:', !!userProfile);
         setProfile(userProfile);
+
+        // Check and award monthly Pro joker if applicable
+        if (userProfile?.is_pro) {
+          const result = await checkAndAwardMonthlyProJoker();
+          if (result.awarded) {
+            // Refresh profile to get updated joker count
+            const updatedProfile = await getProfile();
+            setProfile(updatedProfile);
+
+            // Show notification to user
+            if (typeof window !== 'undefined' && result.message) {
+              alert(result.message);
+            }
+          }
+        }
       } else {
         console.log('[AuthProvider] No user, setting profile to null');
         setProfile(null);

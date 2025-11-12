@@ -17,6 +17,7 @@ import { getTimeUntilNextWindow, formatCountdown } from '@/lib/countdown';
 import ConfirmDialog from './ConfirmDialog';
 import AddToHomeScreen from './AddToHomeScreen';
 import AuthModal from './AuthModal';
+import GoalsInputPopup from './GoalsInputPopup';
 
 interface DashboardProps {
   onUpload: () => void;
@@ -35,6 +36,9 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
   const [uploadType, setUploadType] = useState<'camera' | 'gallery'>('camera');
   const [weekDaysToShow, setWeekDaysToShow] = useState(7);
   const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [showGoalsPopup, setShowGoalsPopup] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
 
   // Update countdown every second
   useEffect(() => {
@@ -127,20 +131,35 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
     if (!file) return;
 
     try {
+      // Create a preview URL for the uploaded image
+      const imageUrl = URL.createObjectURL(file);
+      setUploadedFile(file);
+      setUploadedImageUrl(imageUrl);
+      setShowGoalsPopup(true);
+
+      // Clear file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (error) {
+      console.error('Error preparing image:', error);
+      alert('Fehler beim Vorbereiten des Bildes. Bitte versuche es erneut.');
+    }
+  };
+
+  const handleGoalsSubmit = async (goals: string, initials: string, signedImageBlob?: Blob) => {
+    if (!uploadedFile) return;
+
+    try {
       setUploading(true);
 
-      // For now, we'll use a simple prompt for goals
-      // TODO: Replace with proper modal/form
-      const goals = prompt('Was sind deine Ziele für morgen?');
-      if (!goals) {
-        setUploading(false);
-        return;
-      }
+      // Use signed image if available, otherwise use original
+      const fileToUpload = signedImageBlob
+        ? new File([signedImageBlob], uploadedFile.name, { type: 'image/jpeg' })
+        : uploadedFile;
 
-      const signWithInitials = confirm('Möchtest du mit deinen Initialen unterschreiben?');
-
-      // Upload to Supabase
-      await createCommitment(file, goals, signWithInitials);
+      // Upload to Supabase with initials (empty string since signature is on image now)
+      await createCommitment(fileToUpload, goals, '');
 
       // Refresh profile to update streak
       await refreshProfile();
@@ -148,10 +167,10 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
       // Reload commitments
       await loadCommitments();
 
-      // Clear file input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
+      // Clean up
+      URL.revokeObjectURL(uploadedImageUrl);
+      setUploadedFile(null);
+      setUploadedImageUrl('');
 
       // Call parent onUpload callback
       onUpload();
@@ -237,7 +256,8 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             maxWidth: '715px',
             height: 'auto',
             top: '20px',
-            border: '1px solid black'
+            border: '2.5px solid black',
+            borderRadius: '8px'
           }}
         />
 
@@ -363,23 +383,6 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
               </p>
             </div>
 
-            {/* Countdown to next upload window */}
-            {!isWithinWolfHour() && (
-              <div className="mt-8 mb-8">
-                <div className="bg-white rounded-2xl shadow-lg border-2 px-8 py-6 inline-block" style={{ borderColor: '#e0e0e0' }}>
-                  <p className="text-sm font-bold mb-2 text-center" style={{ color: '#666' }}>
-                    Nächstes Upload-Fenster in:
-                  </p>
-                  <p className="text-4xl md:text-5xl font-bold text-center font-mono" style={{ color: '#2d2e2e' }}>
-                    {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
-                  </p>
-                  <p className="text-xs text-center mt-2" style={{ color: '#666' }}>
-                    20:00 - 02:00 Uhr
-                  </p>
-                </div>
-              </div>
-            )}
-
             {/* Upload Button - Fixed at bottom */}
             <div className="mt-4">
               <button
@@ -423,6 +426,18 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                   ⏰ Die Stunde des Wolfs: 20:00 - 02:00 Uhr
                 </p>
               )}
+            </div>
+          </div>
+
+          {/* Countdown to next upload window - Below button */}
+          <div className="mt-3 flex justify-center w-full">
+            <div className="bg-white rounded-2xl shadow-lg border-2 px-8 py-3" style={{ borderColor: '#e0e0e0' }}>
+              <p className="text-sm font-bold mb-2 text-center" style={{ color: '#666' }}>
+                Nächstes Upload-Fenster in:
+              </p>
+              <p className="text-4xl md:text-5xl font-bold text-center font-mono" style={{ color: '#2d2e2e' }}>
+                {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
+              </p>
             </div>
           </div>
 
@@ -547,6 +562,21 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
 
       {/* Add to Home Screen Prompt */}
       <AddToHomeScreen />
+
+      {/* Goals Input Popup */}
+      <GoalsInputPopup
+        isOpen={showGoalsPopup}
+        imageUrl={uploadedImageUrl}
+        onSubmit={handleGoalsSubmit}
+        onClose={() => {
+          setShowGoalsPopup(false);
+          if (uploadedImageUrl) {
+            URL.revokeObjectURL(uploadedImageUrl);
+          }
+          setUploadedFile(null);
+          setUploadedImageUrl('');
+        }}
+      />
     </div>
   );
 }
