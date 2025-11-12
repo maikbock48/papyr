@@ -128,9 +128,9 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
         {mobileMenuOpen && (
           <div className="md:hidden border-t" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#2d2e2e' }}>
             <div className="px-4 pt-2 pb-4 space-y-3">
-              {appState.userName && (
+              {(profile?.user_name || appState.userName) && (
                 <div className="text-black/70 text-base pb-2 border-b font-medium flex items-center gap-2" style={{ borderColor: '#2d2e2e' }}>
-                  <span>Hallo, {appState.userName}</span>
+                  <span>Hallo, {profile?.user_name || appState.userName}</span>
                   {profile?.is_pro && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
                       ✨ Pro
@@ -233,9 +233,9 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
         <div className="flex flex-col h-full p-6">
           {/* User Info */}
           <div className="mb-8 pb-6 border-b-2" style={{ borderColor: '#2d2e2e' }}>
-            {appState.userName && (
+            {(profile?.user_name || appState.userName) && (
               <div className="text-black text-xl font-bold mb-4 flex items-center gap-2 flex-wrap">
-                <span>Hallo, {appState.userName}!</span>
+                <span>Hallo, {profile?.user_name || appState.userName}!</span>
                 {profile?.is_pro && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
                     ✨ Pro
