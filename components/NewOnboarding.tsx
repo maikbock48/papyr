@@ -155,8 +155,8 @@ export default function NewOnboarding({ onComplete, onOpenInspiration }: NewOnbo
 
                 <button
                   onClick={() => setShowRules(true)}
-                  className="w-full px-8 py-4 text-lg border-2 rounded-xl hover:bg-white/30 transition-colors shadow-md"
-                  style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#e0e0e0', color: '#2d2e2e' }}
+                  className="w-full px-8 py-4 text-lg border-2 rounded-xl hover:bg-white/30 transition-colors shadow-md backdrop-blur-sm"
+                  style={{ backgroundColor: 'transparent', borderColor: '#e0e0e0', color: '#2d2e2e' }}
                 >
                   Die "Spielregeln" - dein Weg zu Erfolg
                 </button>
