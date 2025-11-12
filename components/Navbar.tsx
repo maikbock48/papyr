@@ -78,21 +78,19 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               />
             </button>
 
-            {/* Spacer for centered layout */}
-            <div></div>
-
-            {/* Countdown - Desktop Right */}
-            <div className="hidden md:flex absolute right-6 items-center">
-              {!isWithinWolfHour() && (
-                <div className="bg-white rounded-xl px-4 py-2 shadow-md border-2" style={{ borderColor: '#2d2e2e' }}>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium" style={{ color: '#666' }}>Upload in:</span>
-                    <span className="text-lg font-bold font-mono" style={{ color: '#2d2e2e' }}>
-                      {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
-                    </span>
-                  </div>
-                </div>
-              )}
+            {/* Global Counter - Centered */}
+            <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl md:text-3xl text-black whitespace-nowrap font-medium">
+                  Heute wurden
+                </span>
+                <span className="text-2xl md:text-3xl font-bold text-black">
+                  {globalPulse.toLocaleString()}
+                </span>
+                <span className="text-2xl md:text-3xl text-black whitespace-nowrap font-medium">
+                  Zettel abgegeben
+                </span>
+              </div>
             </div>
 
             {/* Mobile menu button */}
@@ -363,22 +361,21 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
             </button>
           </div>
 
-          {/* Global Counter */}
-          <div className="mb-6 px-2">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border-2" style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}>
-              <div className="text-center">
-                <p className="text-sm font-medium mb-1" style={{ color: '#ffffff', opacity: 0.8 }}>
-                  Heute wurden
-                </p>
-                <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>
-                  {globalPulse.toLocaleString()}
-                </p>
-                <p className="text-sm font-medium mt-1" style={{ color: '#ffffff', opacity: 0.8 }}>
-                  Zettel abgegeben
-                </p>
+          {/* Countdown to next upload window */}
+          {!isWithinWolfHour() && (
+            <div className="mb-6 px-2">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border-2" style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+                <div className="text-center">
+                  <p className="text-xs font-medium mb-2" style={{ color: '#ffffff', opacity: 0.8 }}>
+                    Nächstes Upload-Fenster in:
+                  </p>
+                  <p className="text-2xl font-bold font-mono" style={{ color: '#ffffff' }}>
+                    {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Footer */}
           <div className="pt-6 border-t" style={{ borderColor: '#2d2e2e' }}>
