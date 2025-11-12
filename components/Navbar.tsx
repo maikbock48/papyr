@@ -144,7 +144,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   </div>
 
                   {/* Joker Row */}
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 mt-2">
                     <span className="text-xs font-bold text-black w-14">JOKER</span>
                     <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
                       <span className="text-xs font-bold text-white">{appState.jokers}</span>
@@ -268,7 +268,7 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                 </div>
 
                 {/* Joker Row */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mt-3">
                   <span className="text-xs font-bold text-black w-16">JOKER</span>
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
                     <span className="text-sm font-bold text-white">{appState.jokers}</span>
