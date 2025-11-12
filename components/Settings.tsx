@@ -281,7 +281,7 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-12 px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: '#2d2e2e' }}>
           Einstellungen
@@ -319,7 +319,7 @@ export default function Settings() {
               onClick={handleSave}
               className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
             >
-              {saved ? '✓ Gespeichert!' : 'Speichern'}
+              {saved ? 'Gespeichert!' : 'Speichern'}
             </button>
           </div>
         </div>
@@ -365,7 +365,7 @@ export default function Settings() {
             <div className="p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
               <div className="font-bold mb-1" style={{ color: '#2d2e2e' }}>Aktueller Status</div>
               <div className="text-sm" style={{ color: '#666' }}>
-                {profile.has_paid ? '✓ Premium Member (0,99€/Monat)' : 'Free Trial'}
+                {profile.has_paid ? 'Premium Member (0,99€/Monat)' : 'Free Trial'}
               </div>
               {!profile.has_paid && (
                 <div className="text-sm mt-2 font-medium" style={{ color: '#666' }}>
@@ -378,7 +378,6 @@ export default function Settings() {
             {!profile.has_paid && (
               <div className="border-2 rounded-xl p-6" style={{ borderColor: '#e0e0e0' }}>
                 <div className="text-center mb-5">
-                  <div className="text-3xl mb-2">📁</div>
                   <h3 className="text-xl font-bold mb-2" style={{ color: '#2d2e2e' }}>
                     Werde Member
                   </h3>
@@ -411,7 +410,6 @@ export default function Settings() {
         {profile.current_streak >= 30 && !profile.is_pro && (
           <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <div className="text-center">
-              <div className="text-4xl mb-3">✨</div>
               <h2 className="text-2xl font-bold mb-3" style={{ color: '#2d2e2e' }}>
                 Werde Pro Member
               </h2>
@@ -423,7 +421,7 @@ export default function Settings() {
                 onClick={handleUpgradeToPro}
                 className="w-full bg-black text-white px-8 py-4 text-xl font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
               >
-                ✨ Jetzt Pro Member werden
+                Jetzt Pro Member werden
               </button>
             </div>
           </div>
@@ -433,7 +431,6 @@ export default function Settings() {
         {profile.is_pro && (
           <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
             <div className="text-center">
-              <div className="text-4xl mb-3">✨</div>
               <h2 className="text-2xl font-bold mb-3" style={{ color: '#2d2e2e' }}>
                 Pro Member
               </h2>
@@ -446,7 +443,7 @@ export default function Settings() {
 
         {/* Notifications Section */}
         <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
-          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>🔔 Benachrichtigungen</h2>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Benachrichtigungen</h2>
 
           <div className="space-y-6">
             <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
@@ -530,7 +527,7 @@ export default function Settings() {
                   onClick={handleSaveNotifications}
                   className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
                 >
-                  {notifSaved ? '✓ Gespeichert!' : 'Benachrichtigungen speichern'}
+                  {notifSaved ? 'Gespeichert!' : 'Benachrichtigungen speichern'}
                 </button>
               </>
             )}
@@ -540,14 +537,14 @@ export default function Settings() {
         {/* Push Notifications Section */}
         {pushSupported && (
           <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
-            <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>🔔 Push-Benachrichtigungen</h2>
+            <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Push-Benachrichtigungen</h2>
 
             <div className="space-y-6">
               <div className="flex items-center justify-between p-4 bg-white border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
                 <div>
                   <div className="font-bold" style={{ color: '#2d2e2e' }}>Push-Benachrichtigungen</div>
                   <div className="text-sm" style={{ color: '#666' }}>
-                    {pushEnabled ? '✅ Aktiviert' : '⚪ Deaktiviert'}
+                    {pushEnabled ? 'Aktiviert' : 'Deaktiviert'}
                   </div>
                 </div>
                 <button
@@ -568,7 +565,7 @@ export default function Settings() {
                   onClick={handleTestPush}
                   className="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white px-6 py-3 text-lg font-bold hover:from-green-600 hover:to-teal-600 transition-colors rounded-xl shadow-md"
                 >
-                  🔔 Test-Benachrichtigung senden
+                  Test-Benachrichtigung senden
                 </button>
               )}
             </div>
@@ -577,7 +574,7 @@ export default function Settings() {
 
         {/* Calendar Integration Section */}
         <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
-          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>📅 Kalender-Integration</h2>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Kalender-Integration</h2>
 
           <div className="space-y-6">
             <p className="text-base" style={{ color: '#666' }}>
@@ -588,14 +585,14 @@ export default function Settings() {
               onClick={handleAddToCalendar}
               className="w-full bg-black text-white px-6 py-3 text-lg font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
             >
-              📅 Zu Kalender hinzufügen
+              Zu Kalender hinzufügen
             </button>
           </div>
         </div>
 
         {/* Support Section */}
         <div className="bg-white border-2 rounded-xl p-6 md:p-8 mb-6 shadow-lg" style={{ borderColor: '#e0e0e0' }}>
-          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>💬 Support</h2>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#2d2e2e' }}>Support</h2>
 
           <div className="space-y-6">
             <p className="text-base" style={{ color: '#666' }}>
@@ -605,7 +602,7 @@ export default function Settings() {
             {/* FAQ Section */}
             <div className="space-y-4">
               <div className="p-4 border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
-                <h3 className="font-bold mb-2" style={{ color: '#2d2e2e' }}>❓ Häufig gestellte Fragen</h3>
+                <h3 className="font-bold mb-2" style={{ color: '#2d2e2e' }}>Häufig gestellte Fragen</h3>
                 <ul className="space-y-2 text-sm" style={{ color: '#666' }}>
                   <li>• <strong>Wann kann ich Zettel hochladen?</strong><br />Täglich zwischen 20:00 - 02:00 Uhr (Die Stunde des Wolfs)</li>
                   <li>• <strong>Was passiert bei einem Streak-Verlust?</strong><br />Joker werden automatisch verwendet, wenn du einen hast</li>
@@ -616,7 +613,7 @@ export default function Settings() {
 
             {/* Contact */}
             <div className="p-4 border-2 rounded-xl" style={{ borderColor: '#e0e0e0' }}>
-              <h3 className="font-bold mb-2" style={{ color: '#2d2e2e' }}>📧 Kontakt</h3>
+              <h3 className="font-bold mb-2" style={{ color: '#2d2e2e' }}>Kontakt</h3>
               <p className="text-sm mb-3" style={{ color: '#666' }}>
                 Hast du Fragen, Feedback oder Probleme? Schreib uns!
               </p>
@@ -624,7 +621,7 @@ export default function Settings() {
                 href="mailto:support@papyr.app"
                 className="inline-block bg-black text-white px-6 py-3 text-base font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
               >
-                ✉️ support@papyr.app
+                support@papyr.app
               </a>
             </div>
 
@@ -644,7 +641,7 @@ export default function Settings() {
             className="w-full bg-white text-black px-6 py-3 text-lg font-bold border-2 rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
             style={{ borderColor: '#e0e0e0' }}
           >
-            🚪 Abmelden
+            Abmelden
           </button>
         </div>
 
@@ -678,7 +675,7 @@ export default function Settings() {
         isOpen={showNotifDialog}
         onClose={() => setShowNotifDialog(false)}
         buttons={[
-          { text: '✓ Ja, erinnere mich!', action: confirmEnableNotifications, primary: true },
+          { text: 'Ja, erinnere mich!', action: confirmEnableNotifications, primary: true },
           { text: 'Nicht jetzt', action: () => {} },
         ]}
       />
@@ -695,7 +692,7 @@ export default function Settings() {
       />
 
       <ConfirmDialog
-        title="⚠️ ACHTUNG"
+        title="ACHTUNG"
         message="ALLE Daten werden unwiderruflich gelöscht! Dieser Vorgang kann NICHT rückgängig gemacht werden!"
         isOpen={showClearDialog}
         onClose={() => setShowClearDialog(false)}
@@ -706,18 +703,18 @@ export default function Settings() {
       />
 
       <ConfirmDialog
-        title="✨ Pro Member werden"
+        title="Pro Member werden"
         message="Für 4,99€/Monat erhältst du Extra-Joker, Shop-Rabatte und unterstützt soziale Projekte."
         isOpen={showProDialog}
         onClose={() => setShowProDialog(false)}
         buttons={[
-          { text: '✨ Ja, Pro werden', action: confirmUpgradeToPro, primary: true },
+          { text: 'Ja, Pro werden', action: confirmUpgradeToPro, primary: true },
           { text: 'Nicht jetzt', action: () => {} },
         ]}
       />
 
       <ConfirmDialog
-        title="📁 Member werden"
+        title="Member werden"
         message="Für nur 0,99€/Monat: Unbegrenzte Archivierung, sicherer Cloud-Speicher. Die ersten 14 Zettel sind gratis!"
         isOpen={showMemberDialog}
         onClose={() => setShowMemberDialog(false)}
@@ -729,7 +726,7 @@ export default function Settings() {
 
       {/* Logout Dialog */}
       <ConfirmDialog
-        title="🚪 Abmelden"
+        title="Abmelden"
         message="Möchtest du dich wirklich abmelden?\n\nDeine Daten sind sicher gespeichert und du kannst dich jederzeit wieder anmelden."
         isOpen={showLogoutDialog}
         onClose={() => setShowLogoutDialog(false)}
