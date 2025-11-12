@@ -375,7 +375,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
                   </p>
                 </>
               )}
-              <h2 className="text-xl md:text-3xl font-bold mb-2 mt-40" style={{ color: '#2d2e2e' }}>
+              <h2 className="text-xl md:text-3xl font-bold mb-2 mt-8" style={{ color: '#2d2e2e' }}>
                 Schmiede Pläne..
               </h2>
               <p className="text-base md:text-lg mb-4" style={{ color: '#2d2e2e' }}>
@@ -383,8 +383,11 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
               </p>
             </div>
 
+            {/* Spacer to push button down */}
+            <div className="flex-1"></div>
+
             {/* Upload Button - Fixed at bottom */}
-            <div className="mt-4">
+            <div className="mb-8">
               <button
                 onClick={handleCameraClick}
                 disabled={uploading}
@@ -430,7 +433,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           </div>
 
           {/* Countdown to next upload window - Below button */}
-          <div className="mt-3 flex justify-center w-full">
+          <div className="mb-12 flex justify-center w-full">
             <div className="bg-white rounded-2xl shadow-lg border-2 px-8 py-3" style={{ borderColor: '#e0e0e0' }}>
               <p className="text-sm font-bold mb-2 text-center" style={{ color: '#666' }}>
                 Nächstes Upload-Fenster in:
