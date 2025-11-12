@@ -278,7 +278,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           {/* Mobile/Tablet - Onboarding Card and Week Bar */}
           <div className="lg:hidden px-4 mt-4 flex flex-col items-center gap-4">
             {/* Onboarding Video Card */}
-            <div className="bg-white rounded-xl p-4 shadow-lg w-full max-w-md" style={{ border: '0.5px solid black' }}>
+            <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 shadow-lg w-full max-w-md" style={{ border: '0.5px solid black' }}>
               <h3 className="text-lg font-bold mb-2" style={{ color: '#2d2e2e' }}>
                 Go onboarding in 2 minutes
               </h3>
@@ -295,7 +295,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
 
             {/* Week Bar */}
             <div className="w-full max-w-md">
-              <div className="bg-white shadow-lg rounded-xl p-3" style={{ border: '0.5px solid black' }}>
+              <div className="bg-transparent backdrop-blur-sm shadow-lg rounded-xl p-3" style={{ border: '0.5px solid black' }}>
                 <div className="flex gap-2">
                   {(() => {
                     const today = new Date();

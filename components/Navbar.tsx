@@ -78,20 +78,8 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               />
             </button>
 
-            {/* Global Counter - Centered */}
-            <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl md:text-3xl text-black whitespace-nowrap font-medium">
-                  Heute wurden
-                </span>
-                <span className="text-2xl md:text-3xl font-bold text-black">
-                  {globalPulse.toLocaleString()}
-                </span>
-                <span className="text-2xl md:text-3xl text-black whitespace-nowrap font-medium">
-                  Zettel abgegeben
-                </span>
-              </div>
-            </div>
+            {/* Spacer for centered layout */}
+            <div></div>
 
             {/* Countdown - Desktop Right */}
             <div className="hidden md:flex absolute right-6 items-center">
@@ -373,6 +361,23 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                 </span>
               </div>
             </button>
+          </div>
+
+          {/* Global Counter */}
+          <div className="mb-6 px-2">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border-2" style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+              <div className="text-center">
+                <p className="text-sm font-medium mb-1" style={{ color: '#ffffff', opacity: 0.8 }}>
+                  Heute wurden
+                </p>
+                <p className="text-3xl font-bold" style={{ color: '#ffffff' }}>
+                  {globalPulse.toLocaleString()}
+                </p>
+                <p className="text-sm font-medium mt-1" style={{ color: '#ffffff', opacity: 0.8 }}>
+                  Zettel abgegeben
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Footer */}
