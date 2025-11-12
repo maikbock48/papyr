@@ -70,7 +70,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
   const handleCopy = () => {
     // Check if user is Pro
     if (!profile?.is_pro) {
-      alert('✨ Das Ritual ist nur für Pro Members verfügbar!\n\nWerde Pro Member und schalte exklusive Routinen für deinen Erfolg frei.');
+      alert('Das Ritual ist nur für Pro Members verfügbar!\n\nWerde Pro Member und schalte exklusive Routinen für deinen Erfolg frei.');
       return;
     }
 
@@ -96,7 +96,7 @@ export default function InspirationBrowser({ isOpen, onClose }: InspirationBrows
         className={`max-w-4xl w-full max-h-[90vh] bg-white border-2 shadow-2xl rounded-2xl transform transition-all duration-300 overflow-hidden flex flex-col ${
           show ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
         }`}
-        style={{ borderColor: '#2d2e2e' }}
+        style={{ borderColor: '#2d2e2e', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

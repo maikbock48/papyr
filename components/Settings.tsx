@@ -618,10 +618,10 @@ export default function Settings() {
                 Hast du Fragen, Feedback oder Probleme? Schreib uns!
               </p>
               <a
-                href="mailto:support@papyr.app"
+                href="mailto:papyr.game@gmail.com"
                 className="inline-block bg-black text-white px-6 py-3 text-base font-bold hover:bg-gray-900 transition-colors rounded-xl shadow-md"
               >
-                support@papyr.app
+                papyr.game@gmail.com
               </a>
             </div>
 
