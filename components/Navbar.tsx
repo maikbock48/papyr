@@ -124,24 +124,35 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           <div className="md:hidden border-t" style={{ backgroundColor: 'rgb(206, 205, 203)', borderColor: '#2d2e2e' }}>
             <div className="px-4 pt-2 pb-4 space-y-3">
               {(profile?.user_name || appState.userName) && (
-                <div className="text-black/70 text-base pb-2 border-b font-medium flex items-center gap-2" style={{ borderColor: '#2d2e2e' }}>
-                  <span>Hallo, {profile?.user_name || appState.userName}</span>
+                <div className="pb-2 border-b space-y-2" style={{ borderColor: '#2d2e2e' }}>
+                  <div className="text-black/70 text-base font-medium flex items-center gap-2">
+                    <span>Hallo, {profile?.user_name || appState.userName}</span>
 
-                  {/* Streak Badge - Small and Square */}
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
-                    <span className="text-xs font-bold text-white">{appState.currentStreak}</span>
+                    {profile?.is_pro && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
+                        ✨ Pro
+                      </span>
+                    )}
                   </div>
 
-                  {/* Joker Badge - Small and Square */}
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
-                    <span className="text-xs font-bold text-white">{appState.jokers}</span>
-                  </div>
+                  {/* Streak and Joker Row */}
+                  <div className="flex items-center gap-3">
+                    {/* Streak */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-black">STREAK</span>
+                      <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
+                        <span className="text-xs font-bold text-white">{appState.currentStreak}</span>
+                      </div>
+                    </div>
 
-                  {profile?.is_pro && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
-                      ✨ Pro
-                    </span>
-                  )}
+                    {/* Joker */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-black">JOKER</span>
+                      <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                        <span className="text-xs font-bold text-white">{appState.jokers}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               <button
@@ -240,25 +251,36 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           {/* User Info */}
           <div className="mb-8 pb-6 border-b-2" style={{ borderColor: '#2d2e2e' }}>
             {(profile?.user_name || appState.userName) && (
-              <div className="text-black text-xl font-bold mb-4 flex items-center gap-3 flex-wrap">
-                <span>Hallo, {profile?.user_name || appState.userName}!</span>
+              <>
+                <div className="text-black text-xl font-bold mb-3 flex items-center gap-3 flex-wrap">
+                  <span>Hallo, {profile?.user_name || appState.userName}!</span>
 
-                {/* Streak Badge - Small and Square */}
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-sm font-bold text-white">{appState.currentStreak}</span>
+                  {profile?.is_pro && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
+                      ✨ Pro
+                    </span>
+                  )}
                 </div>
 
-                {/* Joker Badge - Small and Square */}
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-sm font-bold text-white">{appState.jokers}</span>
-                </div>
+                {/* Streak and Joker Row */}
+                <div className="flex items-center gap-4">
+                  {/* Streak */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-black">STREAK</span>
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
+                      <span className="text-sm font-bold text-white">{appState.currentStreak}</span>
+                    </div>
+                  </div>
 
-                {profile?.is_pro && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
-                    ✨ Pro
-                  </span>
-                )}
-              </div>
+                  {/* Joker */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-black">JOKER</span>
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                      <span className="text-sm font-bold text-white">{appState.jokers}</span>
+                    </div>
+                  </div>
+                </div>
+              </>
             )}
           </div>
 
