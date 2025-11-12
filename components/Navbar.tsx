@@ -95,11 +95,6 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-2 absolute right-4">
-              {appState.jokers > 0 && (
-                <div className="bg-white px-3 py-1 rounded-full font-bold text-sm shadow-sm" style={{ color: '#2d2e2e' }}>
-                  🃏 {appState.jokers}
-                </div>
-              )}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="w-6 h-6 flex flex-col justify-center items-center gap-1.5"
@@ -136,6 +131,13 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-md">
                     <span className="text-xs font-bold text-white">{appState.currentStreak}</span>
                   </div>
+
+                  {/* Joker Badge - Small and Square */}
+                  {appState.jokers > 0 && (
+                    <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                      <span className="text-xs font-bold text-white">{appState.jokers}</span>
+                    </div>
+                  )}
 
                   {profile?.is_pro && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
@@ -248,16 +250,18 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                   <span className="text-sm font-bold text-white">{appState.currentStreak}</span>
                 </div>
 
+                {/* Joker Badge - Small and Square */}
+                {appState.jokers > 0 && (
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                    <span className="text-sm font-bold text-white">{appState.jokers}</span>
+                  </div>
+                )}
+
                 {profile?.is_pro && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
                     ✨ Pro
                   </span>
                 )}
-              </div>
-            )}
-            {appState.jokers > 0 && (
-              <div className="bg-white px-4 py-2 rounded-full font-bold text-lg border-2 inline-block shadow-sm" style={{ color: '#2d2e2e', borderColor: '#2d2e2e' }}>
-                🃏 {appState.jokers} Joker
               </div>
             )}
           </div>
@@ -328,29 +332,8 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
             </button>
           </nav>
 
-          {/* Stamps Section */}
-          <div className="flex-1 mb-6 flex flex-col justify-center gap-3">
-            {/* Joker Stamp */}
-            <button
-              onClick={() => onNavigate('subscription')}
-              className="rounded-xl p-2 shadow-lg relative transition-all hover:scale-105 cursor-pointer overflow-hidden w-full"
-              style={{
-                border: '3px solid #ffffff',
-                backgroundColor: 'transparent',
-                boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15)',
-                height: '60px'
-              }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                <span style={{ fontSize: '3rem' }}>🃏</span>
-              </div>
-              <div className="relative flex items-center justify-center h-full">
-                <span className="text-2xl font-bold" style={{ color: '#ffffff' }}>
-                  {appState.jokers}
-                </span>
-              </div>
-            </button>
-          </div>
+          {/* Spacer */}
+          <div className="flex-1"></div>
 
           {/* Countdown to next upload window */}
           <div className="mb-6 px-2">
