@@ -384,10 +384,10 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
             </div>
 
             {/* Spacer to push button down */}
-            <div className="flex-1"></div>
+            <div className="flex-1 min-h-[300px]"></div>
 
             {/* Upload Button - Fixed at bottom */}
-            <div className="mb-8">
+            <div className="mb-4">
               <button
                 onClick={handleCameraClick}
                 disabled={uploading}
@@ -433,7 +433,7 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           </div>
 
           {/* Countdown to next upload window - Below button */}
-          <div className="mb-12 flex justify-center w-full">
+          <div className="mb-24 flex justify-center w-full">
             <div className="bg-white rounded-2xl shadow-lg border-2 px-8 py-3" style={{ borderColor: '#e0e0e0' }}>
               <p className="text-sm font-bold mb-2 text-center" style={{ color: '#666' }}>
                 Nächstes Upload-Fenster in:
