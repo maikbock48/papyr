@@ -39,6 +39,8 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
   const [showGoalsPopup, setShowGoalsPopup] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
+  const [showAlreadyCommittedDialog, setShowAlreadyCommittedDialog] = useState(false);
+  const [showWolfHourDialog, setShowWolfHourDialog] = useState(false);
 
   // Update countdown every second
   useEffect(() => {
@@ -105,13 +107,13 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
     }
 
     if (!isWithinWolfHour()) {
-      alert('⏰ Die Stunde des Wolfs ist zwischen 20:00 und 02:00 Uhr. Komm dann wieder.');
+      setShowWolfHourDialog(true);
       return;
     }
 
     const canCommit = await canCommitTodayDB();
     if (!canCommit) {
-      alert('✅ Du hast heute bereits dein Bekenntnis abgelegt. Bis morgen Abend!');
+      setShowAlreadyCommittedDialog(true);
       return;
     }
 
@@ -547,6 +549,36 @@ export default function Dashboard({ onUpload, onPaywallRequired, globalPulse }: 
           {
             text: 'Galerie durchsuchen',
             action: () => handleUploadChoice('gallery'),
+          },
+        ]}
+      />
+
+      {/* Already Committed Today Dialog */}
+      <ConfirmDialog
+        title="✅ Gut gemacht!"
+        message={`Du hast heute bereits dein Bekenntnis abgelegt.\n\nDein Zettel ist dokumentiert und dein Streak läuft weiter.\n\nKomm morgen Abend zwischen 20:00 und 02:00 Uhr wieder, um deinen nächsten Zettel hochzuladen.\n\nBis morgen! 🔥`}
+        isOpen={showAlreadyCommittedDialog}
+        onClose={() => setShowAlreadyCommittedDialog(false)}
+        buttons={[
+          {
+            text: 'Verstanden',
+            action: () => setShowAlreadyCommittedDialog(false),
+            primary: true,
+          },
+        ]}
+      />
+
+      {/* Wolf Hour Dialog */}
+      <ConfirmDialog
+        title="⏰ Die Stunde des Wolfs"
+        message={`Das Upload-Fenster ist nur zwischen 20:00 und 02:00 Uhr geöffnet.\n\nDas ist die Zeit, in der du deine Pläne für den nächsten Tag schmiedest.\n\nKomm später wieder und lade deinen Zettel hoch.\n\nNächstes Fenster: ${formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}`}
+        isOpen={showWolfHourDialog}
+        onClose={() => setShowWolfHourDialog(false)}
+        buttons={[
+          {
+            text: 'Verstanden',
+            action: () => setShowWolfHourDialog(false),
+            primary: true,
           },
         ]}
       />
