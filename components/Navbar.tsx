@@ -362,20 +362,18 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
           </div>
 
           {/* Countdown to next upload window */}
-          {!isWithinWolfHour() && (
-            <div className="mb-6 px-2">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border-2" style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}>
-                <div className="text-center">
-                  <p className="text-xs font-medium mb-2" style={{ color: '#ffffff', opacity: 0.8 }}>
-                    Nächstes Upload-Fenster in:
-                  </p>
-                  <p className="text-2xl font-bold font-mono" style={{ color: '#ffffff' }}>
-                    {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
-                  </p>
-                </div>
+          <div className="mb-6 px-2">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border-2" style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+              <div className="text-center">
+                <p className="text-xs font-medium mb-2" style={{ color: '#ffffff', opacity: 0.8 }}>
+                  Nächstes Upload-Fenster in:
+                </p>
+                <p className="text-2xl font-bold font-mono" style={{ color: '#ffffff' }}>
+                  {formatCountdown(countdown.hours, countdown.minutes, countdown.seconds)}
+                </p>
               </div>
             </div>
-          )}
+          </div>
 
           {/* Footer */}
           <div className="pt-6 border-t" style={{ borderColor: '#2d2e2e' }}>
