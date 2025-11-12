@@ -20,6 +20,21 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
   const appState = getAppState();
   const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const { profile } = useAuth();
+  const [language, setLanguage] = useState<'de' | 'en'>('de');
+
+  // Load language preference from localStorage
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('papyr_language') as 'de' | 'en';
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+    }
+  }, []);
+
+  const toggleLanguage = () => {
+    const newLanguage = language === 'de' ? 'en' : 'de';
+    setLanguage(newLanguage);
+    localStorage.setItem('papyr_language', newLanguage);
+  };
 
   // Update countdown every second
   useEffect(() => {
@@ -127,6 +142,16 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
                 <div className="pb-2 border-b space-y-2" style={{ borderColor: '#2d2e2e' }}>
                   <div className="text-black/70 text-base font-medium flex items-center gap-2">
                     <span>Hallo, {profile?.user_name || appState.userName}</span>
+
+                    {/* Language Toggle */}
+                    <button
+                      onClick={toggleLanguage}
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-black/10 transition-colors"
+                      title={language === 'de' ? 'Switch to English' : 'Zu Deutsch wechseln'}
+                    >
+                      <span className="text-base">{language === 'de' ? '🇩🇪' : '🇺🇸'}</span>
+                      <span className="text-xs font-bold text-black">{language === 'de' ? 'DE' : 'EN'}</span>
+                    </button>
 
                     {profile?.is_pro && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-sm">
@@ -251,6 +276,16 @@ export default function Navbar({ currentView, onNavigate, onOpenInspiration, sid
               <>
                 <div className="text-black text-xl font-bold mb-3 flex items-center gap-3 flex-wrap">
                   <span>Hallo, {profile?.user_name || appState.userName}!</span>
+
+                  {/* Language Toggle */}
+                  <button
+                    onClick={toggleLanguage}
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-black/10 transition-colors"
+                    title={language === 'de' ? 'Switch to English' : 'Zu Deutsch wechseln'}
+                  >
+                    <span className="text-lg">{language === 'de' ? '🇩🇪' : '🇺🇸'}</span>
+                    <span className="text-xs font-bold text-black">{language === 'de' ? 'DE' : 'EN'}</span>
+                  </button>
 
                   {profile?.is_pro && (
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
